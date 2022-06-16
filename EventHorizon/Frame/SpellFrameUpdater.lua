@@ -13,19 +13,13 @@ function SpellFrameUpdater:new(frame)
 	self.frame = frame
 	self.spell = frame.spell
 
-	frame.OnUpdate = SpellFrameUpdater.OnUpdate
-	frame.GetTexture = SpellFrameUpdater.GetTexture
-	frame.AttachTexture = SpellFrameUpdater.AttachTexture
-	frame.UpdateTexture = SpellFrameUpdater.UpdateTexture
-	frame.RecycleTexture = SpellFrameUpdater.RecycleTexture
-	frame.FindTexture = SpellFrameUpdater.FindTexture
-	frame.InPast = SpellFrameUpdater.InPast
-	frame.InFuture = SpellFrameUpdater.InFuture
-	frame.Widen = SpellFrameUpdater.Widen
-	frame.LeftPointInTime = SpellFrameUpdater.LeftPointInTime
-	frame.RightPointInTime = SpellFrameUpdater.RightPointInTime
+	self.textures = {}
+	self.unusedTextures = {}
+	
+end
 
-	frame:SetScript("OnUpdate", frame.OnUpdate)
+function SpellFrameUpdater:Enable()
+	self.frame:SetScript("OnUpdate", function(frame, elapsed) self:OnUpdate(elapsed) end)
 end
 
 function SpellFrameUpdater:OnUpdate(elapsed)
@@ -67,7 +61,7 @@ function SpellFrameUpdater:GetTexture()
 	if #self.unusedTextures > 0 then
 		return tremove(self.unusedTextures)
 	else
-		return self:CreateTexture(nil, "BORDER")
+		return self.frame:CreateTexture(nil, "BORDER")
 	end
 end
 
@@ -95,9 +89,9 @@ function SpellFrameUpdater:AttachTexture(indicator)
 
 		texture:SetColorTexture(unpack(indicator.style.texture))
 		local a,c,d,e = unpack(indicator.style.point1)
-		texture:SetPoint(a,self,c,d,e)
+		texture:SetPoint(a,self.frame,c,d,e)
 		local a,c,d,e = unpack(indicator.style.point2)
-		texture:SetPoint(a,self,c,d,e)
+		texture:SetPoint(a,self.frame,c,d,e)
 	end
 
 	if indicator:IsReady() then
@@ -115,20 +109,20 @@ function SpellFrameUpdater:RecycleTexture(texture)
 end
 
 function SpellFrameUpdater:UpdateTexture(texture, left, right)	
-	texture:SetPoint('LEFT', self, 'LEFT', not self:InPast(left) and self:Widen(left) or 0, 0)
+	texture:SetPoint('LEFT', self.frame, 'LEFT', not self:InPast(left) and self:Widen(left) or 0, 0)
 	if left ~= right then
-		texture:SetPoint("RIGHT", self, 'LEFT', not self:InFuture(right) and self:Widen(right)+1 or self.width, 0)
+		texture:SetPoint("RIGHT", self.frame, 'LEFT', not self:InFuture(right) and self:Widen(right)+1 or self.frame.width, 0)
 	end
 end
 
 function SpellFrameUpdater:LeftPointInTime(left)
-	local diff = GetTime() + self.past
-	return (left-diff)*self.scale
+	local diff = GetTime() + self.frame.past
+	return (left-diff)*self.frame.scale
 end
 
 function SpellFrameUpdater:RightPointInTime(right)
-	local diff = GetTime() + self.past
-	return (right-diff)*self.scale 
+	local diff = GetTime() + self.frame.past
+	return (right-diff)*self.frame.scale 
 end
 
 function SpellFrameUpdater:InPast(point)
@@ -140,5 +134,5 @@ function SpellFrameUpdater:InFuture(point)
 end
 
 function SpellFrameUpdater:Widen(point)
-	return point * self.width
+	return point * self.frame.width
 end
