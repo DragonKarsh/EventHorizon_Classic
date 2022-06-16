@@ -31,7 +31,7 @@ function MainFrame:CreateFrame(config)
 	frame:SetWidth(frame.width)
 	frame:SetHeight(frame.height)
 
-	local handle = CreateFrame("Frame", "EventHorizonRowynHandle", UIParent)	
+	local handle = CreateFrame("Frame", nil, UIParent)	
 	frame:SetPoint("TOPRIGHT", handle, "BOTTOMRIGHT")
 	
 	handle:SetPoint("CENTER")
