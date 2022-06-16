@@ -1,38 +1,32 @@
 MainFrame = {}
+MainFrame.__index = MainFrame
 
-function MainFrame:CreateFrame(config)		
-	local frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")	
+setmetatable(MainFrame, {
+  __call = function (cls, ...)
+    local self = setmetatable({}, cls)
+    self:new(...)
+    return self
+  end,
+})
 
-	local meta = getmetatable(frame)
-	if meta and meta.__index then
-		local metaindex = meta.__index
-		setmetatable(frame, {__index = 
-		function(self,k) 
-			if MainFrame[k] then 
-				self[k]=MainFrame[k] 
-				return MainFrame[k] 
-			end 
-			return metaindex[k] 
-		end})
-	else
-		setmetatable(frame, {__index = MainFrame})
-	end
+function MainFrame:new(config)	
+	self.past = config.past
+	self.future = config.future
+	self.height = config.height
+	self.width = config.width
+	self.scale = config.scale
 
-	frame.past = config.past
-	frame.future = config.future
-	frame.height = config.height
-	frame.width = config.width
-	frame.scale = config.scale
+	self.spellFrames = {}
+	self.gcdSpellId = config.gcdSpellId or 0
+	self.gcdEnd = nil	
 
-	frame.spellFrames = {}
-	frame.gcdSpellId = config.gcdSpellId or 0
-	frame.gcdEnd = nil	
+	self.frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")	
 
-	frame:SetWidth(frame.width)
-	frame:SetHeight(frame.height)
+	self.frame:SetWidth(self.width)
+	self.frame:SetHeight(self.height)
 
 	local handle = CreateFrame("Frame", nil, UIParent)	
-	frame:SetPoint("TOPRIGHT", handle, "BOTTOMRIGHT")
+	self.frame:SetPoint("TOPRIGHT", handle, "BOTTOMRIGHT")
 	
 	handle:SetPoint("CENTER")
 	handle:SetWidth(10)
@@ -60,25 +54,28 @@ function MainFrame:CreateFrame(config)
 	handle:SetScript("OnLeave",function(frame) frame.texture:SetColorTexture(1,1,1,0.1) end)
 	handle.texture:SetColorTexture(1,1,1,0.1)
 
-	frame.handle = handle
+	self.handle = handle
 
-	frame.nowIndicator = frame:CreateTexture(nil, 'BORDER')
-	frame.nowIndicator:SetPoint('BOTTOM',frame,'BOTTOM')
-	frame.nowIndicator:SetPoint('TOPLEFT',frame,'TOPLEFT', -frame.past/(frame.future-frame.past)*frame.width, 0)
-	frame.nowIndicator:SetWidth(1)
-	frame.nowIndicator:SetColorTexture(1,1,1,1)
+	self.nowIndicator = self.frame:CreateTexture(nil, 'BORDER')
+	self.nowIndicator:SetPoint('BOTTOM',self.frame,'BOTTOM')
+	self.nowIndicator:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -self.past/(self.future-self.past)*self.width, 0)
+	self.nowIndicator:SetWidth(1)
+	self.nowIndicator:SetColorTexture(1,1,1,1)
 	
-	frame.gcdIndicator = frame:CreateTexture(nil, 'BORDER')
-	frame.gcdIndicator:SetPoint('BOTTOM',frame,'BOTTOM')
-	frame.gcdIndicator:SetPoint('TOP',frame,'TOP', -frame.past/(frame.future-frame.past)*frame.width-0.5+frame.height, 0)
-	frame.gcdIndicator:SetWidth(1)
-	frame.gcdIndicator:SetColorTexture(1,1,1,0.5)
-	frame.gcdIndicator:Hide()
+	self.gcdIndicator = self.frame:CreateTexture(nil, 'BORDER')
+	self.gcdIndicator:SetPoint('BOTTOM',self.frame,'BOTTOM')
+	self.gcdIndicator:SetPoint('TOP',self.frame,'TOP', -self.past/(self.future-self.past)*self.width-0.5+self.height, 0)
+	self.gcdIndicator:SetWidth(1)
+	self.gcdIndicator:SetColorTexture(1,1,1,0.5)
+	self.gcdIndicator:Hide()
 
-	frame:RegisterEvent('SPELL_UPDATE_COOLDOWN')
-	frame:SetScript('OnEvent', function(self, event, ...) if self[event] then self[event](self,...) end end)
+	
 
-	return frame
+end
+
+function MainFrame:Enable()
+	self.frame:RegisterEvent('SPELL_UPDATE_COOLDOWN')
+	self.frame:SetScript('OnEvent', function(frame, event, ...) if self[event] then self[event](self,...) end end)
 end
 
 function MainFrame:SPELL_UPDATE_COOLDOWN()
@@ -86,11 +83,11 @@ function MainFrame:SPELL_UPDATE_COOLDOWN()
 		local start, duration = GetSpellCooldown(self.gcdSpellId)
 		if start and duration and duration>0 then
 			self.gcdEnd = start+duration
-			self:SetScript('OnUpdate', self.OnUpdate)
+			self.frame:SetScript('OnUpdate', function(frame, elapsed) self:OnUpdate(elapsed) end)
 		else
 			self.gcdEnd = nil
 			self.gcdIndicator:Hide()
-			self:SetScript('OnUpdate', nil)
+			self.frame:SetScript('OnUpdate', nil)
 		end
 	end
 end
@@ -105,9 +102,13 @@ function MainFrame:OnUpdate(elapsed)
 			local diff = now+self.past
 			local p = (self.gcdEnd-diff)*self.scale
 			if p<=1 then
-				self.gcdIndicator:SetPoint('RIGHT', self, 'RIGHT', (p-1)*self.width+1, 0)
+				self.gcdIndicator:SetPoint('RIGHT', self.frame, 'RIGHT', (p-1)*self.width+1, 0)
 				self.gcdIndicator:Show()
 			end
 		end
 	end
+end
+
+function MainFrame:NewSpell(spellConfig)
+	SpellFrame:CreateFrame(self, spellConfig)
 end

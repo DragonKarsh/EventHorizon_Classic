@@ -1,7 +1,7 @@
 SpellFrame = {}
 
 function SpellFrame:CreateFrame(mainFrame, spellConfig)
-	local frame = CreateFrame("Frame", nil, mainFrame, "BackdropTemplate")	
+	local frame = CreateFrame("Frame", nil, mainFrame.frame, "BackdropTemplate")	
 
 	frame.spell = SpellBase(spellConfig)
 
@@ -13,9 +13,9 @@ function SpellFrame:CreateFrame(mainFrame, spellConfig)
 	frame.scale = mainFrame.scale
 
 	local texture = select(3,GetSpellInfo(spellConfig.spellId))
-	frame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -#mainFrame.spellFrames * mainFrame.height)
+	frame:SetPoint("TOPLEFT", mainFrame.frame, "TOPLEFT", 0, -#mainFrame.spellFrames * mainFrame.height)
 	tinsert(mainFrame.spellFrames, frame)
-	mainFrame:SetHeight(#mainFrame.spellFrames * mainFrame.height)
+	mainFrame.frame:SetHeight(#mainFrame.spellFrames * mainFrame.height)
 	frame:SetWidth(mainFrame.width)
 	frame:SetHeight(mainFrame.height)
 	frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}

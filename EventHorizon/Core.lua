@@ -26,12 +26,14 @@ end
 
 function EventHorizon:Initialize()
 	self.database = EventHorizonDatabase
-	self.mainFrame = MainFrame:CreateFrame(self)	
+	self.mainFrame = MainFrame(self)
+	
+	self.mainFrame:NewSpell({spellId=34917, abbrev='vt', debuff=15, ticks=5, castTime=1.5})
+	self.mainFrame:NewSpell({spellId=10894, abbrev='swp', debuff=27, ticks=9})
+	self.mainFrame:NewSpell({spellId=8092, abbrev='mb', castTime=1.5, coolDown=5.5})
+	self.mainFrame:NewSpell({spellId=25387, abbrev='mf',channel=3, ticks=3})
+	self.mainFrame:NewSpell({spellId=32379, abbrev='swd', coolDown=12})
+	self.mainFrame:NewSpell({spellId=19280, abbrev='dp', debuff=24, ticks=8, coolDown=180})
+	self.mainFrame:Enable()
 
-	SpellFrame:CreateFrame(self.mainFrame, {spellId=34917, abbrev='vt', debuff=15, ticks=5, castTime=1.5})
-	SpellFrame:CreateFrame(self.mainFrame, {spellId=10894, abbrev='swp', debuff=27, ticks=9})
-	SpellFrame:CreateFrame(self.mainFrame, {spellId=8092, abbrev='mb', castTime=1.5, coolDown=5.5})
-	SpellFrame:CreateFrame(self.mainFrame, {spellId=25387, abbrev='mf',channel=3, ticks=3})
-	SpellFrame:CreateFrame(self.mainFrame, {spellId=32379, abbrev='swd', coolDown=12})
-	SpellFrame:CreateFrame(self.mainFrame, {spellId=19280, abbrev='dp', debuff=24, ticks=8, coolDown=180})
 end
