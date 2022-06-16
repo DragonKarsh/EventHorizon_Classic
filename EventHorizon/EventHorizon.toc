@@ -1,6 +1,6 @@
 ## Interface: 20504
 ## Title: EventHorizon
-## Author: Rowyn
+## Author: DragonKarsh
 ## Version: 0.0.1
 ## Dependencies:
 ## OptDeps: 
