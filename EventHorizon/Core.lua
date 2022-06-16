@@ -1,5 +1,5 @@
 EventHorizon = {}
-NEW_EventHorizonDatabase = {}
+EventHorizonDatabase = {}
 
 local EventHorizon = EventHorizon
 EventHorizon.database = EventHorizonDatabase
@@ -18,7 +18,7 @@ do
 	frame:RegisterEvent("PLAYER_LOGIN")
 	function frame:PLAYER_LOGIN()
 		EventHorizon:Initialize()
-		print("EventHorizon Classic Initialized -- Rowyn")
+		print("EventHorizon Classic Initialized")
 	end
 
 	EventHorizon.frame = frame
