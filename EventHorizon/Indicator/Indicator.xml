@@ -1,0 +1,12 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='Indicator.lua'/>
+	<Script file='Segment.lua'/>
+	<Script file='CastingIndicator.lua'/>
+  <Script file='ChannelingIndicator.lua'/>
+  <Script file='RecastIndicator.lua'/>
+  <Script file='CoolDownIndicator.lua'/>
+  <Script file='DebuffIndicator.lua'/>
+  <Script file='CastedDebuffIndicator.lua'/>
+  <Script file='SentIndicator.lua'/>
+  <Script file='TickIndicator.lua'/>
+</Ui>

@@ -1,0 +1,12 @@
+## Interface: 20504
+## Title: EventHorizon
+## Author: Rowyn
+## Version: 0.0.1
+## Dependencies:
+## OptDeps: 
+## SavedVariables: EventHorizonDatabase
+
+Indicator\Indicator.xml
+Spell\Spell.xml
+Frame\Frame.xml
+Core.lua

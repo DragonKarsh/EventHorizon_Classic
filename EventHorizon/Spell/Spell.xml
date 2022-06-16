@@ -1,0 +1,7 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='SpellBase.lua'/>
+	<Script file='Cast.lua'/>
+	<Script file='Channel.lua'/>
+  <Script file='CoolDown.lua'/>
+  <Script file='Debuff.lua'/>
+</Ui>
