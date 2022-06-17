@@ -10,6 +10,7 @@ setmetatable(MainFrame, {
 })
 
 function MainFrame:new(config)	
+	self.config = config
 	self.past = config.past
 	self.future = config.future
 	self.height = config.height
@@ -19,53 +20,29 @@ function MainFrame:new(config)
 	self.spellFrames = {}
 
 	self.frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")	
-
 	self.frame:SetSize(self.width, self.height)
-
-	local handle = CreateFrame("Frame", nil, UIParent)	
-	self.frame:SetPoint("TOPRIGHT", handle, "BOTTOMRIGHT")
-	
-	handle:SetPoint("CENTER")
-	handle:SetSize(10,5)
-	handle:EnableMouse(true)
-	handle:SetMovable(true)
-	handle:RegisterForDrag("LeftButton")
-	handle:SetScript("OnDragStart", function(self, button) self:StartMoving() end)
-	handle:SetScript("OnDragStop", function(frame) 
-		frame:StopMovingOrSizing() 
-		local a,b,c,d,e = frame:GetPoint(1)
-		if type(b)=='frame' then
-			b=b:GetName()
-		end
-		config.database.point = {a,b,c,d,e}
-	end)
-
-	if config.database.point then
-		handle:SetPoint(unpack(config.database.point))
-	end
-	
-	handle.texture = handle:CreateTexture(nil, "BORDER")
-	handle.texture:SetAllPoints()
-	handle:SetScript("OnEnter",function(frame) frame.texture:SetColorTexture(1,1,1,1) end)
-	handle:SetScript("OnLeave",function(frame) frame.texture:SetColorTexture(1,1,1,0.1) end)
-	handle.texture:SetColorTexture(1,1,1,0.1)
-
-	self.handle = handle
 end
 
+function MainFrame:WithHandle(database)
+	self.handle = Handle(database)	
+	self.frame:SetPoint("TOPRIGHT", self.handle.frame, "BOTTOMRIGHT")
+	return self
+end
 function MainFrame:WithNowReference()
 	self.nowReference = NowReference(self)
 	return self
 end
 
 function MainFrame:WithGcdReference(gcdSpellId)
-	self.gcdReference = GcdReference(self, gcdSpellId):WithEventHandler():WithUpdater()
+	self.gcdReference = GcdReference(self, gcdSpellId)
+	:WithEventHandler()
+	:WithUpdater()
 	return self
 end
 
 function MainFrame:NewSpell(spellConfig)
 	local frame = SpellFrame(self, spellConfig)
+	:WithUpdater()
 	tinsert(self.spellFrames, frame)
-	self.frame:SetHeight(#self.spellFrames * self.height)
-	frame:Enable()
+	self.frame:SetHeight(#self.spellFrames * self.height)	
 end

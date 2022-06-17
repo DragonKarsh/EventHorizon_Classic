@@ -17,19 +17,23 @@ function SpellBase:new (config)
 	self.indicators = {}
 	
 	if config.castTime then
-		self.caster = Caster(self, config.castTime):WithEventHandler()
+		self.caster = Caster(self, config.castTime)
+		:WithEventHandler()
 	end
 
 	if config.channel then
-		self.channeler = Channeler(self, config.channel, config.ticks):WithEventHandler()
+		self.channeler = Channeler(self, config.channel, config.ticks)
+		:WithEventHandler()
 	end
 
 	if config.debuff then
-		self.debuffer = Debuffer(self, config.debuff, config.ticks, config.castTime):WithEventHandler()
+		self.debuffer = Debuffer(self, config.debuff, config.ticks, config.castTime)
+		:WithEventHandler()
 	end
 
 	if config.coolDown then
-		self.coolDowner = CoolDowner(self, config.coolDown):WithEventHandler()
+		self.coolDowner = CoolDowner(self, config.coolDown)
+		:WithEventHandler()
 	end	
 end
 

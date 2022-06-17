@@ -34,7 +34,8 @@ function SpellFrame:new(mainFrame, spellConfig)
 	self.frame:SetBackdropColor(1,1,1,.1)	
 end
 
-function SpellFrame:Enable()
+function SpellFrame:WithUpdater()
 	self.updater = SpellFrameUpdateHandler(self)
 	self.updater:Enable()
+	return self
 end

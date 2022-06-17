@@ -24,7 +24,10 @@ end
 
 function EventHorizon:Initialize()
 	self.database = EventHorizonDatabase
-	self.mainFrame = MainFrame(self):WithNowReference():WithGcdReference(self.gcdSpellId)
+	self.mainFrame = MainFrame(self)
+	:WithHandle(self.database)
+	:WithNowReference()
+	:WithGcdReference(self.gcdSpellId)
 	
 	self.mainFrame:NewSpell({spellId=34914, abbrev='vt', debuff=15, ticks=5, castTime=1.5})
 	self.mainFrame:NewSpell({spellId=589, abbrev='swp', debuff=27, ticks=9})
