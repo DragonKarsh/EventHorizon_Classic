@@ -28,6 +28,15 @@ function DebuffIndicator:new(spell, target, start, stop)
 	end
 end
 
+function DebuffIndicator:Dispose()
+	Segment.Dispose(self)
+
+	if self.spell.debuffer.debuffs[self.target] and self.spell.debuffer.debuffs[self.target].id == self.id then
+		self.spell.debuffer.debuffs[self.target] = nil
+	end
+
+end
+
 function DebuffIndicator:Stop(stop)
 	Segment.Stop(self,stop)
 	self:RemoveTicksAfter(stop)

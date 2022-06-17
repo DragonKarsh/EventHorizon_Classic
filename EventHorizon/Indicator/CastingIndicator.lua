@@ -16,7 +16,7 @@ setmetatable(CastingIndicator, {
 function CastingIndicator:new(spell, start, stop)
 	Segment.new(self, spell, nil, start, stop)	
 
-	self.style.texture = {0,1,0,0.7}
+	self.style.texture = {0,1,0,0.9}
 end
 
 function CastingIndicator:IsVisible()

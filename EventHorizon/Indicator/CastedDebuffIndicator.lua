@@ -16,7 +16,6 @@ setmetatable(CastedDebuffIndicator, {
 function CastedDebuffIndicator:new(spell, target, start, stop)
 	DebuffIndicator.new(self,spell, target, start, stop)
 	
-	self.style.texture = {1,1,1,0.7}
 	self.style.point1 = {'TOP', 'TOP', 0, -3}
 	self.style.point2 = {'BOTTOM', 'TOP', -3, -6}
 	

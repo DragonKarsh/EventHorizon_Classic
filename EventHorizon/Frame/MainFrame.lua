@@ -110,5 +110,8 @@ function MainFrame:OnUpdate(elapsed)
 end
 
 function MainFrame:NewSpell(spellConfig)
-	SpellFrame:CreateFrame(self, spellConfig)
+	local frame = SpellFrame(self, spellConfig)
+	tinsert(self.spellFrames, frame)
+	self.frame:SetHeight(#self.spellFrames * self.height)
+	frame:Enable()
 end

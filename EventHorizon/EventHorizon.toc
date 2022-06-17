@@ -6,6 +6,7 @@
 ## OptDeps: 
 ## SavedVariables: EventHorizonDatabase
 
+EventHandling\EventHandling.xml
 Indicator\Indicator.xml
 Spell\Spell.xml
 Frame\Frame.xml

@@ -16,7 +16,7 @@ setmetatable(CoolDownIndicator, {
 function CoolDownIndicator:new(spell, start, stop)
 	Segment.new(self, spell, nil, start, stop)	
 
-	self.style.texture = {1,1,1,0.7}
+	self.style.texture = {0.9,0.9,0.9,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}
 
 end

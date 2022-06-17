@@ -19,7 +19,7 @@ function SpellFrameUpdater:new(frame)
 end
 
 function SpellFrameUpdater:Enable()
-	self.frame:SetScript("OnUpdate", function(frame, elapsed) self:OnUpdate(elapsed) end)
+	self.frame.frame:SetScript("OnUpdate", function(frame, elapsed) self:OnUpdate(elapsed) end)
 end
 
 function SpellFrameUpdater:OnUpdate(elapsed)
@@ -50,18 +50,18 @@ function SpellFrameUpdater:OnUpdate(elapsed)
 		end
 	end
 
-	for k,v in pairs(self.spell.debuffs)do
-		if v.disposed then
-			self.spell.debuffs[k] = nil
-		end
-	end
+--	for k,v in pairs(self.spell.debuffs)do
+--		if v.disposed then
+--			self.spell.debuffs[k] = nil
+--		end
+--	end
 end
 
 function SpellFrameUpdater:GetTexture()
 	if #self.unusedTextures > 0 then
 		return tremove(self.unusedTextures)
 	else
-		return self.frame:CreateTexture(nil, "BORDER")
+		return self.frame.frame:CreateTexture(nil, "BORDER")
 	end
 end
 
@@ -89,9 +89,9 @@ function SpellFrameUpdater:AttachTexture(indicator)
 
 		texture:SetColorTexture(unpack(indicator.style.texture))
 		local a,c,d,e = unpack(indicator.style.point1)
-		texture:SetPoint(a,self.frame,c,d,e)
+		texture:SetPoint(a,self.frame.frame,c,d,e)
 		local a,c,d,e = unpack(indicator.style.point2)
-		texture:SetPoint(a,self.frame,c,d,e)
+		texture:SetPoint(a,self.frame.frame,c,d,e)
 	end
 
 	if indicator:IsReady() then
@@ -109,9 +109,9 @@ function SpellFrameUpdater:RecycleTexture(texture)
 end
 
 function SpellFrameUpdater:UpdateTexture(texture, left, right)	
-	texture:SetPoint('LEFT', self.frame, 'LEFT', not self:InPast(left) and self:Widen(left) or 0, 0)
+	texture:SetPoint('LEFT', self.frame.frame, 'LEFT', not self:InPast(left) and self:Widen(left) or 0, 0)
 	if left ~= right then
-		texture:SetPoint("RIGHT", self.frame, 'LEFT', not self:InFuture(right) and self:Widen(right)+1 or self.frame.width, 0)
+		texture:SetPoint("RIGHT", self.frame.frame, 'LEFT', not self:InFuture(right) and self:Widen(right)+1 or self.frame.width, 0)
 	end
 end
 

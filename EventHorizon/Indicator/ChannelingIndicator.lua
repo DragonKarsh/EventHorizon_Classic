@@ -16,12 +16,12 @@ setmetatable(ChannelingIndicator, {
 function ChannelingIndicator:new(spell, start, stop)
 	CastingIndicator.new(self, spell, start, stop)
 
-	self.style.texture = {0,1,0,0.7}
+	self.style.texture = {0,1,0,0.9}
 	self.ticks = {}
 
 	local duration = stop - start
-	local interval = duration / spell.caster.ticks
-	for i=1,spell.caster.ticks do
+	local interval = duration / spell.channeler.ticks
+	for i=1,spell.channeler.ticks do
 		local tick = TickIndicator(spell, nil, start + i*interval)
 		tinsert(self.ticks, tick)
 	end
