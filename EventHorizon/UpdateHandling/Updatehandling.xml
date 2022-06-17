@@ -1,0 +1,7 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='UpdateHandler.lua'/>
+	<Script file='FrameUpdateHandler.lua'/>
+  <Script file='SpellFrameUpdateHandler.lua'/>
+  <Script file='GcdFrameUpdateHandler.lua'/>
+  <Script file='SpellFrameUpdateHandler.lua'/>
+</Ui>

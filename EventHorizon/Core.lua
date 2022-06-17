@@ -8,7 +8,6 @@ EventHorizon.past = -3
 EventHorizon.future = 9
 EventHorizon.height = 25
 EventHorizon.width = 375
-EventHorizon.scale = 1/(EventHorizon.future-EventHorizon.past)
 EventHorizon.gcdSpellId = 1243
 
 do
@@ -25,7 +24,7 @@ end
 
 function EventHorizon:Initialize()
 	self.database = EventHorizonDatabase
-	self.mainFrame = MainFrame(self)
+	self.mainFrame = MainFrame(self):WithNowReference():WithGcdReference(self.gcdSpellId)
 	
 	self.mainFrame:NewSpell({spellId=34914, abbrev='vt', debuff=15, ticks=5, castTime=1.5})
 	self.mainFrame:NewSpell({spellId=589, abbrev='swp', debuff=27, ticks=9})
@@ -33,6 +32,5 @@ function EventHorizon:Initialize()
 	self.mainFrame:NewSpell({spellId=15407, abbrev='mf',channel=3, ticks=3})
 	self.mainFrame:NewSpell({spellId=32379, abbrev='swd', coolDown=12})
 	self.mainFrame:NewSpell({spellId=2944, abbrev='dp', debuff=24, ticks=8, coolDown=180})
-	self.mainFrame:Enable()
 
 end
