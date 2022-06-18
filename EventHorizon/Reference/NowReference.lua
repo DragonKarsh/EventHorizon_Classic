@@ -13,10 +13,9 @@ setmetatable(NowReference, {
   end,
 })
 
-function NowReference:new(uiFrame)
-	Reference.new(self, uiFrame)
+function NowReference:new(frame)
+	Reference.new(self, frame)
 
-	self.texture:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -self.uiFrame.past/(self.uiFrame.future-self.uiFrame.past)*self.frame:GetWidth(), 0)
+	self.texture:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -self.frame.past/(self.frame.future-self.frame.past)*self.frame:GetWidth(), 0)
 	self.texture:SetColorTexture(1,1,1,1)
-	self.texture:Show()
 end

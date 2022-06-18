@@ -13,10 +13,10 @@ setmetatable(SpellFrameUpdateHandler, {
   end,
 })
 
-function SpellFrameUpdateHandler:new(spellFrame)
-	FrameUpdateHandler.new(self, spellFrame)
+function SpellFrameUpdateHandler:new(spell, frame)
+	FrameUpdateHandler.new(self, frame)
 
-	self.spell = spellFrame.spell
+	self.spell = spell
 	self.textures = {}
 	self.unusedTextures = {}
 end

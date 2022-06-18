@@ -13,28 +13,28 @@ setmetatable(GcdFrameUpdateHandler, {
   end,
 })
 
-function GcdFrameUpdateHandler:new(reference)
-	FrameUpdateHandler.new(self, reference.uiFrame)
+function GcdFrameUpdateHandler:new(gcd, frame)
+	FrameUpdateHandler.new(self, frame)
 
-	self.reference = reference
+	self.gcd = gcd
 end
 
 function GcdFrameUpdateHandler:OnUpdate(elapsed)
-	if self.reference.gcdEnd then
+	if self.gcd.gcdEnd then
 		local now = GetTime()
-		if self.reference.gcdEnd<=now then
-			self.reference.gcdEnd = nil
-			self.reference.texture:Hide()
+		if self.gcd.gcdEnd<=now then
+			self.gcd.gcdEnd = nil
+			self.gcd.texture:Hide()
 		else
 			local diff = now+self.past
-			local p = (self.reference.gcdEnd-diff)*self.scale
+			local p = (self.gcd.gcdEnd-diff)*self.scale
 			if p<=1 then
-				self.reference.texture:SetPoint('RIGHT', self.frame, 'RIGHT', (p-1)*self.frame:GetWidth()+1, 0)
-				self.reference.texture:Show()
+				self.gcd.texture:SetPoint('RIGHT', self.frame, 'RIGHT', (p-1)*self.frame:GetWidth()+1, 0)
+				self.gcd.texture:Show()
 			end
 		end
 	else
-		self.reference.texture:Hide()
+		self.gcd.texture:Hide()
 	end
 end
 

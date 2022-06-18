@@ -9,40 +9,29 @@ setmetatable(MainFrame, {
   end,
 })
 
-function MainFrame:new(config)	
+function MainFrame:new(config, frame, handle, now, gcd, spellConfigs)	
+	self.frame = frame
 	self.config = config
-	self.past = config.past
-	self.future = config.future
-	self.height = config.height
-	self.width = config.width
-	self.scale = 1/(self.future-self.past)
+
+	self.handle = handle
+	if self.handle then
+		self.frame:SetPoint("TOPRIGHT", self.handle.frame, "BOTTOMRIGHT")
+	end
+
+	self.now = now
+	self.gcd = gcd
 
 	self.spellFrames = {}
 
-	self.frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")	
-	self.frame:SetSize(self.width, self.height)
-end
-
-function MainFrame:WithHandle(database)
-	self.handle = Handle(database)	
-	self.frame:SetPoint("TOPRIGHT", self.handle.frame, "BOTTOMRIGHT")
-	return self
-end
-function MainFrame:WithNowReference()
-	self.nowReference = NowReference(self)
-	return self
-end
-
-function MainFrame:WithGcdReference(gcdSpellId)
-	self.gcdReference = GcdReference(self, gcdSpellId)
-	:WithEventHandler()
-	:WithUpdater()
-	return self
+	for _,spellConfig in pairs(spellConfigs) do
+		self:NewSpell(spellConfig)
+	end		
 end
 
 function MainFrame:NewSpell(spellConfig)
-	local frame = SpellFrame(self, spellConfig)
+	local frame = SpellFrameBuilder(self.config, "Frame", spellConfig.abbrev, self.frame, "BackdropTemplate", spellConfig, #self.spellFrames)
 	:WithUpdater()
+	:Build()
 	tinsert(self.spellFrames, frame)
-	self.frame:SetHeight(#self.spellFrames * self.height)	
+	self.frame:SetHeight(#self.spellFrames * self.config.height)	
 end

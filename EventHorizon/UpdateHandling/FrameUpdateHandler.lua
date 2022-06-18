@@ -13,11 +13,11 @@ setmetatable(FrameUpdateHandler, {
   end,
 })
 
-function FrameUpdateHandler:new(uiFrame)
-	UpdateHandler.new(self, uiFrame.frame)
+function FrameUpdateHandler:new(frame)
+	UpdateHandler.new(self, frame)
 
-	self.past = uiFrame.past
-	self.future = uiFrame.future
+	self.past = frame.past
+	self.future = frame.future
 	self.scale = 1/(self.future-self.past)
 end
 

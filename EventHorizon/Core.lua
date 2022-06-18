@@ -24,16 +24,16 @@ end
 
 function EventHorizon:Initialize()
 	self.database = EventHorizonDatabase
-	self.mainFrame = MainFrame(self)
+	self.mainFrame = MainFrameBuilder(self,"Frame", "EventHorizon", UIParent, "BackdropTemplate")
 	:WithHandle(self.database)
 	:WithNowReference()
 	:WithGcdReference(self.gcdSpellId)
-	
-	self.mainFrame:NewSpell({spellId=34914, abbrev='vt', debuff=15, ticks=5, castTime=1.5})
-	self.mainFrame:NewSpell({spellId=589, abbrev='swp', debuff=27, ticks=9})
-	self.mainFrame:NewSpell({spellId=8092, abbrev='mb', castTime=1.5, coolDown=5.5})
-	self.mainFrame:NewSpell({spellId=15407, abbrev='mf',channel=3, ticks=3})
-	self.mainFrame:NewSpell({spellId=32379, abbrev='swd', coolDown=12})
-	self.mainFrame:NewSpell({spellId=2944, abbrev='dp', debuff=24, ticks=8, coolDown=180})
+	:WithSpell({spellId=34914, abbrev='vt', debuff=15, ticks=5, castTime=1.5})
+	:WithSpell({spellId=589, abbrev='swp', debuff=27, ticks=9})
+	:WithSpell({spellId=8092, abbrev='mb', castTime=1.5, coolDown=5.5})
+	:WithSpell({spellId=15407, abbrev='mf',channel=3, ticks=3})
+	:WithSpell({spellId=32379, abbrev='swd', coolDown=12})
+	:WithSpell({spellId=2944, abbrev='dp', debuff=24, ticks=8, coolDown=180})
+	:Build()
 
 end
