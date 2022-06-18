@@ -1,11 +1,11 @@
 SpellFrameUpdateHandler = {}
-for k, v in pairs(FrameUpdateHandler) do
+for k, v in pairs(UpdateHandler) do
   SpellFrameUpdateHandler[k] = v
 end
 SpellFrameUpdateHandler.__index = SpellFrameUpdateHandler
 
 setmetatable(SpellFrameUpdateHandler, {
-	__index = FrameUpdateHandler, 
+	__index = UpdateHandler, 
   __call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -14,7 +14,7 @@ setmetatable(SpellFrameUpdateHandler, {
 })
 
 function SpellFrameUpdateHandler:new(spell, frame)
-	FrameUpdateHandler.new(self, frame)
+	UpdateHandler.new(self, frame)
 
 	self.spell = spell
 	self.textures = {}
@@ -30,8 +30,8 @@ function SpellFrameUpdateHandler:OnUpdate(elapsed)
 
 	for i=#self.spell.indicators,1,-1 do
 		local left, right = self.spell.indicators[i]:GetPoints()
-		left = self:LeftPointInTime(left)
-		right = self:RightPointInTime(right)
+		left = self:PointInTime(left)
+		right = self:PointInTime(right)
 		
 
 		if self:InPast(right) then
@@ -108,14 +108,9 @@ function SpellFrameUpdateHandler:UpdateTexture(texture, left, right)
 	end
 end
 
-function SpellFrameUpdateHandler:LeftPointInTime(left)
-	local diff = GetTime() + self.past
-	return (left-diff)*self.scale
-end
-
-function SpellFrameUpdateHandler:RightPointInTime(right)
-	local diff = GetTime() + self.past
-	return (right-diff)*self.scale 
+function SpellFrameUpdateHandler:PointInTime(point)
+	local diff = GetTime() + self.frame.past
+	return (point-diff)*self.frame.scale
 end
 
 function SpellFrameUpdateHandler:InPast(point)

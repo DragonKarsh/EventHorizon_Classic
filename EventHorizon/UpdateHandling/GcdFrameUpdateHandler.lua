@@ -1,11 +1,11 @@
 GcdFrameUpdateHandler = {}
-for k, v in pairs(FrameUpdateHandler) do
+for k, v in pairs(UpdateHandler) do
   GcdFrameUpdateHandler[k] = v
 end
 GcdFrameUpdateHandler.__index = GcdFrameUpdateHandler
 
 setmetatable(GcdFrameUpdateHandler, {
-	__index = FrameUpdateHandler, 
+	__index = UpdateHandler, 
   __call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -14,7 +14,7 @@ setmetatable(GcdFrameUpdateHandler, {
 })
 
 function GcdFrameUpdateHandler:new(gcd, frame)
-	FrameUpdateHandler.new(self, frame)
+	UpdateHandler.new(self, frame)
 
 	self.gcd = gcd
 end
@@ -26,8 +26,8 @@ function GcdFrameUpdateHandler:OnUpdate(elapsed)
 			self.gcd.gcdEnd = nil
 			self.gcd.texture:Hide()
 		else
-			local diff = now+self.past
-			local p = (self.gcd.gcdEnd-diff)*self.scale
+			local diff = now+self.frame.past
+			local p = (self.gcd.gcdEnd-diff)*self.frame.scale
 			if p<=1 then
 				self.gcd.texture:SetPoint('RIGHT', self.frame, 'RIGHT', (p-1)*self.frame:GetWidth()+1, 0)
 				self.gcd.texture:Show()
