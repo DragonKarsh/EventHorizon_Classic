@@ -17,7 +17,6 @@ function Channeler:new(spellId, frame, ticks)
 	SpellComponent.new(self, spellId, frame)
 
 	self.ticks = ticks
-
 	self.currentChannel = nil
 end
 
@@ -32,16 +31,6 @@ function Channeler:GenerateChannel(start, stop)
 	tinsert(self.indicators, self.currentChannel)
 	for k,v in pairs(self.currentChannel.ticks) do
 		tinsert(self.indicators, v)
-	end
-end
-
-
-function Channeler:RemoveTicksAfter(time)
-	for i=#self.ticks,1,-1 do
-		local diff = self.ticks[i].start - time
-		if diff > 0.1 then
-			tremove(self.ticks,i):Dispose()
-		end
 	end
 end
 

@@ -88,13 +88,9 @@ function SpellComponentUpdateHandler:AttachTexture(indicator)
 
 	if not texture then
 		texture = self:GetTexture()
-		tinsert(self.textures, texture)
-
-		texture:ClearAllPoints()
-		texture:Hide()	
-
 		texture.indicator = indicator
-
+		tinsert(self.textures, texture)
+		
 		texture:SetColorTexture(unpack(indicator.style.texture))
 		local a,c,d,e = unpack(indicator.style.point1)
 		texture:SetPoint(a,self.uiFrame,c,d,e)

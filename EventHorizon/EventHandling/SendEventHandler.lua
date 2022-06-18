@@ -23,7 +23,6 @@ function SendEventHandler:new(sender)
 	self.sender = sender
 end
 
-
 function SpellComponentEventHandler:UNIT_SPELLCAST_SENT(unitId, target, castGUID, spellId)	
 	if self:NotInterestingByUnit(unitId, spellId) then return end
 	self.sender:SentSpell(GetTime())

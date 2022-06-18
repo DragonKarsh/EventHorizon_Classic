@@ -25,7 +25,7 @@ end
 function EventHorizon:Initialize()
 	self.database = EventHorizonDatabase
 	self.mainFrame = MainFrameBuilder(self)
-	:AsShadowPriest()
+	:AsShadowPriest(2, true, true) -- 2/2 imp swp, 2pct6, undead
 	:WithHandle()
 	:WithNowReference()
 	:WithGcdReference()

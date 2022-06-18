@@ -1,7 +1,7 @@
 ## Interface: 20504
 ## Title: EventHorizon
 ## Author: DragonKarsh
-## Version: 0.0.1
+## Version: 22.6.18.0
 ## Dependencies:
 ## OptDeps: 
 ## SavedVariables: EventHorizonDatabase

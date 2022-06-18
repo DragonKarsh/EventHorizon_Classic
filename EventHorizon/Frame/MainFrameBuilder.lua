@@ -24,6 +24,7 @@ function MainFrameBuilder:WithHandle()
 	
 	return self
 end
+
 function MainFrameBuilder:WithNowReference()
 	self.nowReference = NowReference(self.frame)
 	return self
@@ -36,19 +37,29 @@ function MainFrameBuilder:WithGcdReference()
 	return self
 end
 
-function MainFrameBuilder:AsShadowPriest()
+function MainFrameBuilder:AsShadowPriest(impSwpRank, has2PcT6, undead)
 	local shadowPriest = ShadowPriest(self.config, self.frame)
+	:WithImprovedShadowWordPainTalent(impSwpRank)
+
+	if has2PcT6 then
+		shadowPriest = shadowPriest:WithTwoPieceTierSix()
+	end
+
 	self.frame.spells = 0
 	self.spellFrames = {}
 
-	return self
+	self
 	:WithSpell(shadowPriest:VampiricTouch())
 	:WithSpell(shadowPriest:ShadowWordPain())
 	:WithSpell(shadowPriest:MindBlast())
 	:WithSpell(shadowPriest:MindFlay())
 	:WithSpell(shadowPriest:ShadowWordDeath())
-	:WithSpell(shadowPriest:DevouringPlague())	
 
+	if undead then
+		self:WithSpell(shadowPriest:DevouringPlague())	
+	end
+
+	return self
 end
 
 function MainFrameBuilder:WithSpell(spellFrame)

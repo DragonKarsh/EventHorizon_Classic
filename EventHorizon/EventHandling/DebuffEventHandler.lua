@@ -26,7 +26,7 @@ function DebuffEventHandler:new(debuffer)
 end
 
 function DebuffEventHandler:COMBAT_LOG_EVENT_UNFILTERED(...)
-	local time, event, _, srcGuid, _, _, _, dstGuid, _, _, _, spellId = CombatLogGetCurrentEventInfo()
+	local event, _, srcGuid, _, _, _, dstGuid, _, _, _, spellId = select(2,CombatLogGetCurrentEventInfo())
 	local now = GetTime()
 
 	if self:NotInterestingByGuid(srcGuid, spellId) then return end
@@ -45,7 +45,3 @@ function DebuffEventHandler:UNIT_AURA(unitId)
 		self.debuffer:CheckTargetDebuff()
 	end
 end
-
-
-
-

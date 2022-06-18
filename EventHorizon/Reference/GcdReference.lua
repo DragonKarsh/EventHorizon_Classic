@@ -25,13 +25,13 @@ function GcdReference:new(frame, spellId)
 end
 
 function GcdReference:WithUpdater()
-	self.updater = GcdFrameUpdateHandler(self, self.frame)
+	self.updater = GcdUpdateHandler(self)
 	self.updater:Enable()
 	return self
 end
 
 function GcdReference:WithEventHandler()
-	self.eventHandler = GcdEventHandler(self, self.spellId)
+	self.eventHandler = GcdEventHandler(self)
 	self.eventHandler:RegisterEvents()
 	return self
 end

@@ -12,6 +12,19 @@ setmetatable(ShadowPriest, {
 function ShadowPriest:new(config, mainFrame)
 	self.config = config
 	self.mainFrame = mainFrame
+
+	self.swpTicks = 6
+end
+
+function ShadowPriest:WithTwoPieceTierSix()
+	self.swpTicks = self.swpTicks + 1
+	return self
+end
+
+function ShadowPriest:WithImprovedShadowWordPainTalent(rank)
+	if rank < 0 or rank > 2 then error('invalid talent rank') end
+	self.swpTicks = self.swpTicks + rank
+	return self
 end
 
 function ShadowPriest:VampiricTouch()
@@ -24,7 +37,7 @@ end
 
 function ShadowPriest:ShadowWordPain()
 	return SpellFrameBuilder(self.config, 589, self.mainFrame)
-	:WithDebuff(9)
+	:WithDebuff(self.swpTicks)
 	:WithSender()
 	:Build()
 end
