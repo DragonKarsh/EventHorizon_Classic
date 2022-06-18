@@ -13,4 +13,5 @@ Here you can set how big you want the frame to be, as well as what spell you wan
 ![image](https://user-images.githubusercontent.com/51246270/174459347-8d216925-40bb-4353-b214-6301a06c1688.png)
 
 Here you can build the frame as a specific profile. As I mentioned, only Shadow Priest is implemented. You can configure your talent, gear, and race which affects this profile's framing
+
 ![image](https://user-images.githubusercontent.com/51246270/174459411-72847b0e-4b9c-412a-b776-0722f4681e87.png)
