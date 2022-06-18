@@ -1,11 +1,11 @@
 DebuffIndicator = {}
-for k, v in pairs(Segment) do
+for k, v in pairs(Indicator) do
   DebuffIndicator[k] = v
 end
 DebuffIndicator.__index = DebuffIndicator
 
 setmetatable(DebuffIndicator, {
-  __index = Segment, 
+  __index = Indicator, 
   __call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -14,7 +14,7 @@ setmetatable(DebuffIndicator, {
 })
 
 function DebuffIndicator:new(spell, target, start, stop)
-	Segment.new(self,spell, target, start, stop)	
+	Indicator.new(self,spell, target, start, stop)	
 	
 	self.style.texture = {1,1,1,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}
@@ -29,7 +29,7 @@ function DebuffIndicator:new(spell, target, start, stop)
 end
 
 function DebuffIndicator:Dispose()
-	Segment.Dispose(self)
+	Indicator.Dispose(self)
 
 	if self.spell.debuffer.debuffs[self.target] and self.spell.debuffer.debuffs[self.target].id == self.id then
 		self.spell.debuffer.debuffs[self.target] = nil
@@ -38,7 +38,7 @@ function DebuffIndicator:Dispose()
 end
 
 function DebuffIndicator:Stop(stop)
-	Segment.Stop(self,stop)
+	Indicator.Stop(self,stop)
 	self:RemoveTicksAfter(stop)
 end
 

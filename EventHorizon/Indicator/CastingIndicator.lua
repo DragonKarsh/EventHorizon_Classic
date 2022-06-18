@@ -1,11 +1,11 @@
 CastingIndicator = {}
-for k, v in pairs(Segment) do
+for k, v in pairs(Indicator) do
   CastingIndicator[k] = v
 end
 CastingIndicator.__index = CastingIndicator
 
 setmetatable(CastingIndicator, {
-  __index = Segment, 
+  __index = Indicator, 
   __call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -14,7 +14,7 @@ setmetatable(CastingIndicator, {
 })
 
 function CastingIndicator:new(spell, start, stop)
-	Segment.new(self, spell, nil, start, stop)	
+	Indicator.new(self, spell, nil, start, stop)	
 
 	self.style.texture = {0,1,0,0.9}
 end

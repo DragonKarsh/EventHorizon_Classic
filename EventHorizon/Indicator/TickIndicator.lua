@@ -14,7 +14,7 @@ setmetatable(TickIndicator, {
 })
 
 function TickIndicator:new(spell, target, start)
-	Indicator.new(self,spell, target, start)	
+	Indicator.new(self,spell, target, start, start)	
 
 	self.style.texture = {1,1,1,1}
 	self.style.point1 = {'TOP', 'TOP'}

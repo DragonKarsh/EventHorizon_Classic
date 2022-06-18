@@ -1,11 +1,11 @@
 CoolDownIndicator = {}
-for k, v in pairs(Segment) do
+for k, v in pairs(Indicator) do
   CoolDownIndicator[k] = v
 end
 CoolDownIndicator.__index = CoolDownIndicator
 
 setmetatable(CoolDownIndicator, {
-  __index = Segment, 
+  __index = Indicator, 
   __call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -14,7 +14,7 @@ setmetatable(CoolDownIndicator, {
 })
 
 function CoolDownIndicator:new(spell, start, stop)
-	Segment.new(self, spell, nil, start, stop)	
+	Indicator.new(self, spell, nil, start, stop)	
 
 	self.style.texture = {0.9,0.9,0.9,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}

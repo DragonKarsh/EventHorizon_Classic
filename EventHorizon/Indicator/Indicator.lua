@@ -11,13 +11,16 @@ setmetatable(Indicator, {
 
 local id = 0
 
-function Indicator:new(spell, target, start)		
+function Indicator:new(spell, target, start, stop)		
 
 	id = id + 1
 	self.id = 'Ind'..id
 	self.spell = spell
 	self.target = target
 	self.start = start
+	self.stop = stop
+	self.original = {start=start,stop=stop}
+
 	self.disposed = false	
 
 	self.style = {
@@ -38,7 +41,7 @@ function Indicator:IsReady()
 end
 
 function Indicator:GetPoints()
-	return self.start, self.start
+	return self.start, self.stop
 end
 
 function Indicator:IsVisible()
@@ -56,4 +59,8 @@ end
 
 function Indicator:Start(start)
 	self.start = start
+end
+
+function Indicator:Stop(stop)
+	self.stop = stop
 end

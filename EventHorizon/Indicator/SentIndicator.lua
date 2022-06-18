@@ -14,5 +14,5 @@ setmetatable(SentIndicator, {
 })
 
 function SentIndicator:new(spell, start)
-	Indicator.new(self, spell, nil, start)
+	Indicator.new(self, spell, nil, start, start)
 end

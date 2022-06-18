@@ -1,6 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='Indicator.lua'/>
-	<Script file='Segment.lua'/>
 	<Script file='CastingIndicator.lua'/>
   <Script file='ChannelingIndicator.lua'/>
   <Script file='RecastIndicator.lua'/>
