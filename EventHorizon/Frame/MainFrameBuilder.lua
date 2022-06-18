@@ -13,14 +13,15 @@ setmetatable(MainFrameBuilder, {
   end,
 })
 
-function MainFrameBuilder:new(config, frameType, frameName, parentFrame, inheritsFrame)
-	FrameBuilder.new(self, config, frameType, frameName, parentFrame, inheritsFrame)
+function MainFrameBuilder:new(config)
+	FrameBuilder.new(self, config, "EventHorizon", UIParent)
 
-	self.spellConfigs = {}
 end
 
-function MainFrameBuilder:WithHandle(database)
-	self.handle = Handle(database)	
+function MainFrameBuilder:WithHandle()
+	self.handle = Handle(self.config.database)	
+	self.frame:SetPoint("TOPRIGHT", self.handle.frame, "BOTTOMRIGHT")
+	
 	return self
 end
 function MainFrameBuilder:WithNowReference()
@@ -28,18 +29,35 @@ function MainFrameBuilder:WithNowReference()
 	return self
 end
 
-function MainFrameBuilder:WithGcdReference(gcdSpellId)
-	self.gcdReference = GcdReference(self.frame, gcdSpellId)
+function MainFrameBuilder:WithGcdReference()
+	self.gcdReference = GcdReference(self.frame, self.config.gcdSpellId)
 	:WithEventHandler()
 	:WithUpdater()
 	return self
 end
 
-function MainFrameBuilder:WithSpell(spellConfig)
-	tinsert(self.spellConfigs, spellConfig)
+function MainFrameBuilder:AsShadowPriest()
+	local shadowPriest = ShadowPriest(self.config, self.frame)
+	self.frame.spells = 0
+	self.spellFrames = {}
+
+	return self
+	:WithSpell(shadowPriest:VampiricTouch())
+	:WithSpell(shadowPriest:ShadowWordPain())
+	:WithSpell(shadowPriest:MindBlast())
+	:WithSpell(shadowPriest:MindFlay())
+	:WithSpell(shadowPriest:ShadowWordDeath())
+	:WithSpell(shadowPriest:DevouringPlague())	
+
+end
+
+function MainFrameBuilder:WithSpell(spellFrame)
+	tinsert(self.spellFrames, spellFrame)
+	self.frame.spells = #self.spellFrames	
+	self.frame:SetHeight(#self.spellFrames * self.config.height)
 	return self
 end
 
 function MainFrameBuilder:Build()
-	return MainFrame(self.config, self.frame, self.handle, self.now, self.gcd, self.spellConfigs)
+	return MainFrame(self.config, self.frame, self.handle, self.now, self.gcd, self.spellFrames)
 end

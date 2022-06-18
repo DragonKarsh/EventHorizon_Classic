@@ -12,4 +12,5 @@ UpdateHandling\UpdateHandling.xml
 Indicator\Indicator.xml
 Spell\Spell.xml
 Frame\Frame.xml
+Profiles\Profiles.xml
 Core.lua

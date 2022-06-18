@@ -9,9 +9,9 @@ setmetatable(FrameBuilder, {
   end,
 })
 
-function FrameBuilder:new(config, frameType, frameName, parentFrame, inheritsFrame)	
+function FrameBuilder:new(config, frameName, parentFrame)	
 	self.config = config
-	self.frame = CreateFrame(frameType, frameName, parentFrame, inheritsFrame)
+	self.frame = CreateFrame("Frame", frameName, parentFrame, "BackdropTemplate")
 	self.frame:SetSize(config.width, config.height)
 	self.frame.past = config.past
 	self.frame.future = config.future

@@ -9,12 +9,7 @@ setmetatable(SpellFrame, {
   end,
 })
 
-function SpellFrame:new(frame, spell, updater)
+function SpellFrame:new(frame, spell)
 	self.frame = frame
 	self.spell = spell
-	self.updater = updater
-
-	if self.updater then
-		self.updater:Enable()
-	end
 end
