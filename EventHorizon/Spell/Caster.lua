@@ -13,12 +13,10 @@ setmetatable(Caster, {
   end,
 })
 
-function Caster:new(spellId, frame, castTime)
+function Caster:new(spellId, frame)
 	SpellComponent.new(self, spellId, frame)
 
-	self.castTime = castTime
-	self.currentCast = nil
-	
+	self.currentCast = nil	
 end
 
 function Caster:WithEventHandler()

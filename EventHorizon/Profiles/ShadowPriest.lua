@@ -16,22 +16,22 @@ end
 
 function ShadowPriest:VampiricTouch()
 	return SpellFrameBuilder(self.config, 34914, self.mainFrame)
-	:WithDebuff(15,5)
-	:WithCast(1.5)
+	:WithDebuff(5)
+	:WithCast()
 	:WithSender()
 	:Build()
 end
 
 function ShadowPriest:ShadowWordPain()
 	return SpellFrameBuilder(self.config, 589, self.mainFrame)
-	:WithDebuff(27,9)
+	:WithDebuff(9)
 	:WithSender()
 	:Build()
 end
 
 function ShadowPriest:MindBlast()
 	return SpellFrameBuilder(self.config, 8092, self.mainFrame)	
-	:WithCast(1.5)
+	:WithCast()
 	:WithCoolDown()
 	:WithSender()
 	:Build()
@@ -39,7 +39,7 @@ end
 
 function ShadowPriest:MindFlay()
 	return SpellFrameBuilder(self.config, 15407, self.mainFrame)
-	:WithChannel(3,3)
+	:WithChannel(3)
 	:WithSender()
 	:Build()
 end
@@ -53,7 +53,7 @@ end
 
 function ShadowPriest:DevouringPlague()
 	return SpellFrameBuilder(self.config, 2944, self.mainFrame)
-	:WithDebuff(24,8)
+	:WithDebuff(8)
 	:WithCoolDown()
 	:WithSender()
 	:Build()

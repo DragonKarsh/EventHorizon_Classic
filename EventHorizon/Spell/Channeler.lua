@@ -13,10 +13,9 @@ setmetatable(Channeler, {
   end,
 })
 
-function Channeler:new(spellId, frame, channel, ticks)
+function Channeler:new(spellId, frame, ticks)
 	SpellComponent.new(self, spellId, frame)
 
-	self.channel = channel
 	self.ticks = ticks
 
 	self.currentChannel = nil

@@ -13,13 +13,11 @@ setmetatable(Debuffer, {
   end,
 })
 
-function Debuffer:new(spellId, frame, duration, ticks, castTime)
+function Debuffer:new(spellId, frame, ticks, casted)
 	SpellComponent.new(self, spellId, frame)
 	
-	self.duration = duration
-	self.ticks = ticks
-	self.castTime = castTime
-	
+	self.ticks = ticks	
+	self.casted = casted
 	self.debuffs = {}
 	self.successes = {}
 
@@ -34,7 +32,7 @@ end
 function Debuffer:GenerateDebuff(target, start, stop)		
 
 	local debuff
-	if self.castTime then		
+	if self.casted then		
 		debuff = CastedDebuffIndicator(self, target, start, stop)
 		tinsert(self.indicators, debuff.recast)
 	else

@@ -30,19 +30,17 @@ function SpellFrameBuilder:new(config, spellId, mainFrame)
 end
 
 
-function SpellFrameBuilder:WithDebuff(duration, ticks)
-	self.debuff = duration
+function SpellFrameBuilder:WithDebuff(ticks)
 	self.debuffTicks = ticks
 	return self
 end
 
-function SpellFrameBuilder:WithCast(castTime)
-	self.castTime = castTime
+function SpellFrameBuilder:WithCast()
+	self.castTime = true
 	return self
 end
 
-function SpellFrameBuilder:WithChannel(channel, ticks)
-	self.channel = channel
+function SpellFrameBuilder:WithChannel(ticks)	
 	self.channelTicks = ticks
 	return self
 end
@@ -58,20 +56,20 @@ function SpellFrameBuilder:WithSender()
 end
 
 function SpellFrameBuilder:Build()
-	if self.debuff then
-		self.debuffer = Debuffer(self.spellId, self.frame, self.debuff, self.debuffTicks, self.castTime)
+	if self.debuffTicks then
+		self.debuffer = Debuffer(self.spellId, self.frame, self.debuffTicks, self.castTime)
 		:WithEventHandler()
 		:WithUpdateHandler()
 	end
 
 	if self.castTime then
-		self.caster = Caster(self.spellId, self.frame, self.castTime)
+		self.caster = Caster(self.spellId, self.frame)
 		:WithEventHandler()
 		:WithUpdateHandler()
 	end
 
-	if self.channel then
-		self.channeler = Channeler(self.spellId, self.frame, self.channel, self.channelTicks)
+	if self.channelTicks then
+		self.channeler = Channeler(self.spellId, self.frame, self.channelTicks)
 		:WithEventHandler()
 		:WithUpdateHandler()
 	end
