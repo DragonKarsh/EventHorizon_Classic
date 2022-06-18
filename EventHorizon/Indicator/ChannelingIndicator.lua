@@ -13,16 +13,15 @@ setmetatable(ChannelingIndicator, {
   end,
 })
 
-function ChannelingIndicator:new(channeler, start, stop)
+function ChannelingIndicator:new(start, stop, numTicks)
 	CastingIndicator.new(self, start, stop)
 
 	self.style.texture = {0,1,0,0.9}
-	self.channeler = channeler
 	self.ticks = {}
 
 	local duration = stop - start
-	local interval = duration / channeler.ticks
-	for i=1,channeler.ticks do
+	local interval = duration / numTicks
+	for i=1,numTicks do
 		local tick = TickIndicator(nil, start + i*interval)
 		tinsert(self.ticks, tick)
 	end

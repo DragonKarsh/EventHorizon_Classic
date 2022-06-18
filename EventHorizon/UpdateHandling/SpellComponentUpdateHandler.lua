@@ -31,6 +31,7 @@ function SpellComponentUpdateHandler:OnUpdate(elapsed)
 	end
 
 	for i=#self.indicators,1,-1 do
+		self.indicators[i]:Update()
 		local left, right = self:GetIndicatorPoints(i)		
 
 		if self:InPast(right) then
@@ -44,6 +45,7 @@ end
 function SpellComponentUpdateHandler:RemoveIndicator(index)
 	local indicator = tremove(self.indicators, index)
 	indicator:Dispose()
+	self.spellComponent:ClearIndicator(indicator)
 end
 
 function SpellComponentUpdateHandler:UpdateIndicator(index, left, right)

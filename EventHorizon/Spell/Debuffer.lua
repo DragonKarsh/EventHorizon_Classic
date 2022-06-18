@@ -33,10 +33,10 @@ function Debuffer:GenerateDebuff(target, start, stop)
 
 	local debuff
 	if self.casted then		
-		debuff = CastedDebuffIndicator(self, target, start, stop)
+		debuff = CastedDebuffIndicator(target, start, stop, self.ticks, self.spellId)
 		tinsert(self.indicators, debuff.recast)
 	else
-		debuff = DebuffIndicator(self, target, start, stop)		
+		debuff = DebuffIndicator(target, start, stop, self.ticks)		
 	end
 
 	tinsert(self.indicators, debuff)
@@ -89,6 +89,12 @@ end
 
 function Debuffer:RemoveDebuff(target)
 	self.debuffs[target] = nil
+end
+
+function Debuffer:ClearTarget(indicator)
+	if indicator.target and self.debuffs[indicator.target] and self.debuffs[indicator.target].id == indicator.id then
+		self:RemoveDebuff(indicator.target)
+	end
 end
 
 function Debuffer:ApplyDebuff(target, start, stop)	

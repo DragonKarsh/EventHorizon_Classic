@@ -13,13 +13,20 @@ setmetatable(RecastIndicator, {
   end,
 })
 
-function RecastIndicator:new(target, start, stop)
+function RecastIndicator:new(target, start, stop, spellId)
 	Indicator.new(self, target, start, stop)	
 
 	self.style.texture = {1,1,1,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}
 	self.style.point1 = {'TOP', 'TOP', 0, -6}
 
+	self.spellId = spellId
+
+end
+
+function RecastIndicator:Update()
+	local castTime = select(4, GetSpellInfo(self.spellId))/1000
+	self.stop = self.original.stop - castTime
 end
 
 function RecastIndicator:IsReady()

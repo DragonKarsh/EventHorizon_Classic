@@ -17,6 +17,9 @@ function SpellComponent:new(spellId, frame)
 	self.indicators = {}
 end
 
+function SpellComponent:ClearIndicator(indicator)
+	return
+end
 function SpellComponent:WithEventHandler()
 	error("abstract method WithEventHandler not implemented")
 end

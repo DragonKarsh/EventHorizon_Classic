@@ -28,7 +28,7 @@ function Channeler:WithEventHandler()
 end
 
 function Channeler:GenerateChannel(start, stop)
-	self.currentChannel = ChannelingIndicator(self, start, stop)
+	self.currentChannel = ChannelingIndicator(start, stop, self.ticks)
 	tinsert(self.indicators, self.currentChannel)
 	for k,v in pairs(self.currentChannel.ticks) do
 		tinsert(self.indicators, v)

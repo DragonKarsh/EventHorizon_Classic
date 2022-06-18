@@ -24,7 +24,7 @@ function Indicator:new(target, start, stop)
 
 	self.style = {
 		texture = {1,1,1,1},
-		point1 = {'TOP', 'TOP', 0, -5},
+		point1 = {'TOP', 'TOP', 0, -3},
 		point2 = {'BOTTOM', 'BOTTOM'}
 	}
 
@@ -33,6 +33,10 @@ end
 
 function Indicator:Dispose()
 	self.disposed = true
+end
+
+function Indicator:Update()
+	return
 end
 
 function Indicator:IsReady()

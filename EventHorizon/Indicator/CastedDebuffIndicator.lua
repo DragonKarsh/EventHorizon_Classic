@@ -13,14 +13,15 @@ setmetatable(CastedDebuffIndicator, {
   end,
 })
 
-function CastedDebuffIndicator:new(debuffer, target, start, stop)
-	DebuffIndicator.new(self, debuffer, target, start, stop)
+function CastedDebuffIndicator:new(target, start, stop, numTicks, spellId)
+	DebuffIndicator.new(self, target, start, stop, numTicks)
 	
 	self.style.point1 = {'TOP', 'TOP', 0, -3}
 	self.style.point2 = {'BOTTOM', 'TOP', -3, -6}
 
-	local castTime = select(4, GetSpellInfo(debuffer.spellId))/1000
-	self.recast = RecastIndicator(target, start, stop-castTime)
+	self.spellId = spellId
+	self.recast = RecastIndicator(target, start, stop, spellId)
+
 end
 
 function CastedDebuffIndicator:Stop(stop)
@@ -29,6 +30,6 @@ function CastedDebuffIndicator:Stop(stop)
 end
 
 function CastedDebuffIndicator:IsReady()
-	local castTime = select(4, GetSpellInfo(self.debuffer.spellId))/1000
-	return GetTime() >= self.stop-castTime
+	local castTime = select(4, GetSpellInfo(self.spellId))/1000
+	return GetTime() >= self.original.stop-castTime
 end
