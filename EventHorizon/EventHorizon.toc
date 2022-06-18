@@ -13,4 +13,4 @@ Indicator\Indicator.xml
 Spell\Spell.xml
 Frame\Frame.xml
 Profiles\Profiles.xml
-Core.lua
+Init.lua
