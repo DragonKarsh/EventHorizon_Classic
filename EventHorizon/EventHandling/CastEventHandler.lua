@@ -1,11 +1,11 @@
 CastEventHandler = {}
-for k, v in pairs(SpellEventHandler) do
+for k, v in pairs(SpellComponentEventHandler) do
   CastEventHandler[k] = v
 end
 CastEventHandler.__index = CastEventHandler
 
 setmetatable(CastEventHandler, {
-	__index = SpellEventHandler,
+	__index = SpellComponentEventHandler,
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -20,7 +20,7 @@ local events = {
 }
 
 function CastEventHandler:new(caster)
-	SpellEventHandler.new(self, events, caster.spell)
+	SpellComponentEventHandler.new(self, events, caster)
 
 	self.caster = caster
 end

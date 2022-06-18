@@ -13,8 +13,8 @@ setmetatable(CastingIndicator, {
   end,
 })
 
-function CastingIndicator:new(spell, start, stop)
-	Indicator.new(self, spell, nil, start, stop)	
+function CastingIndicator:new(start, stop)
+	Indicator.new(self, nil, start, stop)	
 
 	self.style.texture = {0,1,0,0.9}
 end

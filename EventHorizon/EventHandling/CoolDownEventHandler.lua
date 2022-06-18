@@ -1,11 +1,11 @@
 CoolDownEventHandler = {}
-for k, v in pairs(SpellEventHandler) do
+for k, v in pairs(SpellComponentEventHandler) do
   CoolDownEventHandler[k] = v
 end
 CoolDownEventHandler.__index = CoolDownEventHandler
 
 setmetatable(CoolDownEventHandler, {
-	__index = SpellEventHandler, 
+	__index = SpellComponentEventHandler, 
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -18,7 +18,7 @@ local events = {
 }
 
 function CoolDownEventHandler:new(coolDowner)
-	SpellEventHandler.new(self, events, coolDowner.spell)
+	SpellComponentEventHandler.new(self, events, coolDowner)
 
 	self.coolDowner = coolDowner
 end

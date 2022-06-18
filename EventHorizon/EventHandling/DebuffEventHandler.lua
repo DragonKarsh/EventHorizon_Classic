@@ -1,11 +1,11 @@
 DebuffEventHandler = {}
-for k, v in pairs(SpellEventHandler) do
+for k, v in pairs(SpellComponentEventHandler) do
   DebuffEventHandler[k] = v
 end
 DebuffEventHandler.__index = DebuffEventHandler
 
 setmetatable(DebuffEventHandler, {
-	__index = SpellEventHandler, 
+	__index = SpellComponentEventHandler, 
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -20,7 +20,7 @@ local events = {
 }
 
 function DebuffEventHandler:new(debuffer)
-	SpellEventHandler.new(self, events, debuffer.spell)
+	SpellComponentEventHandler.new(self, events, debuffer)
 
 	self.debuffer = debuffer
 end

@@ -1,21 +1,26 @@
 Debuffer = {}
+for k, v in pairs(SpellComponent) do
+  Debuffer[k] = v
+end
 Debuffer.__index = Debuffer
 
 setmetatable(Debuffer, {
-  __call = function (cls, ...)
+	__index = SpellComponent,
+	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
     return self
   end,
 })
 
-function Debuffer:new(spell, duration, ticks, castTime)
-	self.spell = spell
+function Debuffer:new(spellId, frame, duration, ticks, castTime)
+	SpellComponent.new(self, spellId, frame)
+	
 	self.duration = duration
 	self.ticks = ticks
 	self.castTime = castTime
 	
-	self.debuffs = {}	
+	self.debuffs = {}
 	self.successes = {}
 
 end
@@ -26,20 +31,23 @@ function Debuffer:WithEventHandler()
 	return self
 end
 
-function Debuffer:GetIndicator(target, start, stop)	
-	local indicator
-	if self.castTime then
-		indicator = CastedDebuffIndicator(self.spell, target, start, stop)
-		tinsert(self.spell.indicators, indicator.recast)
+function Debuffer:GenerateDebuff(target, start, stop)		
+
+	local debuff
+	if self.castTime then		
+		debuff = CastedDebuffIndicator(self, target, start, stop)
+		tinsert(self.indicators, debuff.recast)
 	else
-		indicator = DebuffIndicator(self.spell, target, start, stop)
+		debuff = DebuffIndicator(self, target, start, stop)		
 	end
 
-	tinsert(self.spell.indicators, indicator)
-	for k,v in pairs(indicator.ticks) do
-		tinsert(self.spell.indicators, v)
+	tinsert(self.indicators, debuff)
+	self.debuffs[target] = debuff
+
+	for _,v in pairs(debuff.ticks) do
+		tinsert(self.indicators, v)
 	end
-	return indicator
+
 end
 
 function Debuffer:UnitDebuffByName(unitId, debuff)
@@ -66,7 +74,7 @@ end
 
 function Debuffer:CheckTargetDebuff()
 	local target = UnitGUID('target')
-	local afflicted, icon, count, debuffType, duration, expirationTime = self:UnitDebuffByName('target', self.spell.spellName)	
+	local afflicted, icon, count, debuffType, duration, expirationTime = self:UnitDebuffByName('target', self.spellName)	
 	local shouldReplace, start	
 
 	if afflicted then
@@ -88,22 +96,34 @@ end
 function Debuffer:ApplyDebuff(target, start, stop)	
 	local lastSuccess = self.successes[target]
 	local refreshed, replaced, applied
-	if self.debuffs[target] then
+
+	local debuff = self.debuffs[target]
+
+	if debuff then
 		if lastSuccess then
-			refreshed = self:WasRefreshed(self.debuffs[target].original.stop, lastSuccess, start, stop)
+			refreshed = self:WasRefreshed(debuff.original.stop, lastSuccess, start, stop)
 		end
-		replaced = self:WasReplaced(self.debuffs[target].stop, stop, refreshed)				
-		if replaced then
-			self.debuffs[target]:Stop(start-0.2)
-		end
+
+		replaced = self:WasReplaced(debuff.stop, stop, refreshed)	
 	else
 		applied = true
 	end
 
-	if replaced or applied then
-		self.debuffs[target] = self:GetIndicator(target, start, stop)
+	if applied then
+		self:GenerateDebuff(target, start, stop)
+	elseif replaced then
+		self:ReplaceDebuff(target, start, stop)
 	elseif refreshed then
-		self.debuffs[target]:Refresh(start, stop)
-		self.debuffs[target].original.stop = stop
+		self:RefreshDebuff(target, start, stop)
 	end
+end
+
+function Debuffer:ReplaceDebuff(target, start, stop)
+	self.debuffs[target]:Stop(start-0.2)
+	self:GenerateDebuff(target, start, stop)
+end
+
+function Debuffer:RefreshDebuff(target, start, stop)
+	self.debuffs[target]:Refresh(start, stop)
+	self.debuffs[target].original.stop = stop
 end

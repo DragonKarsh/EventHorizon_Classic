@@ -13,8 +13,8 @@ setmetatable(CoolDownIndicator, {
   end,
 })
 
-function CoolDownIndicator:new(spell, start, stop)
-	Indicator.new(self, spell, nil, start, stop)	
+function CoolDownIndicator:new(start, stop)
+	Indicator.new(self, nil, start, stop)	
 
 	self.style.texture = {0.9,0.9,0.9,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}

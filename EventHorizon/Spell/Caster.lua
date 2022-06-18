@@ -1,18 +1,22 @@
 Caster = {}
+for k, v in pairs(SpellComponent) do
+  Caster[k] = v
+end
 Caster.__index = Caster
 
 setmetatable(Caster, {
-  __call = function (cls, ...)
+	__index = SpellComponent,
+	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
     return self
   end,
 })
 
-function Caster:new(spell, castTime)
-	self.spell = spell
-	self.castTime = castTime
+function Caster:new(spellId, frame, castTime)
+	SpellComponent.new(self, spellId, frame)
 
+	self.castTime = castTime
 	self.currentCast = nil
 	
 end
@@ -23,14 +27,13 @@ function Caster:WithEventHandler()
 	return self
 end
 
-function Caster:GetIndicator(start, stop)
-	local indicator = CastingIndicator(self.spell, start, stop)
-	tinsert(self.spell.indicators, indicator)
-	return indicator
+function Caster:GenerateCast(start, stop)
+	self.currentCast = CastingIndicator(start, stop)
+	tinsert(self.indicators, self.currentCast)
 end
 
 function Caster:StartCastingSpell(start, stop)
-	self.currentCast = self:GetIndicator(start, stop)
+	self:GenerateCast(start, stop)
 end
 
 function Caster:StopCastingSpell(time)

@@ -11,11 +11,10 @@ setmetatable(Indicator, {
 
 local id = 0
 
-function Indicator:new(spell, target, start, stop)		
+function Indicator:new(target, start, stop)		
 
 	id = id + 1
 	self.id = 'Ind'..id
-	self.spell = spell
 	self.target = target
 	self.start = start
 	self.stop = stop

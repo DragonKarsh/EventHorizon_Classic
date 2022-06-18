@@ -9,35 +9,39 @@ setmetatable(SpellBase, {
   end,
 })
 
-function SpellBase:new (config)
+function SpellBase:new (config, frame)
 	self.spellId = config.spellId
 	self.abbrev = config.abbrev
 	self.spellName = GetSpellInfo(config.spellId)	
+	self.frame = frame
 
 	self.indicators = {}
+
+	self.sender = Sender(config.spellId, frame)
+	:WithEventHandler()
+	:WithUpdateHandler()
 	
 	if config.castTime then
-		self.caster = Caster(self, config.castTime)
+		self.caster = Caster(config.spellId, frame, config.castTime)
 		:WithEventHandler()
+		:WithUpdateHandler()
 	end
 
 	if config.channel then
-		self.channeler = Channeler(self, config.channel, config.ticks)
+		self.channeler = Channeler(config.spellId, frame, config.channel, config.ticks)
 		:WithEventHandler()
+		:WithUpdateHandler()
 	end
 
 	if config.debuff then
-		self.debuffer = Debuffer(self, config.debuff, config.ticks, config.castTime)
+		self.debuffer = Debuffer(config.spellId, frame, config.debuff, config.ticks, config.castTime)
 		:WithEventHandler()
+		:WithUpdateHandler()
 	end
 
 	if config.coolDown then
-		self.coolDowner = CoolDowner(self, config.coolDown)
+		self.coolDowner = CoolDowner(config.spellId, frame, config.coolDown)
 		:WithEventHandler()
+		:WithUpdateHandler()
 	end	
-end
-
-function SpellBase:SentSpell(time)
-	local indicator  = SentIndicator(self, time)
-	tinsert(self.indicators, indicator)
 end

@@ -13,8 +13,8 @@ setmetatable(RecastIndicator, {
   end,
 })
 
-function RecastIndicator:new(spell, target, start, stop)
-	Indicator.new(self,spell, target, start, stop)	
+function RecastIndicator:new(target, start, stop)
+	Indicator.new(self, target, start, stop)	
 
 	self.style.texture = {1,1,1,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}

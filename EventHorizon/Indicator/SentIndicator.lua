@@ -13,6 +13,6 @@ setmetatable(SentIndicator, {
   end,
 })
 
-function SentIndicator:new(spell, start)
-	Indicator.new(self, spell, nil, start, start)
+function SentIndicator:new(start)
+	Indicator.new(self, nil, start, start)
 end

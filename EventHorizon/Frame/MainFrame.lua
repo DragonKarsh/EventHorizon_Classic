@@ -30,7 +30,7 @@ end
 
 function MainFrame:NewSpell(spellConfig)
 	local frame = SpellFrameBuilder(self.config, "Frame", spellConfig.abbrev, self.frame, "BackdropTemplate", spellConfig, #self.spellFrames)
-	:WithUpdater()
+	--:WithUpdater()
 	:Build()
 	tinsert(self.spellFrames, frame)
 	self.frame:SetHeight(#self.spellFrames * self.config.height)	

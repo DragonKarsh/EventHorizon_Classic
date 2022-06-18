@@ -13,37 +13,41 @@ setmetatable(DebuffIndicator, {
   end,
 })
 
-function DebuffIndicator:new(spell, target, start, stop)
-	Indicator.new(self,spell, target, start, stop)	
-	
+function DebuffIndicator:new(debuffer, target, start, stop)
+	Indicator.new(self, target, start, stop)	
 	self.style.texture = {1,1,1,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}
+
+	self.debuffer = debuffer
 	self.ticks = {}
 
 	local duration = stop - start
-	local interval = duration / spell.debuffer.ticks
-	for i=1,spell.debuffer.ticks do
-		local tick = TickIndicator(spell, target, start + i*interval)
+	local interval = duration / debuffer.ticks
+	for i=1,debuffer.ticks do
+		local tick = TickIndicator(target, start + i*interval)
 		tinsert(self.ticks, tick)
 	end
+
 end
 
 function DebuffIndicator:Dispose()
 	Indicator.Dispose(self)
 
-	if self.spell.debuffer.debuffs[self.target] and self.spell.debuffer.debuffs[self.target].id == self.id then
-		self.spell.debuffer.debuffs[self.target] = nil
+	if self.debuffer.debuffs[self.target] and self.debuffer.debuffs[self.target].id == self.id then
+		self.debuffer:RemoveDebuff(self.target)
 	end
 
+	self.ticks = {}
+		
+end
+
+function DebuffIndicator:IsReady()
+	return GetTime() >= self.stop
 end
 
 function DebuffIndicator:Stop(stop)
 	Indicator.Stop(self,stop)
 	self:RemoveTicksAfter(stop)
-end
-
-function DebuffIndicator:IsReady()
-	return GetTime() >= self.stop
 end
 
 function DebuffIndicator:Refresh(start, stop)
@@ -52,10 +56,10 @@ function DebuffIndicator:Refresh(start, stop)
 end	
 
 function DebuffIndicator:ApplyTicksAfter(time)
-	local duration = stop - time
-	local interval = duration / self.spell.debuffer.ticks
-	for i=1,self.spell.debuffer.ticks do
-		local tick = TickIndicator(self.spell, self.target, time + i*interval)
+	local duration = self.stop - time
+	local interval = duration / self.debuffer.ticks
+	for i=1,self.debuffer.ticks do
+		local tick = TickIndicator(self.target, time + i*interval)
 		tinsert(self.ticks, tick)		
 	end
 end

@@ -16,7 +16,7 @@ setmetatable(SpellFrameBuilder, {
 function SpellFrameBuilder:new(config, frameType, frameName, parentFrame, inheritsFrame, spellConfig, frameNumber)
 	FrameBuilder.new(self, config, frameType, frameName, parentFrame, inheritsFrame)
 
-	self.spell = SpellBase(spellConfig)
+	self.spell = SpellBase(spellConfig, self.frame)
 
 	self.icon = self.frame:CreateTexture(nil, "BORDER")
 	local texture = select(3,GetSpellInfo(spellConfig.spellId))

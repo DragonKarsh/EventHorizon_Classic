@@ -1,16 +1,21 @@
 Channeler = {}
+for k, v in pairs(SpellComponent) do
+  Channeler[k] = v
+end
 Channeler.__index = Channeler
 
 setmetatable(Channeler, {
-  __call = function (cls, ...)
+	__index = SpellComponent,
+	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
     return self
   end,
 })
 
-function Channeler:new(spell, channel, ticks)
-	self.spell = spell
+function Channeler:new(spellId, frame, channel, ticks)
+	SpellComponent.new(self, spellId, frame)
+
 	self.channel = channel
 	self.ticks = ticks
 
@@ -23,17 +28,26 @@ function Channeler:WithEventHandler()
 	return self
 end
 
-function Channeler:GetIndicator(start, stop)
-	local indicator =  ChannelingIndicator(self.spell, start, stop)
-	tinsert(self.spell.indicators, indicator)
-	for k,v in pairs(indicator.ticks) do
-		tinsert(self.spell.indicators, v)
+function Channeler:GenerateChannel(start, stop)
+	self.currentChannel = ChannelingIndicator(self, start, stop)
+	tinsert(self.indicators, self.currentChannel)
+	for k,v in pairs(self.currentChannel.ticks) do
+		tinsert(self.indicators, v)
 	end
-	return indicator
+end
+
+
+function Channeler:RemoveTicksAfter(time)
+	for i=#self.ticks,1,-1 do
+		local diff = self.ticks[i].start - time
+		if diff > 0.1 then
+			tremove(self.ticks,i):Dispose()
+		end
+	end
 end
 
 function Channeler:StartChannelingSpell(start, stop)
-	self.currentChannel = self:GetIndicator(start, stop)
+	self:GenerateChannel(start, stop)
 end
 
 function Channeler:StopChannelingSpell(time)

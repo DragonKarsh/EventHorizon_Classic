@@ -1,11 +1,11 @@
 ChannelEventHandler = {}
-for k, v in pairs(SpellEventHandler) do
+for k, v in pairs(SpellComponentEventHandler) do
   ChannelEventHandler[k] = v
 end
 ChannelEventHandler.__index = ChannelEventHandler
 
 setmetatable(ChannelEventHandler, {
-	__index = SpellEventHandler, 
+	__index = SpellComponentEventHandler, 
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -20,7 +20,7 @@ local events = {
 }
 
 function ChannelEventHandler:new(channeler)
-	SpellEventHandler.new(self, events, channeler.spell)
+	SpellComponentEventHandler.new(self, events, channeler)
 
 	self.channeler = channeler
 end
