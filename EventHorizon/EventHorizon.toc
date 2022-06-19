@@ -6,6 +6,7 @@
 ## OptDeps: 
 ## SavedVariables: EventHorizonDatabase
 
+Embeds.xml
 Reference\Reference.xml
 EventHandling\EventHandling.xml
 UpdateHandling\UpdateHandling.xml

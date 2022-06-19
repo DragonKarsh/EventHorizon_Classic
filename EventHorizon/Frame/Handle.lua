@@ -24,11 +24,11 @@ function Handle:new(database)
 		if type(b)=='frame' then
 			b=b:GetName()
 		end
-		database.point = {a,b,c,d,e}
+		database.profile.point = {a,b,c,d,e}
 	end)
 
-	if database.point then
-		self.frame:SetPoint(unpack(database.point))
+	if database.profile.point then
+		self.frame:SetPoint(unpack(database.profile.point))
 	end
 	
 	self.frame.texture = self.frame:CreateTexture(nil, "BORDER")

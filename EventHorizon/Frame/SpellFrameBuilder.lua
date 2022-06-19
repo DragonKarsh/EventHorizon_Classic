@@ -16,15 +16,16 @@ setmetatable(SpellFrameBuilder, {
 function SpellFrameBuilder:new(config, spellId, mainFrame)
 	FrameBuilder.new(self, config, GetSpellInfo(spellId), mainFrame)
 
-	self.spellId = spellId
-
-	self.icon = self.frame:CreateTexture(nil, "BORDER")
-	local texture = select(3,GetSpellInfo(spellId))
-	self.icon:SetTexture(texture)
-	self.icon:SetPoint("TOPRIGHT", self.frame, "TOPLEFT")
-	self.icon:SetSize(self.frame:GetHeight(), self.frame:GetHeight())
+	self.spellId = spellId	
 	
-	self.frame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -mainFrame.spells * self.config.height)	
+	local relativeFrame = mainFrame	
+	local relativePoint = "TOPLEFT"
+	if #mainFrame.spellFrames > 0 then
+		relativeFrame = mainFrame.spellFrames[#mainFrame.spellFrames].frame
+		relativePoint = "BOTTOMLEFT"
+	end
+
+	self.frame:SetPoint("TOPLEFT", relativeFrame, relativePoint)	
 	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
 	self.frame:SetBackdropColor(1,1,1,.1)	
 end
@@ -52,6 +53,15 @@ end
 
 function SpellFrameBuilder:WithSender()
 	self.sender = true
+	return self
+end
+
+function SpellFrameBuilder:WithIcon()
+	self.icon = self.frame:CreateTexture(nil, "BORDER")
+	local texture = select(3,GetSpellInfo(self.spellId))
+	self.icon:SetTexture(texture)
+	self.icon:SetPoint("TOPRIGHT", self.frame, "TOPLEFT")
+	self.icon:SetSize(self.frame:GetHeight(), self.frame:GetHeight())
 	return self
 end
 
@@ -87,5 +97,5 @@ function SpellFrameBuilder:Build()
 	end
 
 	local spell = SpellBase(self.debuffer, self.caster, self.channeler, self.coolDowner, self.sender)
-	return SpellFrame(self.frame, self.spell)
+	return SpellFrame(self.config, self.frame, self.spell, self.icon)
 end

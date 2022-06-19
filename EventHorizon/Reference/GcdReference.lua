@@ -24,6 +24,10 @@ function GcdReference:new(frame, spellId)
 	self.texture:Hide()
 end
 
+function GcdReference:Update()
+	self.texture:SetPoint('TOP',self.frame,'TOP', -self.frame.past/(self.frame.future-self.frame.past)*self.frame:GetWidth()-0.5+self.frame:GetHeight(), 0)	
+end
+
 function GcdReference:WithUpdater()
 	self.updater = GcdUpdateHandler(self)
 	self.updater:Enable()

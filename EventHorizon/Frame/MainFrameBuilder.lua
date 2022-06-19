@@ -15,7 +15,7 @@ setmetatable(MainFrameBuilder, {
 
 function MainFrameBuilder:new(config)
 	FrameBuilder.new(self, config, "EventHorizon", UIParent)
-
+	self.frame.spellFrames = {}
 end
 
 function MainFrameBuilder:WithHandle()
@@ -31,7 +31,7 @@ function MainFrameBuilder:WithNowReference()
 end
 
 function MainFrameBuilder:WithGcdReference()
-	self.gcdReference = GcdReference(self.frame, self.config.gcdSpellId)
+	self.gcdReference = GcdReference(self.frame, self.config.database.profile.gcdSpellId)
 	:WithEventHandler()
 	:WithUpdater()
 	return self
@@ -44,10 +44,7 @@ function MainFrameBuilder:AsShadowPriest(impSwpRank, has2PcT6, undead)
 	if has2PcT6 then
 		shadowPriest = shadowPriest:WithTwoPieceTierSix()
 	end
-
-	self.frame.spells = 0
-	self.spellFrames = {}
-
+	
 	self
 	:WithSpell(shadowPriest:VampiricTouch())
 	:WithSpell(shadowPriest:ShadowWordPain())
@@ -63,12 +60,11 @@ function MainFrameBuilder:AsShadowPriest(impSwpRank, has2PcT6, undead)
 end
 
 function MainFrameBuilder:WithSpell(spellFrame)
-	tinsert(self.spellFrames, spellFrame)
-	self.frame.spells = #self.spellFrames	
-	self.frame:SetHeight(#self.spellFrames * self.config.height)
+	tinsert(self.frame.spellFrames, spellFrame)
+	self.frame:SetHeight(#self.frame.spellFrames * self.config.database.profile.height)
 	return self
 end
 
 function MainFrameBuilder:Build()
-	return MainFrame(self.config, self.frame, self.handle, self.now, self.gcd, self.spellFrames)
+	return MainFrame(self.config, self.frame, self.handle, self.nowReference, self.gcdReference)
 end
