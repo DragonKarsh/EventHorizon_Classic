@@ -16,3 +16,7 @@ function Reference:new(frame)
 	self.texture:SetPoint('BOTTOM',self.frame,'BOTTOM')
 	self.texture:SetWidth(1)
 end
+
+function Reference:GetTexture()
+	return self.texture
+end

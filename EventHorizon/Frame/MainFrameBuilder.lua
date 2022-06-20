@@ -1,11 +1,7 @@
 MainFrameBuilder = {}
-for k, v in pairs(FrameBuilder) do
-  MainFrameBuilder[k] = v
-end
 MainFrameBuilder.__index = MainFrameBuilder
 
 setmetatable(MainFrameBuilder, {
-	__index = FrameBuilder,
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -13,62 +9,56 @@ setmetatable(MainFrameBuilder, {
   end,
 })
 
-function MainFrameBuilder:new(config)
-	FrameBuilder.new(self, config, "EventHorizon", UIParent)
-
+function MainFrameBuilder:new()
+	self.frame = CreateFrame("Frame", "EventHorizon", UIParent, "BackdropTemplate")
 end
 
 function MainFrameBuilder:WithHandle()
-	self.handle = Handle(self.config.database)	
-	self.frame:SetPoint("TOPRIGHT", self.handle.frame, "BOTTOMRIGHT")
+	self.handle = CreateFrame("Frame", nil, UIParent)	
+	self.handle:SetPoint("CENTER")
+	self.handle:SetSize(10,5)
+	self.handle:EnableMouse(true)
+	self.handle:SetMovable(true)
+	self.handle:RegisterForDrag("LeftButton")
+	self.handle:SetScript("OnDragStart", function(self, button) self:StartMoving() end)
+	self.handle:SetScript("OnDragStop", function(frame) 
+		frame:StopMovingOrSizing() 
+		local a,b,c,d,e = frame:GetPoint(1)
+		if type(b)=='frame' then
+			b=b:GetName()
+		end
+		EventHorizon.database.profile.point = {a,b,c,d,e}
+	end)
+
+	if EventHorizon.database.profile.point then
+		self.handle:SetPoint(unpack(EventHorizon.database.profile.point))
+	end
 	
+	self.handle.texture = self.handle:CreateTexture(nil, "BORDER")
+	self.handle.texture:SetAllPoints()
+	self.handle:SetScript("OnEnter", function(frame) frame.texture:SetColorTexture(1,1,1,1) end)
+	self.handle:SetScript("OnLeave", function(frame) frame.texture:SetColorTexture(1,1,1,0.1) end)
+	self.handle.texture:SetColorTexture(1,1,1,0.1)
+
+	self.frame:SetPoint("TOPRIGHT", self.handle, "BOTTOMRIGHT")
+
 	return self
 end
 
-function MainFrameBuilder:WithNowReference()
-	self.nowReference = NowReference(self.frame)
+function MainFrameBuilder:WithNow()
+	self.now = NowReference(self.frame)
+
 	return self
 end
 
-function MainFrameBuilder:WithGcdReference()
-	self.gcdReference = GcdReference(self.frame, self.config.gcdSpellId)
+function MainFrameBuilder:WithGcd()
+	self.gcd = GcdReference(self.frame)
 	:WithEventHandler()
-	:WithUpdater()
-	return self
-end
+	:WithUpdateHandler()
 
-function MainFrameBuilder:AsShadowPriest(impSwpRank, has2PcT6, undead)
-	local shadowPriest = ShadowPriest(self.config, self.frame)
-	:WithImprovedShadowWordPainTalent(impSwpRank)
-
-	if has2PcT6 then
-		shadowPriest = shadowPriest:WithTwoPieceTierSix()
-	end
-
-	self.frame.spells = 0
-	self.spellFrames = {}
-
-	self
-	:WithSpell(shadowPriest:VampiricTouch())
-	:WithSpell(shadowPriest:ShadowWordPain())
-	:WithSpell(shadowPriest:MindBlast())
-	:WithSpell(shadowPriest:MindFlay())
-	:WithSpell(shadowPriest:ShadowWordDeath())
-
-	if undead then
-		self:WithSpell(shadowPriest:DevouringPlague())	
-	end
-
-	return self
-end
-
-function MainFrameBuilder:WithSpell(spellFrame)
-	tinsert(self.spellFrames, spellFrame)
-	self.frame.spells = #self.spellFrames	
-	self.frame:SetHeight(#self.spellFrames * self.config.height)
 	return self
 end
 
 function MainFrameBuilder:Build()
-	return MainFrame(self.config, self.frame, self.handle, self.now, self.gcd, self.spellFrames)
+	return MainFrame(self.frame, self.handle, self.now, self.gcd)
 end

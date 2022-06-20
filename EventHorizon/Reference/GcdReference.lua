@@ -13,25 +13,22 @@ setmetatable(GcdReference, {
   end,
 })
 
-function GcdReference:new(frame, spellId)
+function GcdReference:new(frame)
 	Reference.new(self, frame)
 
-	self.spellId = spellId
 	self.gcdEnd = nil
-
-	self.texture:SetPoint('TOP',self.frame,'TOP', -self.frame.past/(self.frame.future-self.frame.past)*self.frame:GetWidth()-0.5+self.frame:GetHeight(), 0)	
 	self.texture:SetColorTexture(1,1,1,0.5)	
 	self.texture:Hide()
 end
 
-function GcdReference:WithUpdater()
-	self.updater = GcdUpdateHandler(self)
-	self.updater:Enable()
+function GcdReference:WithUpdateHandler()
+	self.updateHandler = GcdUpdateHandler(self)
+	self.updateHandler:Enable()
 	return self
 end
 
 function GcdReference:WithEventHandler()
 	self.eventHandler = GcdEventHandler(self)
-	self.eventHandler:RegisterEvents()
+	self.eventHandler:Enable()
 	return self
 end

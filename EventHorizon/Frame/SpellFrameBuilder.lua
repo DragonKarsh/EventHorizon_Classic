@@ -1,11 +1,7 @@
 SpellFrameBuilder = {}
-for k, v in pairs(FrameBuilder) do
-  SpellFrameBuilder[k] = v
-end
 SpellFrameBuilder.__index = SpellFrameBuilder
 
 setmetatable(SpellFrameBuilder, {
-	__index = FrameBuilder,
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -13,18 +9,13 @@ setmetatable(SpellFrameBuilder, {
   end,
 })
 
-function SpellFrameBuilder:new(config, spellId, mainFrame)
-	FrameBuilder.new(self, config, GetSpellInfo(spellId), mainFrame)
-
-	self.spellId = spellId
-
-	self.icon = self.frame:CreateTexture(nil, "BORDER")
-	local texture = select(3,GetSpellInfo(spellId))
-	self.icon:SetTexture(texture)
-	self.icon:SetPoint("TOPRIGHT", self.frame, "TOPLEFT")
-	self.icon:SetSize(self.frame:GetHeight(), self.frame:GetHeight())
+function SpellFrameBuilder:new(spellId, enabled, order)
+	self.spellId = spellId	
+	self.enabled = enabled
+	self.order = order
 	
-	self.frame:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 0, -mainFrame.spells * self.config.height)	
+	self.frame = CreateFrame("Frame", GetSpellInfo(spellId), EventHorizon.mainFrame:GetFrame(), "BackdropTemplate")
+	self.frame:SetSize(EventHorizon.database.profile.width, EventHorizon.database.profile.height)
 	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
 	self.frame:SetBackdropColor(1,1,1,.1)	
 end
@@ -52,6 +43,15 @@ end
 
 function SpellFrameBuilder:WithSender()
 	self.sender = true
+	return self
+end
+
+function SpellFrameBuilder:WithIcon()
+	self.icon = self.frame:CreateTexture(nil, "BORDER")
+	local texture = select(3,GetSpellInfo(self.spellId))
+	self.icon:SetTexture(texture)
+	self.icon:SetPoint("TOPRIGHT", self.frame, "TOPLEFT")
+	self.icon:SetSize(self.frame:GetHeight(), self.frame:GetHeight())
 	return self
 end
 
@@ -87,5 +87,13 @@ function SpellFrameBuilder:Build()
 	end
 
 	local spell = SpellBase(self.debuffer, self.caster, self.channeler, self.coolDowner, self.sender)
-	return SpellFrame(self.frame, self.spell)
+	local spellFrame = SpellFrame(self.frame, spell, self.icon, self.order)
+
+	if self.enabled then
+		spellFrame:Enable()
+	else
+		spellFrame:Disable()
+	end
+
+	return spellFrame
 end

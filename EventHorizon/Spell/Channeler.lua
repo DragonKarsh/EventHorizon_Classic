@@ -20,9 +20,13 @@ function Channeler:new(spellId, frame, ticks)
 	self.currentChannel = nil
 end
 
+function Channeler:SetTicks(ticks)
+	self.ticks = ticks
+end
+
 function Channeler:WithEventHandler()
 	self.eventHandler = ChannelEventHandler(self)
-	self.eventHandler:RegisterEvents()
+	self.eventHandler:Enable()
 	return self
 end
 

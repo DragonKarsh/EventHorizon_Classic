@@ -1,16 +1,16 @@
 ## Interface: 20504
 ## Title: EventHorizon
 ## Author: DragonKarsh
-## Version: 22.6.18.0
+## Version: 22.6.20.0
 ## Dependencies:
 ## OptDeps: 
 ## SavedVariables: EventHorizonDatabase
 
+Embeds.xml
 Reference\Reference.xml
 EventHandling\EventHandling.xml
 UpdateHandling\UpdateHandling.xml
 Indicator\Indicator.xml
 Spell\Spell.xml
 Frame\Frame.xml
-Profiles\Profiles.xml
-Init.lua
+Core\Core.xml
