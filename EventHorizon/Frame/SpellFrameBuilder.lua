@@ -1,11 +1,7 @@
 SpellFrameBuilder = {}
-for k, v in pairs(FrameBuilder) do
-  SpellFrameBuilder[k] = v
-end
 SpellFrameBuilder.__index = SpellFrameBuilder
 
 setmetatable(SpellFrameBuilder, {
-	__index = FrameBuilder,
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -13,19 +9,13 @@ setmetatable(SpellFrameBuilder, {
   end,
 })
 
-function SpellFrameBuilder:new(config, spellId, mainFrame)
-	FrameBuilder.new(self, config, GetSpellInfo(spellId), mainFrame)
-
+function SpellFrameBuilder:new(spellId, enabled, order)
 	self.spellId = spellId	
+	self.enabled = enabled
+	self.order = order
 	
-	local relativeFrame = mainFrame	
-	local relativePoint = "TOPLEFT"
-	if #mainFrame.spellFrames > 0 then
-		relativeFrame = mainFrame.spellFrames[#mainFrame.spellFrames].frame
-		relativePoint = "BOTTOMLEFT"
-	end
-
-	self.frame:SetPoint("TOPLEFT", relativeFrame, relativePoint)	
+	self.frame = CreateFrame("Frame", GetSpellInfo(spellId), EventHorizon.mainFrame, "BackdropTemplate")
+	self.frame:SetSize(EventHorizon.database.profile.width, EventHorizon.database.profile.height)
 	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
 	self.frame:SetBackdropColor(1,1,1,.1)	
 end
@@ -97,5 +87,13 @@ function SpellFrameBuilder:Build()
 	end
 
 	local spell = SpellBase(self.debuffer, self.caster, self.channeler, self.coolDowner, self.sender)
-	return SpellFrame(self.config, self.frame, self.spell, self.icon)
+	local spellFrame = SpellFrame(self.frame, spell, self.icon, self.order)
+
+	if self.enabled then
+		spellFrame:Enable()
+	else
+		spellFrame:Disable()
+	end
+
+	return spellFrame
 end

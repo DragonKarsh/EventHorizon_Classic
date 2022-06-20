@@ -16,10 +16,5 @@ setmetatable(NowReference, {
 function NowReference:new(frame)
 	Reference.new(self, frame)
 
-	self.texture:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -self.frame.past/(self.frame.future-self.frame.past)*self.frame:GetWidth(), 0)
 	self.texture:SetColorTexture(1,1,1,1)
-end
-
-function NowReference:Update()
-	self.texture:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -self.frame.past/(self.frame.future-self.frame.past)*self.frame:GetWidth(), 0)	
 end

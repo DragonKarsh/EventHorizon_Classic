@@ -9,22 +9,31 @@ setmetatable(SpellFrame, {
   end,
 })
 
-function SpellFrame:new(config, frame, spell, icon)
-	self.config = config
+function SpellFrame:new(frame, spell, icon, order)
 	self.frame = frame
 	self.spell = spell
 	self.icon = icon
+	self.order = order
 end
 
-function SpellFrame:UpdateFrame(mainFrame)
-	self.frame.past = mainFrame.past
-	self.frame.future = mainFrame.future
-	self.frame.height = mainFrame.height
-	self.frame.width = mainFrame.width
-	self.frame.scale =  1/(self.frame.future-self.frame.past)
-	self.frame:SetSize(self.frame.width, self.frame.height)
+function SpellFrame:Update(order, enabled)
+	self.order = order
 
-	if self.icon then		
-		self.icon:SetSize(self.frame:GetHeight(), self.frame:GetHeight())	
+	if enabled then 
+		self:Enable()
+	else 
+		self:Disable()
 	end
+end
+
+function SpellFrame:Enable()
+	self.enabled = true
+	self.frame:Show()
+	self.spell:Enable()
+end
+
+function SpellFrame:Disable()
+	self.enabled = false
+	self.frame:Hide()
+	self.spell:Disable()
 end

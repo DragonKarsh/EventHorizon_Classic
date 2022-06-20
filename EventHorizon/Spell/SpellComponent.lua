@@ -26,6 +26,26 @@ end
 
 function SpellComponent:WithUpdateHandler()
 	self.updateHandler = SpellComponentUpdateHandler(self)
-	self.updateHandler:Enable()
 	return self
+end
+
+function SpellComponent:Enable()
+	if self.updateHandler then
+		self.updateHandler:Enable()
+	end
+
+	if self.eventHandler then
+		self.eventHandler:Enable()
+	end
+end
+
+function SpellComponent:Disable()
+
+	if self.updateHandler then
+		self.updateHandler:Disable()
+	end
+
+	if self.eventHandler then
+		self.eventHandler:Disable()
+	end
 end

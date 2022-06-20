@@ -120,8 +120,8 @@ function SpellComponentUpdateHandler:UpdateTexture(texture, left, right)
 end
 
 function SpellComponentUpdateHandler:PointInTime(point)
-	local diff = GetTime() + self.uiFrame.past
-	return (point-diff)*self.uiFrame.scale
+	local diff = GetTime() + EventHorizon.database.profile.past
+	return (point-diff)*EventHorizon.scale
 end
 
 function SpellComponentUpdateHandler:InBounds(left, right)

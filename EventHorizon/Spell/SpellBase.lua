@@ -11,8 +11,52 @@ setmetatable(SpellBase, {
 
 function SpellBase:new(debuffer, caster, channeler, coolDowner, sender)
 	self.debuffer = debuffer
-	self.caster = vaster
+	self.caster = caster
 	self.channeler = channeler
 	self.coolDowner = coolDowner
 	self.sender = sender
+end
+
+function SpellBase:Enable()
+	if self.debuffer then
+		self.debuffer:Enable()
+	end
+
+	if self.caster then
+		self.caster:Enable()
+	end
+
+	if self.channeler then
+		self.channeler:Enable()
+	end
+
+	if self.coolDowner then
+		self.coolDowner:Enable()
+	end
+
+	if self.sender then
+		self.sender:Enable()
+	end
+end
+
+function SpellBase:Disable()
+	if self.debuffer then
+		self.debuffer:Disable()
+	end
+
+	if self.caster then
+		self.caster:Disable()
+	end
+
+	if self.channeler then
+		self.channeler:Disable()
+	end
+
+	if self.coolDowner then
+		self.coolDowner:Disable()
+	end
+
+	if self.sender then
+		self.sender:Disable()
+	end
 end

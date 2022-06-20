@@ -19,7 +19,7 @@ end
 
 function Sender:WithEventHandler()
 	self.eventHandler = SendEventHandler(self)
-	self.eventHandler:RegisterEvents()
+	self.eventHandler:Enable()
 	return self
 end
 
