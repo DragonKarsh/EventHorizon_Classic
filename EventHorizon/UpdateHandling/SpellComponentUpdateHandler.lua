@@ -121,7 +121,7 @@ end
 
 function SpellComponentUpdateHandler:PointInTime(point)
 	local diff = GetTime() + EventHorizon.database.profile.past
-	return (point-diff)*EventHorizon.scale
+	return (point-diff)*EventHorizon.database.profile.scale
 end
 
 function SpellComponentUpdateHandler:InBounds(left, right)

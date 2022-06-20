@@ -16,8 +16,8 @@ EventHorizon.options = {
 					max = 500,
 					step = 1,
 					order = 1,
-					get = function(info) return EventHorizon.database.profile.width end,
-					set = function(info,val) EventHorizon.database.profile.width = val EventHorizon:RefreshMainFrame() end
+					get = function(info) return EventHorizon:GetWidth() end,
+					set = function(info,val) EventHorizon:SetWidth(val) end
 				},				
 				height = {
 					name = "Height",
@@ -27,8 +27,8 @@ EventHorizon.options = {
 					max = 500,
 					step = 1,
 					order = 2,
-					get = function(info) return EventHorizon.database.profile.height end,
-					set = function(info,val) EventHorizon.database.profile.height = val EventHorizon:RefreshMainFrame() end
+					get = function(info) return EventHorizon:GetHeight() end,
+					set = function(info,val) EventHorizon:SetHeight(val) end
 				}
 			}
 		},
@@ -45,8 +45,8 @@ EventHorizon.options = {
 					max = 0,
 					step = 1,
 					order = 1,
-					get = function(info) return EventHorizon.database.profile.past end,
-					set = function(info,val) EventHorizon.database.profile.past = val EventHorizon:RefreshMainFrame() end
+					get = function(info) return EventHorizon:GetPast() end,
+					set = function(info,val) EventHorizon:SetPast(val) end
 				},
 				future = {
 					name = "Future",
@@ -56,8 +56,8 @@ EventHorizon.options = {
 					max = 10,
 					step = 1,
 					order = 2,
-					get = function(info) return EventHorizon.database.profile.future end,
-					set = function(info,val) EventHorizon.database.profile.future = val EventHorizon:RefreshMainFrame() end
+					get = function(info) return EventHorizon:GetFuture() end,
+					set = function(info,val) EventHorizon:SetFuture(val) end
 				}
 			}
 		},
@@ -79,10 +79,16 @@ EventHorizon.options = {
 	}	
 }
 
-function EventHorizon:SetupOptionsTable()	
+function EventHorizon:InitializeOptions()	
 	self:CreateChanneledSpellsOptions()
 	self:CreateDirectSpellsOptions()
 	self:CreateDotSpellsOptions()
+	
+	LibStub("AceConfig-3.0")
+	:RegisterOptionsTable("EventHorizon", self.options, {"eventhorizon", "eh", "evh"})
+	
+	self.optionsFrame = LibStub("AceConfigDialog-3.0")
+	:AddToBlizOptions("EventHorizon", "EventHorizon")
 end
 
 function EventHorizon:CreateNewChanneledSpell()
@@ -329,4 +335,37 @@ function EventHorizon:CreateDotSpellsOptions()
 	end
 
 	EventHorizon.options.args.dots.args = dotSpells
+end
+
+function EventHorizon:GetHeight()
+	return EventHorizon.database.profile.height
+end
+
+function EventHorizon:SetHeight(height)
+	EventHorizon.database.profile.height = height
+	self:RefreshMainFrame()
+end
+
+function EventHorizon:GetWidth()
+	return EventHorizon.database.profile.width
+end
+function EventHorizon:SetWidth(width)
+	EventHorizon.database.profile.width = width
+	self:RefreshMainFrame()
+end
+function EventHorizon:GetPast()
+	return EventHorizon.database.profile.past
+end
+function EventHorizon:SetPast(past)
+	EventHorizon.database.profile.past = Past
+	EventHorizon.database.profile.scale = 1/(EventHorizon.database.profile.future-EventHorizon.database.profile.past)
+	self:RefreshMainFrame()
+end
+function EventHorizon:GetFuture()
+	return EventHorizon.database.profile.future
+end
+function EventHorizon:SetFuture(future)
+	EventHorizon.database.profile.future = future
+	EventHorizon.database.profile.scale = 1/(EventHorizon.database.profile.future-EventHorizon.database.profile.past)
+	self:RefreshMainFrame()
 end

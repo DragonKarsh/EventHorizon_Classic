@@ -14,7 +14,7 @@ function SpellFrameBuilder:new(spellId, enabled, order)
 	self.enabled = enabled
 	self.order = order
 	
-	self.frame = CreateFrame("Frame", GetSpellInfo(spellId), EventHorizon.mainFrame, "BackdropTemplate")
+	self.frame = CreateFrame("Frame", GetSpellInfo(spellId), EventHorizon.mainFrame:GetFrame(), "BackdropTemplate")
 	self.frame:SetSize(EventHorizon.database.profile.width, EventHorizon.database.profile.height)
 	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
 	self.frame:SetBackdropColor(1,1,1,.1)	

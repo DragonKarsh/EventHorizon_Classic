@@ -23,6 +23,10 @@ function Debuffer:new(spellId, frame, ticks, casted)
 
 end
 
+function Debuffer:SetTicks(ticks)
+	self.ticks = ticks
+end
+
 function Debuffer:WithEventHandler()
 	self.eventHandler = DebuffEventHandler(self)
 	self.eventHandler:Enable()

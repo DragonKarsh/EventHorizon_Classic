@@ -1,4 +1,6 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
   <Script file='SpellFrameBuilder.lua'/>
 	<Script file='SpellFrame.lua'/>
+  <Script file='MainFrameBuilder.lua'/>
+  <Script file='MainFrame.lua'/>
 </Ui>

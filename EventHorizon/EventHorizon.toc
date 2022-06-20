@@ -13,6 +13,4 @@ UpdateHandling\UpdateHandling.xml
 Indicator\Indicator.xml
 Spell\Spell.xml
 Frame\Frame.xml
-Init.lua
-Defaults.lua
-Options.lua
+Core\Core.xml

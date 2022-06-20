@@ -29,7 +29,6 @@ end
 
 function GcdReference:WithEventHandler()
 	self.eventHandler = GcdEventHandler(self)
---	self.eventHandler:RegisterEvents()
 	self.eventHandler:Enable()
 	return self
 end
