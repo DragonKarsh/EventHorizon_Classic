@@ -9,9 +9,11 @@ setmetatable(SpellFrame, {
   end,
 })
 
-function SpellFrame:new(frame, spell, icon, order)
+function SpellFrame:new(spellId, frame, spellComponents, icon, order)
+	self.spellId = spellId
+	self.spellName = GetSpellInfo(spellId)
 	self.frame = frame
-	self.spell = spell
+	self.spellComponents = spellComponents
 	self.icon = icon
 	self.order = order
 end
@@ -34,26 +36,6 @@ function SpellFrame:GetIcon()
 	return self.icon
 end
 
-function SpellFrame:GetChanneler()
-	return self.spell.channeler
-end
-
-function SpellFrame:GetDebuffer()
-	return self.spell.debuffer
-end
-
-function SpellFrame:GetSender()
-	return self.spell.sender
-end
-
-function SpellFrame:GetCaster()
-	return self.spell.caster
-end
-
-function SpellFrame:GetCoolDowner()
-	return self.spell.coolDowner
-end
-
 function SpellFrame:Enabled()
 	return self.enabled
 end
@@ -61,11 +43,17 @@ end
 function SpellFrame:Enable()
 	self.enabled = true
 	self.frame:Show()
-	self.spell:Enable()
+	
+	for _,spellComponent in pairs(self.spellComponents) do
+		spellComponent:Enable()
+	end
 end
 
 function SpellFrame:Disable()
 	self.enabled = false
 	self.frame:Hide()
-	self.spell:Disable()
+	
+	for _,spellComponent in pairs(self.spellComponents) do
+		spellComponent:Disable()
+	end
 end
