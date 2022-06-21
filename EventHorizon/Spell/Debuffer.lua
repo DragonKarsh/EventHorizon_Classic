@@ -132,5 +132,4 @@ end
 
 function Debuffer:RefreshDebuff(target, start, stop)
 	self.debuffs[target]:Refresh(start, stop)
-	self.debuffs[target].original.stop = stop
 end
