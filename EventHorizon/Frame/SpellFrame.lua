@@ -35,23 +35,23 @@ function SpellFrame:GetIcon()
 end
 
 function SpellFrame:GetChanneler()
-	return self.channeler
+	return self.spell.channeler
 end
 
 function SpellFrame:GetDebuffer()
-	return self.debuffer
+	return self.spell.debuffer
 end
 
 function SpellFrame:GetSender()
-	return self.sender
+	return self.spell.sender
 end
 
 function SpellFrame:GetCaster()
-	return self.caster
+	return self.spell.caster
 end
 
 function SpellFrame:GetCoolDowner()
-	return self.coolDowner
+	return self.spell.coolDowner
 end
 
 function SpellFrame:Enabled()

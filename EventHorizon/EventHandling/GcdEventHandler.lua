@@ -13,6 +13,9 @@ setmetatable(GcdEventHandler, {
   end,
 })
 
+LibStub("AceEvent-3.0")
+:Embed(GcdEventHandler)
+
 local events = {
 	["SPELL_UPDATE_COOLDOWN"] = true
 }
@@ -23,7 +26,7 @@ function GcdEventHandler:new(reference)
 	self.reference = reference
 end
 
-function GcdEventHandler:SPELL_UPDATE_COOLDOWN()		
+function GcdEventHandler:SPELL_UPDATE_COOLDOWN()	
 	local start, duration = GetSpellCooldown(EventHorizon.database.profile.gcdSpellId)
 	if start and duration and duration>0 then
 		self.reference.gcdEnd = start+duration

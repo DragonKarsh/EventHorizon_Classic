@@ -1,6 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='EventHandler.lua'/>
-	<Script file='SpellComponentEventHandler.lua'/>
 	<Script file='CastEventHandler.lua'/>
   <Script file='ChannelEventHandler.lua'/>
   <Script file='DebuffEventHandler.lua'/>

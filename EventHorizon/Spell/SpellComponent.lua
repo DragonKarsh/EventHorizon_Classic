@@ -12,7 +12,8 @@ setmetatable(SpellComponent, {
 function SpellComponent:new(spellId, frame)
 	self.spellId = spellId
 	self.spellName = GetSpellInfo(spellId)
-	self.frame = frame
+	self.frame = frame	
+	self.playerGuid = UnitGUID('player')
 
 	self.indicators = {}
 end
@@ -48,4 +49,22 @@ function SpellComponent:Disable()
 	if self.eventHandler then
 		self.eventHandler:Disable()
 	end
+end
+
+function SpellComponent:SpellNotInteresting(spellId)
+	local spellName = GetSpellInfo(spellId)
+	return self.spellName ~= spellName
+end
+
+function SpellComponent:UnitNotInteresting(unitGuid)
+	return self.playerGuid ~= unitGuid
+end
+
+function SpellComponent:NotInterestingByUnit(unitId, spellId)
+	local unitGuid = UnitGUID(unitId)
+	return self:NotInterestingByGuid(unitGuid, spellId)
+end
+
+function SpellComponent:NotInterestingByGuid(unitGuid, spellId)
+	return self:UnitNotInteresting(unitGuid) or self:SpellNotInteresting(spellId)
 end

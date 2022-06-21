@@ -26,7 +26,6 @@ end
 
 function Channeler:WithEventHandler()
 	self.eventHandler = ChannelEventHandler(self)
-	self.eventHandler:Enable()
 	return self
 end
 

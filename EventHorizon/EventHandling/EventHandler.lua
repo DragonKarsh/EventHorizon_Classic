@@ -11,8 +11,6 @@ setmetatable(EventHandler, {
 
 function EventHandler:new(events)	
 	self.events = events
-	self.eventFrame = CreateFrame('Frame', nil)
-	self.eventFrame:SetScript("OnEvent", function(frame, event, ...) if self[event] then self[event](self,...) end end)
 end
 
 function EventHandler:Enable()
@@ -33,12 +31,4 @@ function EventHandler:UnregisterEvents()
 	for k,v in pairs(self.events) do
 		self:UnregisterEvent(k)
 	end
-end
-
-function EventHandler:RegisterEvent(event)
-	self.eventFrame:RegisterEvent(event)
-end
-
-function EventHandler:UnregisterEvent(event)
-	self.eventFrame:RegisterEvent(event)
 end

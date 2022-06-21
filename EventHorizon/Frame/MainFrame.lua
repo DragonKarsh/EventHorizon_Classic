@@ -17,6 +17,8 @@ function MainFrame:new(frame, handle, nowReference, gcdReference)
 	
 	self.enabledSpellFrames = {}
 	self.disabledSpellFrames = {}
+
+	self.spellFramePool = CreateFramePool("Frame",self.frame, "BackdropTemplate")
 end
 
 function MainFrame:GetFrame()
@@ -79,7 +81,7 @@ function MainFrame:AddDotSpellFrame(spellId, ticks, enabled, order)
 end
 
 function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
-	local builder = SpellFrameBuilder(spellId, enabled, order)
+	local builder = SpellFrameBuilder(self.spellFramePool, spellId, enabled, order)
 	:WithIcon()
 	:WithSender()
 
@@ -120,15 +122,23 @@ function MainFrame:OrderEnabledSpellFrames()
 	table.sort(self.enabledSpellFrames, function(a,b) return a.order < b.order end)
 end
 
+function MainFrame:ReleaseSpellFrame(spellId)
+	local spellFrame = self:RemoveSpellFrame(spellId)
+	spellFrame:Disable()
+
+	self.spellFramePool:Release(spellFrame.frame)
+	self:Refresh()
+end
+
 function MainFrame:RemoveSpellFrame(spellId)
 	for i=#self.enabledSpellFrames,1,-1 do
-		if GetSpellInfo(self.enabledSpellFrames[i].spellId) == GetSpellInfo(spellId) then
+		if self.enabledSpellFrames[i].spell.spellName == GetSpellInfo(spellId) then
 			return tremove(self.enabledSpellFrames,i)
 		end
 	end
 
 	for i=#self.disabledSpellFrames,1,-1 do
-		if GetSpellInfo(self.disabledSpellFrames[i].spellId) == GetSpellInfo(spellId) then
+		if self.disabledSpellFrames[i].spell.spellName == GetSpellInfo(spellId) then
 			return tremove(self.disabledSpellFrames,i)
 		end
 	end

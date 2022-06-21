@@ -9,12 +9,13 @@ setmetatable(SpellFrameBuilder, {
   end,
 })
 
-function SpellFrameBuilder:new(spellId, enabled, order)
+
+function SpellFrameBuilder:new(framePool, spellId, enabled, order)
 	self.spellId = spellId	
 	self.enabled = enabled
 	self.order = order
 	
-	self.frame = CreateFrame("Frame", GetSpellInfo(spellId), EventHorizon.mainFrame:GetFrame(), "BackdropTemplate")
+	self.frame = framePool:Acquire()
 	self.frame:SetSize(EventHorizon.database.profile.width, EventHorizon.database.profile.height)
 	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
 	self.frame:SetBackdropColor(1,1,1,.1)	
@@ -86,7 +87,7 @@ function SpellFrameBuilder:Build()
 		:WithUpdateHandler()
 	end
 
-	local spell = SpellBase(self.debuffer, self.caster, self.channeler, self.coolDowner, self.sender)
+	local spell = SpellBase(self.spellId, self.debuffer, self.caster, self.channeler, self.coolDowner, self.sender)
 	local spellFrame = SpellFrame(self.frame, spell, self.icon, self.order)
 
 	if self.enabled then

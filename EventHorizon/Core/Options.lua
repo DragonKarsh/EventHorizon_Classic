@@ -107,6 +107,29 @@ function EventHorizon:CreateNewChanneledSpell()
 	self:RefreshMainFrame()
 end
 
+function EventHorizon:RemoveChannelSpell(spellName)
+	local spellId = self.database.profile.channels[spellName].spellId
+	 self.database.profile.channels[spellName] = nil
+	self:CreateChanneledSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+end
+
+function EventHorizon:RemoveDirectSpell(spellName)
+	local spellId = self.database.profile.directs[spellName].spellId
+	self.database.profile.directs[spellName] = nil
+	self:CreateDirectSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+end
+
+function EventHorizon:RemoveDotSpell(spellName)
+	local spellId = self.database.profile.dots[spellName].spellId
+	self.database.profile.dots[spellName] = nil
+	self:CreateDotSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+
+
+end
+
 function EventHorizon:CreateNewDirectSpell()
 	local spellId = tonumber(self.newDirectSpellId)
 
@@ -200,7 +223,15 @@ function EventHorizon:CreateChanneledSpellsOptions()
 					step = 1,
 					get = function(info) return EventHorizon.database.profile.channels[k].ticks end,
 					set = function(info, val) EventHorizon.database.profile.channels[k].ticks = val EventHorizon:RefreshMainFrame() end
-				}				
+				},
+				
+				remove = {
+					order = 4,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveChannelSpell(k) end,				
+					width = "full"
+				}
 			}
 		}
 	end
@@ -248,7 +279,7 @@ function EventHorizon:CreateDirectSpellsOptions()
 					get = function(info) return EventHorizon.database.profile.directs[k].enabled end,
 					set = function(info, val) EventHorizon.database.profile.directs[k].enabled = val EventHorizon:RefreshMainFrame() end,
 					width = "full"
-				},
+				},				
 				order = {
 					order = 2,
 					name = "Order",
@@ -259,7 +290,14 @@ function EventHorizon:CreateDirectSpellsOptions()
 					step = 1,
 					get = function(info) return EventHorizon.database.profile.directs[k].order end,
 					set = function(info, val) EventHorizon.database.profile.directs[k].order = val EventHorizon:RefreshMainFrame() end,
-				}				
+				},
+				remove = {
+					order = 3,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveDirectSpell(k) end,				
+					width = "full"
+				},
 			}
 		}
 	end
@@ -308,7 +346,7 @@ function EventHorizon:CreateDotSpellsOptions()
 					get = function(info) return EventHorizon.database.profile.dots[k].enabled end,
 					set = function(info, val) EventHorizon.database.profile.dots[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
 					width = "full"
-				},
+				},				
 				order = {
 					order = 2,
 					name = "Order",
@@ -329,7 +367,14 @@ function EventHorizon:CreateDotSpellsOptions()
 					step = 1,
 					get = function(info) return EventHorizon.database.profile.dots[k].ticks end,
 					set = function(info, val) EventHorizon.database.profile.dots[k].ticks = val EventHorizon:RefreshMainFrame(k) end
-				}				
+				},
+				remove = {
+					order = 4,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveDotSpell(k) end,				
+					width = "full"
+				},
 			}
 		}
 	end

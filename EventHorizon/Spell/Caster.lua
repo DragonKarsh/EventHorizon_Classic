@@ -21,7 +21,6 @@ end
 
 function Caster:WithEventHandler()
 	self.eventHandler = CastEventHandler(self)
-	self.eventHandler:Enable()
 	return self
 end
 

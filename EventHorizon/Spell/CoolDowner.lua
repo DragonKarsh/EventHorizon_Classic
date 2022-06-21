@@ -21,7 +21,6 @@ end
 
 function CoolDowner:WithEventHandler()
 	self.eventHandler = CoolDownEventHandler(self)
-	self.eventHandler:Enable()
 	return self
 end
 
