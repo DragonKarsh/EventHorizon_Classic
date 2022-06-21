@@ -17,6 +17,8 @@ function MainFrame:new(frame, handle, nowReference, gcdReference)
 	
 	self.enabledSpellFrames = {}
 	self.disabledSpellFrames = {}
+
+	self.spellFramePool = CreateFramePool("Frame",self.frame, "BackdropTemplate")
 end
 
 function MainFrame:GetFrame()
@@ -79,7 +81,7 @@ function MainFrame:AddDotSpellFrame(spellId, ticks, enabled, order)
 end
 
 function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
-	local builder = SpellFrameBuilder(spellId, enabled, order)
+	local builder = SpellFrameBuilder(self.spellFramePool, spellId, enabled, order)
 	:WithIcon()
 	:WithSender()
 
@@ -94,6 +96,11 @@ function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
 	return builder
 end
 
+function MainFrame:Disable()
+	self:DisableAllSpellFrames()
+	self:Hide()
+end
+
 function MainFrame:DisableAllSpellFrames()
 	while #self.enabledSpellFrames > 0 do
 		local spellFrame = tremove(self.enabledSpellFrames)
@@ -103,32 +110,58 @@ function MainFrame:DisableAllSpellFrames()
 end
 
 function MainFrame:LoadSpellFrames()
-	for _,spell in pairs(EventHorizon.database.profile.channels) do
+	for _,spell in pairs(EventHorizon.opt.channels) do
 		self:AddChanneledSpellFrame(spell.spellId, spell.ticks, spell.enabled, spell.order)
 	end
 
-	for _,spell in pairs(EventHorizon.database.profile.directs) do
+	for _,spell in pairs(EventHorizon.opt.directs) do
 		self:AddDirectSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 
-	for _,spell in pairs(EventHorizon.database.profile.dots) do
+	for _,spell in pairs(EventHorizon.opt.dots) do
 		self:AddDotSpellFrame(spell.spellId, spell.ticks, spell.enabled, spell.order)
 	end
+end
+
+function MainFrame:Lock()
+	self.handle:SetMovable(false)
+	self.handle:Hide()
+end
+
+function MainFrame:Unlock()
+	self.handle:SetMovable(true)
+	self.handle:Show()
+end
+
+function MainFrame:Show()
+	self.frame:Show()
+end
+
+function MainFrame:Hide()
+	self.frame:Hide()
 end
 
 function MainFrame:OrderEnabledSpellFrames()
 	table.sort(self.enabledSpellFrames, function(a,b) return a.order < b.order end)
 end
 
+function MainFrame:ReleaseSpellFrame(spellId)
+	local spellFrame = self:RemoveSpellFrame(spellId)
+	spellFrame:Disable()
+
+	self.spellFramePool:Release(spellFrame.frame)
+	self:Refresh()
+end
+
 function MainFrame:RemoveSpellFrame(spellId)
 	for i=#self.enabledSpellFrames,1,-1 do
-		if GetSpellInfo(self.enabledSpellFrames[i].spellId) == GetSpellInfo(spellId) then
+		if self.enabledSpellFrames[i].spell.spellName == GetSpellInfo(spellId) then
 			return tremove(self.enabledSpellFrames,i)
 		end
 	end
 
 	for i=#self.disabledSpellFrames,1,-1 do
-		if GetSpellInfo(self.disabledSpellFrames[i].spellId) == GetSpellInfo(spellId) then
+		if self.disabledSpellFrames[i].spell.spellName == GetSpellInfo(spellId) then
 			return tremove(self.disabledSpellFrames,i)
 		end
 	end
@@ -139,13 +172,24 @@ function MainFrame:Refresh()
 	self:LoadSpellFrames()
 	self:OrderEnabledSpellFrames()
 	self:UpdateAllFrames()
+
+	if EventHorizon.opt.locked then
+		self:Lock()
+	else
+		self:Unlock()
+	end
+	if EventHorizon.opt.hidden then
+		self:Hide()
+	else
+		self:Show()
+	end
 end
 
 function MainFrame:UpdateAllFrames()
-	local past = EventHorizon.database.profile.past
-	local future = EventHorizon.database.profile.future
-	local height = EventHorizon.database.profile.height
-	local width = EventHorizon.database.profile.width
+	local past = EventHorizon.opt.past
+	local future = EventHorizon.opt.future
+	local height = EventHorizon.opt.height
+	local width = EventHorizon.opt.width
 
 	self.frame:SetSize(width, #self.enabledSpellFrames * height)
 

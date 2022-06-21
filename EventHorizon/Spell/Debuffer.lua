@@ -29,7 +29,6 @@ end
 
 function Debuffer:WithEventHandler()
 	self.eventHandler = DebuffEventHandler(self)
-	self.eventHandler:Enable()
 	return self
 end
 

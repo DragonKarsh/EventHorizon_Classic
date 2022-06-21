@@ -8,9 +8,15 @@ function EventHorizon:OnInitialize()
 	self:InitializeCommands()
 end
 
-function EventHorizon:OnEnable()	
-	self:CreateMainFrame()
+function EventHorizon:OnEnable()
+	if not self.mainFrame then
+		self:CreateMainFrame()
+	end
 	self:RefreshMainFrame()
+end
+
+function EventHorizon:OnDisable()
+	self.mainFrame:Disable()
 end
 
 function EventHorizon:CreateMainFrame()

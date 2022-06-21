@@ -9,7 +9,9 @@ setmetatable(SpellBase, {
   end,
 })
 
-function SpellBase:new(debuffer, caster, channeler, coolDowner, sender)
+function SpellBase:new(spellId, debuffer, caster, channeler, coolDowner, sender)
+	self.spellId = spellId
+	self.spellName = GetSpellInfo(spellId)
 	self.debuffer = debuffer
 	self.caster = caster
 	self.channeler = channeler

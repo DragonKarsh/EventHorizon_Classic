@@ -2,84 +2,16 @@ EventHorizon.options = {
 	name = "EventHorizon",
 	handler = EventHorizon,
 	type = "group",
+	childGroups = "tab",
 	args = {
-		frameSize = {
-			name = "Frame Size",
-			type = "group",
-			order=1,
-			args = {
-				width = {
-					name = "Width",
-					type = "range",
-					desc = "Width of a spell frame",
-					min = 1,
-					max = 500,
-					step = 1,
-					order = 1,
-					get = function(info) return EventHorizon:GetWidth() end,
-					set = function(info,val) EventHorizon:SetWidth(val) end
-				},				
-				height = {
-					name = "Height",
-					type = "range",
-					desc = "Height of a spell frame",
-					min = 1,
-					max = 500,
-					step = 1,
-					order = 2,
-					get = function(info) return EventHorizon:GetHeight() end,
-					set = function(info,val) EventHorizon:SetHeight(val) end
-				}
-			}
-		},
-		timeLine = {
-			name="Timeline",
-			type = "group",
-			order=2,
-			args = {
-				past = {
-					name = "Past",
-					type = "range",
-					desc = "How many seconds in the past to show",
-					min = -10,
-					max = 0,
-					step = 1,
-					order = 1,
-					get = function(info) return EventHorizon:GetPast() end,
-					set = function(info,val) EventHorizon:SetPast(val) end
-				},
-				future = {
-					name = "Future",
-					type = "range",
-					desc = "How many seconds in the future to show",
-					min = 0,
-					max = 10,
-					step = 1,
-					order = 2,
-					get = function(info) return EventHorizon:GetFuture() end,
-					set = function(info,val) EventHorizon:SetFuture(val) end
-				}
-			}
-		},
-		channels = {
-			name = "Channeled Spells",
-			type = "group",
-			order=3
-		},
-		directs = {
-			name = "Direct Spells",
-			type = "group",
-			order=4
-		},
-		dots = {
-			name = "Damage Over Time Spells",
-			type = "group",
-			order=5
-		}
 	}	
 }
 
 function EventHorizon:InitializeOptions()	
+	self:CreateGlobalOptions()
+	self:CreateChannelsOptions()
+	self:CreateDirectsOptions()
+	self:CreateDotsOptions()
 	self:CreateChanneledSpellsOptions()
 	self:CreateDirectSpellsOptions()
 	self:CreateDotSpellsOptions()
@@ -87,80 +19,310 @@ function EventHorizon:InitializeOptions()
 	LibStub("AceConfig-3.0")
 	:RegisterOptionsTable("EventHorizon", self.options, {"eventhorizon", "eh", "evh"})
 	
+	self.options.args.profiles = LibStub("AceDBOptions-3.0")
+	:GetOptionsTable(self.database)
+
 	self.optionsFrame = LibStub("AceConfigDialog-3.0")
 	:AddToBlizOptions("EventHorizon", "EventHorizon")
 end
 
-function EventHorizon:CreateNewChanneledSpell()
-	local spellId = tonumber(self.newChannelSpellId)
+function EventHorizon:CreateGlobalOptions()
+	self.options.args.settings = {
+		order = 1,
+		name = "Settings",
+		desc = "Change global settings",
+		type = "group",
+		cmdHidden = true,
+		args = {
+			main = {
+				order = 1,
+				name = "Main Settings",
+				type = "group",
+				inline = true,
+				args = {
+					enabled = {
+						order = 1,
+						name = "Enable EventHorizon",
+						desc = "[Enable/Disable] EventHorizon",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.enabled end,
+						set = function(info, val) EventHorizon.opt.enabled = val if val then EventHorizon:OnEnable() else EventHorizon:OnDisable() end end
+					},
+					locked = {
+						order = 2,
+						name = "Lock",
+						desc = "Lock main frame",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.locked end,
+						set = function(info, val) EventHorizon.opt.locked = val if val then EventHorizon.mainFrame:Lock() else EventHorizon.mainFrame:Unlock() end end
+					},
+					hidden = {
+						order = 3,
+						name = "Hide",
+						desc = "Hide main frame",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.hidden end,
+						set = function(info, val) EventHorizon.opt.hidden = val if val then EventHorizon.mainFrame:Hide() else EventHorizon.mainFrame:Show() end end
+					}
+				}
+			},
+			frame = {
+				order = 2,
+				name = "Frame Settings",
+				type = "group",
+				inline = true,
+				args = {
+					width = {
+						name = "Width",
+						type = "range",
+						desc = "Width of a spell frame",
+						min = 1,
+						max = 500,
+						step = 1,
+						order = 1,
+						get = function(info) return EventHorizon.opt.width end,
+						set = function(info,val) EventHorizon:SetWidth(val) end
+					},				
+					height = {
+						name = "Height",
+						type = "range",
+						desc = "Height of a spell frame",
+						min = 1,
+						max = 500,
+						step = 1,
+						order = 2,
+						get = function(info) return EventHorizon.opt.height end,
+						set = function(info,val) EventHorizon:SetHeight(val) end
+					}
+				}
+			},
+			timeLine = {
+				order = 3,
+				name = "Timeline Settings",
+				type = "group",
+				inline = true,
+				args = {
+					past = {
+						name = "Past",
+						type = "range",
+						desc = "How many seconds in the past to show",
+						min = -10,
+						max = 0,
+						step = 1,
+						order = 1,
+						get = function(info) return EventHorizon.opt.past end,
+						set = function(info,val) EventHorizon:SetPast(val) end
+					},
+					future = {
+						name = "Future",
+						type = "range",
+						desc = "How many seconds in the future to show",
+						min = 0,
+						max = 10,
+						step = 1,
+						order = 2,
+						get = function(info) return EventHorizon.opt.future end,
+						set = function(info,val) EventHorizon:SetFuture(val) end
+					}
+				}
+			}
+		}
+	}
+end
 
-	if spellId then
-		local spellName = GetSpellInfo(spellId)
-		if not self.database.profile.channels[spellName] then
-			local channel = {spellId=spellId, ticks=1, enabled=true, order=1}
-			self.database.profile.channels[spellName] = channel
-		end
-	end
+function EventHorizon:CreateChannelsOptions()
+	self.options.args.channels = {
+		order=2,
+		name = "Channels",
+		desc = "Edit channeled spells",
+		type = "group",
+		cmdHidden = true,
+		args = {
+			createChannel = {
+				order = 1,
+				name = "Create new spell",
+				desc = "Create a new channeled spell",
+				type = "group",
+				inline = true,
+				args = {
+					create = {
+						name = "Create",
+						type = "execute",
+						order = 1,
+						func = function() EventHorizon:CreateNewChanneledSpell() end
+					},
+					input = {
+						name = "Spell name/id",
+						type = "input",
+						desc = "Enter spellname or spellId of the channeled spell to create",
+						order = 2,
+						get = function(info) return EventHorizon.newChannelSpell end,
+						set = function(info,val) EventHorizon.newChannelSpell = val end
+					}
+				}
+			},
+			existing = {
+				order = 2,
+				name = "Existing channels",
+				desc = "Already created channels",
+				type = "group"
+			}
+		}	
+	}
+end
 
-	self.newChannelSpellId = nil
+function EventHorizon:CreateDirectsOptions()
+	self.options.args.directs = {
+		order=3,
+		name = "Directs",
+		desc = "Edit direct damage spells",
+		type = "group",
+		cmdHidden = true,
+		args = {
+			createDirect = {
+				order = 1,
+				name = "Create new spell",
+				desc = "Create a new direct damage spell",
+				type = "group",
+				inline = true,
+				args = {
+					create = {
+						name = "Create",
+						type = "execute",
+						order = 1,
+						func = function() EventHorizon:CreateNewDirectSpell() end
+					},
+					input = {
+						name = "Spell name/id",
+						type = "input",
+						desc = "Enter spellname or spellId of the direct damage spell to create",
+						order = 2,
+						get = function(info) return EventHorizon.newDirectSpell end,
+						set = function(info,val) EventHorizon.newDirectSpell = val end
+					}
+				}
+			},
+			existing = {
+				order = 2,
+				name = "Existing direct damage spells",
+				desc = "Already created direct damage spells",
+				type = "group"
+			}
+		}
+	}
+end
+
+function EventHorizon:CreateDotsOptions()
+	self.options.args.dots = {
+		order=4,
+		name = "Dots",
+		desc = "Edit damage over time spells",
+		type = "group",
+		cmdHidden = true,
+		args = {
+			createDot = {
+				order = 1,
+				name = "Create new spell",
+				desc = "Create a new damage over time spell",
+				type = "group",
+				inline = true,
+				args = {
+					create = {
+						name = "Create",
+						type = "execute",
+						order = 1,
+						func = function() EventHorizon:CreateNewDotSpell() end
+					},
+					input = {
+						name = "Spell name/id",
+						type = "input",
+						desc = "Enter spellname or spellId of the damage over time spell to create",
+						order = 2,
+						get = function(info) return EventHorizon.newDotSpell end,
+						set = function(info,val) EventHorizon.newDotSpell = val end
+					}
+				}
+			},
+			existing = {
+				order = 2,
+				name = "Existing damage over time spells",
+				desc = "Already created channels",
+				type = "group"
+			}
+		}
+	}
+end
+
+function EventHorizon:CreateNewChanneledSpell()	
+	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newChannelSpell)
+
+	if spellName and not self.opt.channels[spellName] then
+		local channel = {spellId=spellId, ticks=1, enabled=true, order=1}
+		self.opt.channels[spellName] = channel
+	end	
+
+	self.newChannelSpell = nil
 	self:CreateChanneledSpellsOptions()
 	self:RefreshMainFrame()
 end
 
-function EventHorizon:CreateNewDirectSpell()
-	local spellId = tonumber(self.newDirectSpellId)
+function EventHorizon:RemoveChannelSpell(spellName)
+	local spellId = self.opt.channels[spellName].spellId
+	 self.opt.channels[spellName] = nil
+	self:CreateChanneledSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+end
 
-	if spellId then
-		local spellName = GetSpellInfo(spellId)
-		if not self.database.profile.directs[spellName] then
-			local direct = {spellId=spellId, enabled=true, order=1}
-			self.database.profile.directs[spellName] = direct
-		end
+function EventHorizon:RemoveDirectSpell(spellName)
+	local spellId = self.opt.directs[spellName].spellId
+	self.opt.directs[spellName] = nil
+	self:CreateDirectSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+end
+
+function EventHorizon:RemoveDotSpell(spellName)
+	local spellId = self.opt.dots[spellName].spellId
+	self.opt.dots[spellName] = nil
+	self:CreateDotSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+end
+
+function EventHorizon:CreateNewDirectSpell()
+	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDirectSpell)
+
+	if spellName and not self.opt.directs[spellName] then
+		local direct = {spellId=spellId, enabled=true, order=1}
+		self.opt.directs[spellName] = direct
 	end
 
-	self.newDirectSpellId = nil
+	self.newDirectSpell = nil
 	self:CreateDirectSpellsOptions()
 	self:RefreshMainFrame()
 end
 
 function EventHorizon:CreateNewDotSpell()
-	local spellId = tonumber(self.newDotSpellId)
+	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDotSpell)
+		
+	if spellName and not self.opt.dots[spellName] then
+		local dot = {spellId=spellId, ticks=1, enabled=true, order=1}
+		self.opt.dots[spellName] = dot
+	end	
 
-	if spellId then
-		local spellName = GetSpellInfo(spellId)
-		if not self.database.profile.dots[spellName] then
-			local dot = {spellId=spellId, ticks=1, enabled=true, order=1}
-			self.database.profile.dots[spellName] = dot
-		end
-	end
-
-	self.newDotSpellId = nil
+	self.newDotSpell = nil
 	self:CreateDotSpellsOptions()
 	self:RefreshMainFrame()
 end
 
 function EventHorizon:CreateChanneledSpellsOptions()
-	local channeledSpells = {}
-	local count = 2
-
-	channeledSpells.newChannel = {
-		name = "Create new channeled spell",
-		type = "execute",
-		order = 1,
-		func = function() EventHorizon:CreateNewChanneledSpell() end
+	local channeledSpells = {		
 	}
-
-	channeledSpells.newChannelSpellId = {
-		name = "SpellId",
-		type = "input",
-		desc = "Enter spellId of the channeled spell to create",
-		order = 2,
-		get = function(info) return EventHorizon.newChannelSpellId end,
-		set = function(info,val) EventHorizon.newChannelSpellId = val end
-	}
+	local count = 0
 
 	local sorted = {}
-	for k,v in pairs(self.database.profile.channels) do
+	for k,v in pairs(self.opt.channels) do
 		tinsert(sorted, k)
 	end
 
@@ -176,8 +338,8 @@ function EventHorizon:CreateChanneledSpellsOptions()
 					order = 1,
 					name = "Enabled",
 					type = "toggle",
-					get = function(info) return EventHorizon.database.profile.channels[k].enabled end,
-					set = function(info, val) EventHorizon.database.profile.channels[k].enabled = val EventHorizon:RefreshMainFrame() end,
+					get = function(info) return EventHorizon.opt.channels[k].enabled end,
+					set = function(info, val) EventHorizon.opt.channels[k].enabled = val EventHorizon:RefreshMainFrame() end,
 					width = "full"
 				},
 				order = {
@@ -188,8 +350,8 @@ function EventHorizon:CreateChanneledSpellsOptions()
 					min = 1,
 					max = 10,
 					step = 1,
-					get = function(info) return EventHorizon.database.profile.channels[k].order end,
-					set = function(info, val) EventHorizon.database.profile.channels[k].order = val EventHorizon:RefreshMainFrame() end,
+					get = function(info) return EventHorizon.opt.channels[k].order end,
+					set = function(info, val) EventHorizon.opt.channels[k].order = val EventHorizon:RefreshMainFrame() end,
 				},
 				ticks = {
 					order = 3,
@@ -198,38 +360,30 @@ function EventHorizon:CreateChanneledSpellsOptions()
 					min = 1,
 					max = 15,
 					step = 1,
-					get = function(info) return EventHorizon.database.profile.channels[k].ticks end,
-					set = function(info, val) EventHorizon.database.profile.channels[k].ticks = val EventHorizon:RefreshMainFrame() end
-				}				
+					get = function(info) return EventHorizon.opt.channels[k].ticks end,
+					set = function(info, val) EventHorizon.opt.channels[k].ticks = val EventHorizon:RefreshMainFrame() end
+				},
+				
+				remove = {
+					order = 4,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveChannelSpell(k) end,				
+					width = "full"
+				}
 			}
 		}
 	end
 
-	EventHorizon.options.args.channels.args = channeledSpells
+	EventHorizon.options.args.channels.args.existing.args = channeledSpells
 end
 
 function EventHorizon:CreateDirectSpellsOptions()
 	local directSpells = {}
-	local count = 2
-
-	directSpells.newDirect = {
-		name = "Create new direct spell",
-		type = "execute",
-		order = 1,
-		func = function() EventHorizon:CreateNewDirectSpell() end
-	}
-
-	directSpells.newDirectSpellId = {
-		name = "SpellId",
-		type = "input",
-		desc = "Enter spellId of the direct spell to create",
-		order = 2,
-		get = function(info) return EventHorizon.newDirectSpellId end,
-		set = function(info,val) EventHorizon.newDirectSpellId = val end
-	}
+	local count = 0
 
 	local sorted = {}
-	for k,v in pairs(self.database.profile.directs) do
+	for k,v in pairs(self.opt.directs) do
 		tinsert(sorted, k)
 	end
 
@@ -245,10 +399,10 @@ function EventHorizon:CreateDirectSpellsOptions()
 					order = 1,
 					name = "Enabled",
 					type = "toggle",
-					get = function(info) return EventHorizon.database.profile.directs[k].enabled end,
-					set = function(info, val) EventHorizon.database.profile.directs[k].enabled = val EventHorizon:RefreshMainFrame() end,
+					get = function(info) return EventHorizon.opt.directs[k].enabled end,
+					set = function(info, val) EventHorizon.opt.directs[k].enabled = val EventHorizon:RefreshMainFrame() end,
 					width = "full"
-				},
+				},				
 				order = {
 					order = 2,
 					name = "Order",
@@ -257,39 +411,29 @@ function EventHorizon:CreateDirectSpellsOptions()
 					min = 1,
 					max = 10,
 					step = 1,
-					get = function(info) return EventHorizon.database.profile.directs[k].order end,
-					set = function(info, val) EventHorizon.database.profile.directs[k].order = val EventHorizon:RefreshMainFrame() end,
-				}				
+					get = function(info) return EventHorizon.opt.directs[k].order end,
+					set = function(info, val) EventHorizon.opt.directs[k].order = val EventHorizon:RefreshMainFrame() end,
+				},
+				remove = {
+					order = 3,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveDirectSpell(k) end,				
+					width = "full"
+				},
 			}
 		}
 	end
 
-	EventHorizon.options.args.directs.args = directSpells
+	EventHorizon.options.args.directs.args.existing.args = directSpells
 end
-
 
 function EventHorizon:CreateDotSpellsOptions()
 	local dotSpells = {}
-	local count = 2
-
-	dotSpells.newDot = {
-		name = "Create new dot spell",
-		type = "execute",
-		order = 1,
-		func = function() EventHorizon:CreateNewDotSpell() end
-	}
-
-	dotSpells.newDotSpellId = {
-		name = "SpellId",
-		type = "input",
-		desc = "Enter spellId of the dot spell to create",
-		order = 2,
-		get = function(info) return EventHorizon.newDotSpellId end,
-		set = function(info,val) EventHorizon.newDotSpellId = val end
-	}
+	local count = 0
 
 	local sorted = {}
-	for k,v in pairs(self.database.profile.dots) do
+	for k,v in pairs(self.opt.dots) do
 		tinsert(sorted, k)
 	end
 
@@ -305,10 +449,10 @@ function EventHorizon:CreateDotSpellsOptions()
 					order = 1,
 					name = "Enabled",
 					type = "toggle",
-					get = function(info) return EventHorizon.database.profile.dots[k].enabled end,
-					set = function(info, val) EventHorizon.database.profile.dots[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
+					get = function(info) return EventHorizon.opt.dots[k].enabled end,
+					set = function(info, val) EventHorizon.opt.dots[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
 					width = "full"
-				},
+				},				
 				order = {
 					order = 2,
 					name = "Order",
@@ -317,8 +461,8 @@ function EventHorizon:CreateDotSpellsOptions()
 					min = 1,
 					max = 10,
 					step = 1,
-					get = function(info) return EventHorizon.database.profile.dots[k].order end,
-					set = function(info, val) EventHorizon.database.profile.dots[k].order = val EventHorizon:RefreshMainFrame(k) end,
+					get = function(info) return EventHorizon.opt.dots[k].order end,
+					set = function(info, val) EventHorizon.opt.dots[k].order = val EventHorizon:RefreshMainFrame(k) end,
 				},
 				ticks = {
 					order = 3,
@@ -327,45 +471,41 @@ function EventHorizon:CreateDotSpellsOptions()
 					min = 1,
 					max = 15,
 					step = 1,
-					get = function(info) return EventHorizon.database.profile.dots[k].ticks end,
-					set = function(info, val) EventHorizon.database.profile.dots[k].ticks = val EventHorizon:RefreshMainFrame(k) end
-				}				
+					get = function(info) return EventHorizon.opt.dots[k].ticks end,
+					set = function(info, val) EventHorizon.opt.dots[k].ticks = val EventHorizon:RefreshMainFrame(k) end
+				},
+				remove = {
+					order = 4,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveDotSpell(k) end,				
+					width = "full"
+				},
 			}
 		}
 	end
 
-	EventHorizon.options.args.dots.args = dotSpells
-end
-
-function EventHorizon:GetHeight()
-	return EventHorizon.database.profile.height
+	EventHorizon.options.args.dots.args.existing.args = dotSpells
 end
 
 function EventHorizon:SetHeight(height)
-	EventHorizon.database.profile.height = height
+	self.opt.height = height
 	self:RefreshMainFrame()
 end
 
-function EventHorizon:GetWidth()
-	return EventHorizon.database.profile.width
-end
 function EventHorizon:SetWidth(width)
-	EventHorizon.database.profile.width = width
+	self.opt.width = width
 	self:RefreshMainFrame()
 end
-function EventHorizon:GetPast()
-	return EventHorizon.database.profile.past
-end
+
 function EventHorizon:SetPast(past)
-	EventHorizon.database.profile.past = Past
-	EventHorizon.database.profile.scale = 1/(EventHorizon.database.profile.future-EventHorizon.database.profile.past)
+	self.opt.past = past
+	self.opt.scale = 1/(self.opt.future-self.opt.past)
 	self:RefreshMainFrame()
 end
-function EventHorizon:GetFuture()
-	return EventHorizon.database.profile.future
-end
+
 function EventHorizon:SetFuture(future)
-	EventHorizon.database.profile.future = future
-	EventHorizon.database.profile.scale = 1/(EventHorizon.database.profile.future-EventHorizon.database.profile.past)
+	self.opt.future = future
+	self.opt.scale = 1/(self.opt.future-self.opt.past)
 	self:RefreshMainFrame()
 end

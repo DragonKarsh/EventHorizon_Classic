@@ -1,11 +1,11 @@
 CoolDownEventHandler = {}
-for k, v in pairs(SpellComponentEventHandler) do
+for k, v in pairs(EventHandler) do
   CoolDownEventHandler[k] = v
 end
 CoolDownEventHandler.__index = CoolDownEventHandler
 
 setmetatable(CoolDownEventHandler, {
-	__index = SpellComponentEventHandler, 
+	__index = EventHandler, 
 	__call = function (cls, ...)
     local self = setmetatable({}, cls)
     self:new(...)
@@ -13,12 +13,15 @@ setmetatable(CoolDownEventHandler, {
   end,
 })
 
+LibStub("AceEvent-3.0")
+:Embed(CoolDownEventHandler)
+
 local events = {
 	['SPELL_UPDATE_COOLDOWN'] = true
 }
 
 function CoolDownEventHandler:new(coolDowner)
-	SpellComponentEventHandler.new(self, events, coolDowner)
+	EventHandler.new(self, events)
 
 	self.coolDowner = coolDowner
 end
