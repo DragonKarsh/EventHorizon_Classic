@@ -120,8 +120,8 @@ function SpellComponentUpdateHandler:UpdateTexture(texture, left, right)
 end
 
 function SpellComponentUpdateHandler:PointInTime(point)
-	local diff = GetTime() + EventHorizon.database.profile.past
-	return (point-diff)*EventHorizon.database.profile.scale
+	local diff = GetTime() + EventHorizon.opt.past
+	return (point-diff)*EventHorizon.opt.scale
 end
 
 function SpellComponentUpdateHandler:InBounds(left, right)

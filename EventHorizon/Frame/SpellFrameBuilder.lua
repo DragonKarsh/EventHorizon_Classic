@@ -16,7 +16,7 @@ function SpellFrameBuilder:new(framePool, spellId, enabled, order)
 	self.order = order
 	
 	self.frame = framePool:Acquire()
-	self.frame:SetSize(EventHorizon.database.profile.width, EventHorizon.database.profile.height)
+	self.frame:SetSize(EventHorizon.opt.width, EventHorizon.opt.height)
 	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
 	self.frame:SetBackdropColor(1,1,1,.1)	
 end

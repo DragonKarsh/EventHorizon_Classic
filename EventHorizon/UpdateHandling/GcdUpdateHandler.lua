@@ -26,8 +26,8 @@ function GcdUpdateHandler:OnUpdate(elapsed)
 			self.gcd.gcdEnd = nil
 			self.gcd.texture:Hide()
 		else
-			local diff = now+EventHorizon.database.profile.past
-			local p = (self.gcd.gcdEnd-diff)*EventHorizon.database.profile.scale
+			local diff = now+EventHorizon.opt.past
+			local p = (self.gcd.gcdEnd-diff)*EventHorizon.opt.scale
 			if p<=1 then
 				self.gcd.texture:SetPoint('RIGHT', self.frame, 'RIGHT', (p-1)*self.frame:GetWidth()+1, 0)
 				self.gcd.texture:Show()

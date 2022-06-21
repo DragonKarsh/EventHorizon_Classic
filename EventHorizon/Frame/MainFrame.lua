@@ -96,6 +96,11 @@ function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
 	return builder
 end
 
+function MainFrame:Disable()
+	self:DisableAllSpellFrames()
+	self:Hide()
+end
+
 function MainFrame:DisableAllSpellFrames()
 	while #self.enabledSpellFrames > 0 do
 		local spellFrame = tremove(self.enabledSpellFrames)
@@ -105,17 +110,35 @@ function MainFrame:DisableAllSpellFrames()
 end
 
 function MainFrame:LoadSpellFrames()
-	for _,spell in pairs(EventHorizon.database.profile.channels) do
+	for _,spell in pairs(EventHorizon.opt.channels) do
 		self:AddChanneledSpellFrame(spell.spellId, spell.ticks, spell.enabled, spell.order)
 	end
 
-	for _,spell in pairs(EventHorizon.database.profile.directs) do
+	for _,spell in pairs(EventHorizon.opt.directs) do
 		self:AddDirectSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 
-	for _,spell in pairs(EventHorizon.database.profile.dots) do
+	for _,spell in pairs(EventHorizon.opt.dots) do
 		self:AddDotSpellFrame(spell.spellId, spell.ticks, spell.enabled, spell.order)
 	end
+end
+
+function MainFrame:Lock()
+	self.handle:SetMovable(false)
+	self.handle:Hide()
+end
+
+function MainFrame:Unlock()
+	self.handle:SetMovable(true)
+	self.handle:Show()
+end
+
+function MainFrame:Show()
+	self.frame:Show()
+end
+
+function MainFrame:Hide()
+	self.frame:Hide()
 end
 
 function MainFrame:OrderEnabledSpellFrames()
@@ -149,13 +172,24 @@ function MainFrame:Refresh()
 	self:LoadSpellFrames()
 	self:OrderEnabledSpellFrames()
 	self:UpdateAllFrames()
+
+	if EventHorizon.opt.locked then
+		self:Lock()
+	else
+		self:Unlock()
+	end
+	if EventHorizon.opt.hidden then
+		self:Hide()
+	else
+		self:Show()
+	end
 end
 
 function MainFrame:UpdateAllFrames()
-	local past = EventHorizon.database.profile.past
-	local future = EventHorizon.database.profile.future
-	local height = EventHorizon.database.profile.height
-	local width = EventHorizon.database.profile.width
+	local past = EventHorizon.opt.past
+	local future = EventHorizon.opt.future
+	local height = EventHorizon.opt.height
+	local width = EventHorizon.opt.width
 
 	self.frame:SetSize(width, #self.enabledSpellFrames * height)
 

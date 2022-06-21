@@ -27,7 +27,7 @@ function GcdEventHandler:new(reference)
 end
 
 function GcdEventHandler:SPELL_UPDATE_COOLDOWN()	
-	local start, duration = GetSpellCooldown(EventHorizon.database.profile.gcdSpellId)
+	local start, duration = GetSpellCooldown(EventHorizon.opt.gcdSpellId)
 	if start and duration and duration>0 then
 		self.reference.gcdEnd = start+duration
 	else

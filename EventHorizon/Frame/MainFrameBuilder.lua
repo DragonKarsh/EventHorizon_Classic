@@ -27,11 +27,11 @@ function MainFrameBuilder:WithHandle()
 		if type(b)=='frame' then
 			b=b:GetName()
 		end
-		EventHorizon.database.profile.point = {a,b,c,d,e}
+		EventHorizon.opt.point = {a,b,c,d,e}
 	end)
 
-	if EventHorizon.database.profile.point then
-		self.handle:SetPoint(unpack(EventHorizon.database.profile.point))
+	if EventHorizon.opt.point then
+		self.handle:SetPoint(unpack(EventHorizon.opt.point))
 	end
 	
 	self.handle.texture = self.handle:CreateTexture(nil, "BORDER")
