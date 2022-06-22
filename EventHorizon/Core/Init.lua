@@ -2,7 +2,8 @@ EventHorizon = LibStub("AceAddon-3.0")
 :NewAddon("EventHorizon", "AceConsole-3.0")
 
 
-function EventHorizon:OnInitialize()	
+function EventHorizon:OnInitialize()
+	self:InitializeMedia()
 	self:InitializeDatabase()
 	self:InitializeOptions()
 	self:InitializeCommands()

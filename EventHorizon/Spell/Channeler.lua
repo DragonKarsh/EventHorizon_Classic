@@ -34,6 +34,9 @@ function Channeler:GenerateChannel(start, stop)
 end
 
 function Channeler:StartChannelingSpell(start, stop)
+	if self.currentChannel then
+		self:StopChannelingSpell(start)
+	end
 	self:GenerateChannel(start, stop)
 end
 

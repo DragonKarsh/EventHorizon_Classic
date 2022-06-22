@@ -10,4 +10,5 @@
     <Include file="Libs\AceConfig-3.0\AceConfig-3.0.xml"/>
     <Include file="Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua"/>
     <Include file="Libs\LibDBIcon-1.0\lib.xml"/>
+    <Include file="Libs\LibSharedMedia-3.0\lib.xml"/>
 </Ui>

@@ -17,8 +17,11 @@ function SpellFrameBuilder:new(framePool, spellId, enabled, order)
 	
 	self.frame = framePool:Acquire()
 	self.frame:SetSize(EventHorizon.opt.width, EventHorizon.opt.height)
-	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
-	self.frame:SetBackdropColor(1,1,1,.1)	
+	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
+	self.frame:SetBackdrop({bgFile=texture})
+	self.frame:SetBackdropColor(unpack(EventHorizon.opt.background))	
+
+
 end
 
 

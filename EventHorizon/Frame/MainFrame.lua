@@ -206,11 +206,15 @@ function MainFrame:UpdateAllFrames()
 	local width = EventHorizon.opt.width
 
 	self.frame:SetSize(width, #self.enabledSpellFrames * height)
+	
+	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
+
+	self.frame:SetBackdrop({edgeFile=texture, edgeSize=1})
+	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.border))	
 
 	if EventHorizon.opt.point then
 		self.handle:SetPoint(unpack(EventHorizon.opt.point))
 	end
-
 
 	if self.nowReference then
 		self.nowReference
@@ -224,11 +228,21 @@ function MainFrame:UpdateAllFrames()
 		:SetPoint('TOP',self.frame,'TOP', -past/(future-past)*width-0.5+height, 0)	
 	end
 
+
 	local relativeFrame = self.frame	
 	local relativePoint = "TOPLEFT"
 
 	for i=1,#self.enabledSpellFrames do
 		local spellFrame = self.enabledSpellFrames[i]
+
+		spellFrame
+		:GetFrame()
+		:SetBackdrop({bgFile=texture})			
+
+		spellFrame
+		:GetFrame()
+		:SetBackdropColor(unpack(EventHorizon.opt.background))
+
 
 		spellFrame
 		:GetFrame()

@@ -100,7 +100,35 @@ function EventHorizon:CreateGlobalOptions()
 						order = 2,
 						get = function(info) return EventHorizon.opt.height end,
 						set = function(info,val) EventHorizon:SetHeight(val) end
-					}					
+					},
+					texture = {
+						order = 3,
+						type = "select",
+						name = "Texture",
+						desc = "Set the background texture",
+						values = EventHorizon.media:HashTable("statusbar"),
+						dialogControl = "LSM30_Statusbar",
+						get = function(info) return EventHorizon.opt.texture end,
+						set = function(info,val)  EventHorizon.opt.texture = val EventHorizon:RefreshMainFrame() end
+					},
+					background = {
+						order = 4,
+						type = "color",
+						name = "Background",
+						desc = "Set the background color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.background) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					border = {
+						order = 5,
+						type = "color",
+						name = "Border",
+						desc = "Set the border color",
+						get = function(info) return unpack(EventHorizon.opt.border) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					}
+
 				}
 			},
 			timeLine = {
