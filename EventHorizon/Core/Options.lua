@@ -78,28 +78,23 @@ function EventHorizon:CreateGlobalOptions()
 				name = "Frame Settings",
 				type = "group",
 				inline = true,
-				args = {
-					width = {
-						name = "Width",
-						type = "range",
-						desc = "Width of a spell frame",
-						min = 1,
-						max = 500,
-						step = 1,
+				args = {					
+					background = {
 						order = 1,
-						get = function(info) return EventHorizon.opt.width end,
-						set = function(info,val) EventHorizon:SetWidth(val) end
-					},				
-					height = {
-						name = "Height",
-						type = "range",
-						desc = "Height of a spell frame",
-						min = 1,
-						max = 50,
-						step = 1,
+						type = "color",
+						name = "Background",
+						desc = "Set the background color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.background) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					border = {
 						order = 2,
-						get = function(info) return EventHorizon.opt.height end,
-						set = function(info,val) EventHorizon:SetHeight(val) end
+						type = "color",
+						name = "Border",
+						desc = "Set the border color",
+						get = function(info) return unpack(EventHorizon.opt.border) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					texture = {
 						order = 3,
@@ -111,23 +106,29 @@ function EventHorizon:CreateGlobalOptions()
 						get = function(info) return EventHorizon.opt.texture end,
 						set = function(info,val)  EventHorizon.opt.texture = val EventHorizon:RefreshMainFrame() end
 					},
-					background = {
+					width = {
+						name = "Width",
+						type = "range",
+						desc = "Width of a spell frame",
+						min = 1,
+						max = 500,
+						step = 1,
 						order = 4,
-						type = "color",
-						name = "Background",
-						desc = "Set the background color",
-						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.background) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
-					},
-					border = {
+						get = function(info) return EventHorizon.opt.width end,
+						set = function(info,val) EventHorizon:SetWidth(val) end
+					},				
+					height = {
+						name = "Height",
+						type = "range",
+						desc = "Height of a spell frame",
+						min = 1,
+						max = 50,
+						step = 1,
 						order = 5,
-						type = "color",
-						name = "Border",
-						desc = "Set the border color",
-						get = function(info) return unpack(EventHorizon.opt.border) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return EventHorizon.opt.height end,
+						set = function(info,val) EventHorizon:SetHeight(val) end
 					}
+					
 
 				}
 			},
