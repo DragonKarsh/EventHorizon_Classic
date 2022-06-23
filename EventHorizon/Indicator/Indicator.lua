@@ -67,3 +67,8 @@ end
 function Indicator:Stop(stop)
 	self.stop = stop
 end
+
+function Indicator:Cancel(stop)
+	self.original.stop = stop
+	self:Stop(stop)
+end
