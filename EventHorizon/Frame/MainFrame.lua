@@ -33,17 +33,14 @@ function MainFrame:AddSpellFrame(spellFrame)
 	end
 end
 
-function MainFrame:AddChanneledSpellFrame(spellId, ticks, enabled, order)
+function MainFrame:AddChanneledSpellFrame(spellId, enabled, order)
 	local spellFrame = self:RemoveSpellFrame(spellId)
 	
 	if not spellFrame then
 		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
-		:WithChannel(ticks)
+		:WithChannel()
 		:Build()
 	else
-		spellFrame
-		:GetChanneler()
-		:SetTicks(ticks)
 		spellFrame:Update(order, enabled)
 	end
 
@@ -63,17 +60,14 @@ function MainFrame:AddDirectSpellFrame(spellId, enabled, order)
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:AddDotSpellFrame(spellId, ticks, enabled, order)
+function MainFrame:AddDotSpellFrame(spellId, enabled, order)
 	local spellFrame = self:RemoveSpellFrame(spellId)
 
 	if not spellFrame then
 		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
-		:WithDebuff(ticks)
+		:WithDebuff()
 		:Build()
 	else
-		spellFrame
-		:GetDebuffer()
-		:SetTicks(ticks)
 		spellFrame:Update(order, enabled)
 	end
 
@@ -111,7 +105,7 @@ end
 
 function MainFrame:LoadSpellFrames()
 	for _,spell in pairs(EventHorizon.opt.channels) do
-		self:AddChanneledSpellFrame(spell.spellId, spell.ticks, spell.enabled, spell.order)
+		self:AddChanneledSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 
 	for _,spell in pairs(EventHorizon.opt.directs) do
@@ -119,7 +113,7 @@ function MainFrame:LoadSpellFrames()
 	end
 
 	for _,spell in pairs(EventHorizon.opt.dots) do
-		self:AddDotSpellFrame(spell.spellId, spell.ticks, spell.enabled, spell.order)
+		self:AddDotSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 end
 
@@ -141,6 +135,26 @@ function MainFrame:Hide()
 	self.frame:Hide()
 end
 
+function MainFrame:ToggleNowReference(toggle)
+	if self.nowReference then
+		if toggle then
+			self.nowReference.texture:Show()
+		else
+			self.nowReference.texture:Hide()
+		end
+	end
+end
+
+function MainFrame:ToggleGcdReference(toggle)
+	if self.gcdReference then
+		if toggle then
+			self.gcdReference.texture:Show()
+		else
+			self.gcdReference.texture:Hide()
+		end
+	end
+end
+
 function MainFrame:OrderEnabledSpellFrames()
 	table.sort(self.enabledSpellFrames, function(a,b) return a.order < b.order end)
 end
@@ -155,13 +169,13 @@ end
 
 function MainFrame:RemoveSpellFrame(spellId)
 	for i=#self.enabledSpellFrames,1,-1 do
-		if self.enabledSpellFrames[i].spell.spellName == GetSpellInfo(spellId) then
+		if self.enabledSpellFrames[i].spellName == GetSpellInfo(spellId) then
 			return tremove(self.enabledSpellFrames,i)
 		end
 	end
 
 	for i=#self.disabledSpellFrames,1,-1 do
-		if self.disabledSpellFrames[i].spell.spellName == GetSpellInfo(spellId) then
+		if self.disabledSpellFrames[i].spellName == GetSpellInfo(spellId) then
 			return tremove(self.disabledSpellFrames,i)
 		end
 	end
@@ -192,7 +206,15 @@ function MainFrame:UpdateAllFrames()
 	local width = EventHorizon.opt.width
 
 	self.frame:SetSize(width, #self.enabledSpellFrames * height)
+	
+	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
 
+	self.frame:SetBackdrop({edgeFile=texture, edgeSize=1})
+	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.border))	
+
+	if EventHorizon.opt.point then
+		self.handle:SetPoint(unpack(EventHorizon.opt.point))
+	end
 
 	if self.nowReference then
 		self.nowReference
@@ -206,11 +228,21 @@ function MainFrame:UpdateAllFrames()
 		:SetPoint('TOP',self.frame,'TOP', -past/(future-past)*width-0.5+height, 0)	
 	end
 
+
 	local relativeFrame = self.frame	
 	local relativePoint = "TOPLEFT"
 
 	for i=1,#self.enabledSpellFrames do
 		local spellFrame = self.enabledSpellFrames[i]
+
+		spellFrame
+		:GetFrame()
+		:SetBackdrop({bgFile=texture})			
+
+		spellFrame
+		:GetFrame()
+		:SetBackdropColor(unpack(EventHorizon.opt.background))
+
 
 		spellFrame
 		:GetFrame()

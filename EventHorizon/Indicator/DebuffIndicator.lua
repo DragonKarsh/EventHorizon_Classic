@@ -18,7 +18,6 @@ function DebuffIndicator:new(target, start, stop, numTicks)
 	self.style.texture = {1,1,1,0.7}
 	self.style.ready = {0.5,0.5,0.5,0.7}
 
-	self.debuffer = debuffer
 	self.ticks = {}
 	self.numTicks = numTicks
 
@@ -47,7 +46,8 @@ end
 
 function DebuffIndicator:Refresh(start, stop)
 	self:Stop(stop)
-	self:ApplyTicksAfter(start)
+	self:ApplyTicksAfter(start)	
+	self.original.stop = stop
 end	
 
 function DebuffIndicator:ApplyTicksAfter(time)

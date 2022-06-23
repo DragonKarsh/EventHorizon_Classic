@@ -17,23 +17,26 @@ function SpellFrameBuilder:new(framePool, spellId, enabled, order)
 	
 	self.frame = framePool:Acquire()
 	self.frame:SetSize(EventHorizon.opt.width, EventHorizon.opt.height)
-	self.frame:SetBackdrop{bgFile = [[Interface\Addons\EventHorizon\Smooth]]}
-	self.frame:SetBackdropColor(1,1,1,.1)	
+	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
+	self.frame:SetBackdrop({bgFile=texture})
+	self.frame:SetBackdropColor(unpack(EventHorizon.opt.background))	
+
+
 end
 
 
-function SpellFrameBuilder:WithDebuff(ticks)
-	self.debuffTicks = ticks
+function SpellFrameBuilder:WithDebuff()
+	self.debuff = true
 	return self
 end
 
 function SpellFrameBuilder:WithCast()
-	self.castTime = true
+	self.cast = true
 	return self
 end
 
-function SpellFrameBuilder:WithChannel(ticks)	
-	self.channelTicks = ticks
+function SpellFrameBuilder:WithChannel()	
+	self.channel = true
 	return self
 end
 
@@ -57,38 +60,43 @@ function SpellFrameBuilder:WithIcon()
 end
 
 function SpellFrameBuilder:Build()
-	if self.debuffTicks then
-		self.debuffer = Debuffer(self.spellId, self.frame, self.debuffTicks, self.castTime)
+	local spellComponents = {}
+	if self.debuff then
+		local debuffer = Debuffer(self.spellId, self.frame, self.cast)
 		:WithEventHandler()
 		:WithUpdateHandler()
+		tinsert(spellComponents, debuffer)
 	end
 
-	if self.castTime then
-		self.caster = Caster(self.spellId, self.frame)
+	if self.cast then
+		local caster = Caster(self.spellId, self.frame)
 		:WithEventHandler()
 		:WithUpdateHandler()
+		tinsert(spellComponents, caster)
 	end
 
-	if self.channelTicks then
-		self.channeler = Channeler(self.spellId, self.frame, self.channelTicks)
+	if self.channel then
+		local channeler = Channeler(self.spellId, self.frame)
 		:WithEventHandler()
 		:WithUpdateHandler()
+		tinsert(spellComponents, channeler)
 	end
 
 	if self.coolDown then
-		self.coolDowner = CoolDowner(self.spellId, self.frame)
+		local coolDowner = CoolDowner(self.spellId, self.frame)
 		:WithEventHandler()
 		:WithUpdateHandler()
+		tinsert(spellComponents, coolDowner)
 	end
 
 	if self.sender then
-		self.sender = Sender(self.spellId, self.frame)
+		local sender = Sender(self.spellId, self.frame)
 		:WithEventHandler()
 		:WithUpdateHandler()
+		tinsert(spellComponents, sender)
 	end
 
-	local spell = SpellBase(self.spellId, self.debuffer, self.caster, self.channeler, self.coolDowner, self.sender)
-	local spellFrame = SpellFrame(self.frame, spell, self.icon, self.order)
+	local spellFrame = SpellFrame(self.spellId, self.frame, spellComponents, self.icon, self.order)
 
 	if self.enabled then
 		spellFrame:Enable()

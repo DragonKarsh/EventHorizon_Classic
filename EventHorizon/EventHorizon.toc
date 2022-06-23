@@ -7,10 +7,11 @@
 ## SavedVariables: EventHorizonDatabase
 
 Embeds.xml
+Core\Core.xml
 Reference\Reference.xml
 EventHandling\EventHandling.xml
 UpdateHandling\UpdateHandling.xml
 Indicator\Indicator.xml
 Spell\Spell.xml
 Frame\Frame.xml
-Core\Core.xml
+

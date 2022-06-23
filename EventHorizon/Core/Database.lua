@@ -4,9 +4,14 @@ EventHorizon.defaults = {
 		future = 9,
 		height = 25,
 		width = 375,
-		gcdSpellId = 1243,
+		texture = "EventHorizon_Smooth",
+		border = {0,0,0,1},
+		background = {1,1,1,.1},
+		now=true,
+		gcd=true,
+		gcdSpell = 1243,
 		enabled = true,
-		hidden = false,
+		shown = true,
 		locked = false,
 		channels = {},
 		dots = {},
@@ -27,5 +32,6 @@ end
 
 function EventHorizon:OnProfileChanged()
 	self.opt = self.database.profile
+	self:InitializeAllOptions()
 	self:RefreshMainFrame()
 end

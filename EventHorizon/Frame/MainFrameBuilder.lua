@@ -10,7 +10,10 @@ setmetatable(MainFrameBuilder, {
 })
 
 function MainFrameBuilder:new()
-	self.frame = CreateFrame("Frame", "EventHorizon", UIParent, "BackdropTemplate")
+	self.frame = CreateFrame("Frame", "EventHorizon", UIParent, "BackdropTemplate")	
+	local texture = EventHorizon.media:Fetch("background", EventHorizon.opt.texture)
+	self.frame:SetBackdrop({edgeFile=texture, edgeSize=1})
+	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.border))	
 end
 
 function MainFrameBuilder:WithHandle()

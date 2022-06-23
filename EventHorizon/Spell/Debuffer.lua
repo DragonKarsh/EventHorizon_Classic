@@ -13,18 +13,13 @@ setmetatable(Debuffer, {
   end,
 })
 
-function Debuffer:new(spellId, frame, ticks, casted)
+function Debuffer:new(spellId, frame, casted)
 	SpellComponent.new(self, spellId, frame)
 	
-	self.ticks = ticks	
 	self.casted = casted
 	self.debuffs = {}
 	self.successes = {}
 
-end
-
-function Debuffer:SetTicks(ticks)
-	self.ticks = ticks
 end
 
 function Debuffer:WithEventHandler()
@@ -32,14 +27,14 @@ function Debuffer:WithEventHandler()
 	return self
 end
 
-function Debuffer:GenerateDebuff(target, start, stop)		
-
+function Debuffer:GenerateDebuff(target, start, stop)	
 	local debuff
+	local ticks = EventHorizon.opt.dots[self.spellName].ticks
 	if self.casted then		
-		debuff = CastedDebuffIndicator(target, start, stop, self.ticks, self.spellId)
+		debuff = CastedDebuffIndicator(target, start, stop, ticks, self.spellId)
 		tinsert(self.indicators, debuff.recast)
 	else
-		debuff = DebuffIndicator(target, start, stop, self.ticks)		
+		debuff = DebuffIndicator(target, start, stop, ticks)		
 	end
 
 	tinsert(self.indicators, debuff)
@@ -101,10 +96,9 @@ function Debuffer:ClearTarget(indicator)
 end
 
 function Debuffer:ApplyDebuff(target, start, stop)	
-	local lastSuccess = self.successes[target]
 	local refreshed, replaced, applied
-
 	local debuff = self.debuffs[target]
+	local lastSuccess = self.successes[target]
 
 	if debuff then
 		if lastSuccess then
@@ -132,5 +126,4 @@ end
 
 function Debuffer:RefreshDebuff(target, start, stop)
 	self.debuffs[target]:Refresh(start, stop)
-	self.debuffs[target].original.stop = stop
 end

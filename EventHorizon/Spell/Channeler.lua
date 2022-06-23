@@ -13,15 +13,10 @@ setmetatable(Channeler, {
   end,
 })
 
-function Channeler:new(spellId, frame, ticks)
+function Channeler:new(spellId, frame)
 	SpellComponent.new(self, spellId, frame)
 
-	self.ticks = ticks
 	self.currentChannel = nil
-end
-
-function Channeler:SetTicks(ticks)
-	self.ticks = ticks
 end
 
 function Channeler:WithEventHandler()
@@ -30,7 +25,8 @@ function Channeler:WithEventHandler()
 end
 
 function Channeler:GenerateChannel(start, stop)
-	self.currentChannel = ChannelingIndicator(start, stop, self.ticks)
+	local ticks =  EventHorizon.opt.channels[self.spellName].ticks
+	self.currentChannel = ChannelingIndicator(start, stop, ticks)
 	tinsert(self.indicators, self.currentChannel)
 	for k,v in pairs(self.currentChannel.ticks) do
 		tinsert(self.indicators, v)
@@ -38,6 +34,9 @@ function Channeler:GenerateChannel(start, stop)
 end
 
 function Channeler:StartChannelingSpell(start, stop)
+	if self.currentChannel then
+		self:StopChannelingSpell(start)
+	end
 	self:GenerateChannel(start, stop)
 end
 

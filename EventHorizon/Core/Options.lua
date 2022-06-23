@@ -8,13 +8,7 @@ EventHorizon.options = {
 }
 
 function EventHorizon:InitializeOptions()	
-	self:CreateGlobalOptions()
-	self:CreateChannelsOptions()
-	self:CreateDirectsOptions()
-	self:CreateDotsOptions()
-	self:CreateChanneledSpellsOptions()
-	self:CreateDirectSpellsOptions()
-	self:CreateDotSpellsOptions()
+	self:InitializeAllOptions()
 	
 	LibStub("AceConfig-3.0")
 	:RegisterOptionsTable("EventHorizon", self.options, {"eventhorizon", "eh", "evh"})
@@ -24,6 +18,16 @@ function EventHorizon:InitializeOptions()
 
 	self.optionsFrame = LibStub("AceConfigDialog-3.0")
 	:AddToBlizOptions("EventHorizon", "EventHorizon")
+end
+
+function EventHorizon:InitializeAllOptions()
+	self:CreateGlobalOptions()
+	self:CreateChannelsOptions()
+	self:CreateDirectsOptions()
+	self:CreateDotsOptions()
+	self:CreateChanneledSpellsOptions()
+	self:CreateDirectSpellsOptions()
+	self:CreateDotSpellsOptions()
 end
 
 function EventHorizon:CreateGlobalOptions()
@@ -42,7 +46,7 @@ function EventHorizon:CreateGlobalOptions()
 				args = {
 					enabled = {
 						order = 1,
-						name = "Enable EventHorizon",
+						name = "Enable",
 						desc = "[Enable/Disable] EventHorizon",
 						type = "toggle",
 						width = 1.0,
@@ -58,14 +62,14 @@ function EventHorizon:CreateGlobalOptions()
 						get = function(info) return EventHorizon.opt.locked end,
 						set = function(info, val) EventHorizon.opt.locked = val if val then EventHorizon.mainFrame:Lock() else EventHorizon.mainFrame:Unlock() end end
 					},
-					hidden = {
+					shown = {
 						order = 3,
-						name = "Hide",
-						desc = "Hide main frame",
+						name = "Show",
+						desc = "Show main frame",
 						type = "toggle",
 						width = 1.0,
-						get = function(info) return EventHorizon.opt.hidden end,
-						set = function(info, val) EventHorizon.opt.hidden = val if val then EventHorizon.mainFrame:Hide() else EventHorizon.mainFrame:Show() end end
+						get = function(info) return EventHorizon.opt.shown end,
+						set = function(info, val) EventHorizon.opt.shown = val if val then EventHorizon.mainFrame:Show() else EventHorizon.mainFrame:Hide() end end
 					}
 				}
 			},
@@ -74,7 +78,34 @@ function EventHorizon:CreateGlobalOptions()
 				name = "Frame Settings",
 				type = "group",
 				inline = true,
-				args = {
+				args = {					
+					background = {
+						order = 1,
+						type = "color",
+						name = "Background",
+						desc = "Set the background color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.background) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					border = {
+						order = 2,
+						type = "color",
+						name = "Border",
+						desc = "Set the border color",
+						get = function(info) return unpack(EventHorizon.opt.border) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					texture = {
+						order = 3,
+						type = "select",
+						name = "Texture",
+						desc = "Set the background texture",
+						values = EventHorizon.media:HashTable("statusbar"),
+						dialogControl = "LSM30_Statusbar",
+						get = function(info) return EventHorizon.opt.texture end,
+						set = function(info,val)  EventHorizon.opt.texture = val EventHorizon:RefreshMainFrame() end
+					},
 					width = {
 						name = "Width",
 						type = "range",
@@ -82,7 +113,7 @@ function EventHorizon:CreateGlobalOptions()
 						min = 1,
 						max = 500,
 						step = 1,
-						order = 1,
+						order = 4,
 						get = function(info) return EventHorizon.opt.width end,
 						set = function(info,val) EventHorizon:SetWidth(val) end
 					},				
@@ -91,12 +122,14 @@ function EventHorizon:CreateGlobalOptions()
 						type = "range",
 						desc = "Height of a spell frame",
 						min = 1,
-						max = 500,
+						max = 50,
 						step = 1,
-						order = 2,
+						order = 5,
 						get = function(info) return EventHorizon.opt.height end,
 						set = function(info,val) EventHorizon:SetHeight(val) end
 					}
+					
+
 				}
 			},
 			timeLine = {
@@ -128,10 +161,45 @@ function EventHorizon:CreateGlobalOptions()
 						set = function(info,val) EventHorizon:SetFuture(val) end
 					}
 				}
+			},
+			indicators = {
+				order = 4,
+				name = "Indicators",
+				type = "group",
+				inline = true,
+				args = {					
+					now = {
+						order = 1,
+						name = "Now Indicator",
+						desc = "Add now indicator to main frame",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.now end,
+						set = function(info, val) EventHorizon.opt.now = val EventHorizon.mainFrame:ToggleNowReference(val) end
+					},
+					gcd = {
+						order = 2,
+						name = "Gcd Indicator",
+						desc = "Add gcd indicator to main frame",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.gcd end,
+						set = function(info, val) EventHorizon.opt.gcd = val EventHorizon.mainFrame:ToggleGcdReference(val) end
+					},
+					gcdSpell = {
+						order = 3,
+						name = "Gcd spell",
+						type = "input",
+						desc = "Input spell name/id to track Gcd",
+						get = function(info) return EventHorizon.opt.gcdSpell end,
+						set = function(info,val) EventHorizon.opt.gcdSpell = val end
+					}
+				}
 			}
 		}
 	}
 end
+
 
 function EventHorizon:CreateChannelsOptions()
 	self.options.args.channels = {
@@ -331,6 +399,7 @@ function EventHorizon:CreateChanneledSpellsOptions()
 		channeledSpells[k] = {
 			order = count,
 			name = k,
+			icon = select(3,GetSpellInfo(k)),
 			type = "group",
 			width = "half",
 			args = {
@@ -392,6 +461,7 @@ function EventHorizon:CreateDirectSpellsOptions()
 		directSpells[k] = {
 			order = count,
 			name = k,
+			icon = select(3,GetSpellInfo(k)),
 			type = "group",
 			width = "half",
 			args = {
@@ -442,6 +512,7 @@ function EventHorizon:CreateDotSpellsOptions()
 		dotSpells[k] = {
 			order = count,
 			name = k,
+			icon = select(3,GetSpellInfo(k)),
 			type = "group",
 			width = "half",
 			args = {
