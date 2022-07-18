@@ -1,6 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
   <Script file='SpellComponent.lua'/>
-	<Script file='SpellBase.lua'/>
 	<Script file='Caster.lua'/>
 	<Script file='Channeler.lua'/>
   <Script file='CoolDowner.lua'/>

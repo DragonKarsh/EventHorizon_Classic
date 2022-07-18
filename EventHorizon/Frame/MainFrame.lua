@@ -78,13 +78,11 @@ function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
 	local builder = SpellFrameBuilder(self.spellFramePool, spellId, enabled, order)
 	:WithIcon()
 	:WithSender()
+	:WithCoolDown()
 
-	if select(4, GetSpellInfo(spellId)) then
+	local castTime = select(4, GetSpellInfo(spellId))
+	if  castTime > 0 then
 		builder:WithCast()
-	end
-
-	if GetSpellBaseCooldown(spellId) then
-		builder:WithCoolDown()
 	end
 
 	return builder

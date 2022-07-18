@@ -90,13 +90,13 @@ function SpellComponentUpdateHandler:AttachTexture(indicator)
 		texture = self:GetTexture()
 		texture.indicator = indicator
 		tinsert(self.textures, texture)
-		
-		texture:SetColorTexture(unpack(indicator.style.texture))
-		local a,c,d,e = unpack(indicator.style.point1)
-		texture:SetPoint(a,self.uiFrame,c,d,e)
-		local a,c,d,e = unpack(indicator.style.point2)
-		texture:SetPoint(a,self.uiFrame,c,d,e)
 	end
+
+	texture:SetColorTexture(unpack(indicator.style.texture))
+	local a,c,d,e = unpack(indicator.style.point1)
+	texture:SetPoint(a,self.uiFrame,c,d,e)
+	local a,c,d,e = unpack(indicator.style.point2)
+	texture:SetPoint(a,self.uiFrame,c,d,e)
 
 	if indicator:IsReady() then
 		texture:SetColorTexture(unpack(indicator.style.ready))

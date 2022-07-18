@@ -24,6 +24,14 @@ function CastedDebuffIndicator:new(target, start, stop, numTicks, spellId)
 
 end
 
+function CastedDebuffIndicator:Cancel(stop)	
+	self.style.texture = {1,1,1,0.7}
+	self.style.point1 = {'TOP', 'TOP', 0, -3}
+	self.style.point2 = {'BOTTOM', 'BOTTOM'}
+	DebuffIndicator.Cancel(self,stop)
+	self.recast:Dispose()
+end
+
 function CastedDebuffIndicator:Stop(stop)
 	DebuffIndicator.Stop(self,stop)
 	self.recast:Stop(stop)

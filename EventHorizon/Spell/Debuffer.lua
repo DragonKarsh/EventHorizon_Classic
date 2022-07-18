@@ -89,7 +89,7 @@ function Debuffer:RemoveDebuff(target)
 	self.debuffs[target] = nil
 end
 
-function Debuffer:ClearTarget(indicator)
+function Debuffer:ClearIndicator(indicator)
 	if indicator.target and self.debuffs[indicator.target] and self.debuffs[indicator.target].id == indicator.id then
 		self:RemoveDebuff(indicator.target)
 	end
@@ -120,7 +120,7 @@ function Debuffer:ApplyDebuff(target, start, stop)
 end
 
 function Debuffer:ReplaceDebuff(target, start, stop)
-	self.debuffs[target]:Stop(start-0.2)
+	self.debuffs[target]:Cancel(start-0.2)
 	self:GenerateDebuff(target, start, stop)
 end
 
