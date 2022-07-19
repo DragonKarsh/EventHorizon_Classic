@@ -52,8 +52,8 @@ end
 
 function DebuffIndicator:ApplyTicksAfter(time)
 	local duration = self.stop - time
-	local interval = duration / self.numticks
-	for i=1,self.numticks do
+	local interval = duration / self.numTicks
+	for i=1,self.numTicks do
 		local tick = TickIndicator(self.target, time + i*interval)
 		tinsert(self.ticks, tick)		
 	end
