@@ -34,6 +34,7 @@ function MainFrameBuilder:WithHandle()
 	end)
 
 	if EventHorizon.opt.point then
+		self.handle:ClearAllPoints()
 		self.handle:SetPoint(unpack(EventHorizon.opt.point))
 	end
 	

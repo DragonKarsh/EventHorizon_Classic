@@ -126,4 +126,7 @@ end
 
 function Debuffer:RefreshDebuff(target, start, stop)
 	self.debuffs[target]:Refresh(start, stop)
+	for _,v in pairs(self.debuffs[target].ticks) do
+		tinsert(self.indicators, v)
+	end
 end
