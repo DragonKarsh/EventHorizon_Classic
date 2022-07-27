@@ -45,17 +45,22 @@ function DebuffIndicator:Stop(stop)
 end
 
 function DebuffIndicator:Refresh(start, stop)
-	self:Stop(stop)
-	self:ApplyTicksAfter(start)	
-	self.original.stop = stop
+	local lastTick = self.ticks[#self.ticks]
+	self:ApplyTicksAfter(start, stop, lastTick.start)	
+	lastTick = self.ticks[#self.ticks]
+	self:Stop(lastTick.start)
+	self.original.stop = lastTick.start
 end	
 
-function DebuffIndicator:ApplyTicksAfter(time)
-	local duration = self.stop - time
+function DebuffIndicator:ApplyTicksAfter(start, stop, lastTick)
+	local duration = stop - start
 	local interval = duration / self.numTicks
 	for i=1,self.numTicks do
-		local tick = TickIndicator(self.target, time + i*interval)
-		tinsert(self.ticks, tick)		
+		local tickTime = lastTick + i*interval
+		if tickTime <= stop then
+			local tick = TickIndicator(self.target, tickTime)
+			tinsert(self.ticks, tick)
+		end
 	end
 end
 
