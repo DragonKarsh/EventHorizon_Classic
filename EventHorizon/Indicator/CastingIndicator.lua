@@ -16,7 +16,7 @@ setmetatable(CastingIndicator, {
 function CastingIndicator:new(start, stop)
 	Indicator.new(self, nil, start, stop)	
 
-	self.style.texture = {0,1,0,0.9}
+	self.style.texture = EventHorizon.opt.casting
 end
 
 function CastingIndicator:IsVisible()

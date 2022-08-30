@@ -19,6 +19,9 @@ function MainFrame:new(frame, handle, nowReference, gcdReference)
 	self.disabledSpellFrames = {}
 
 	self.spellFramePool = CreateFramePool("Frame",self.frame, "BackdropTemplate")
+
+	self.inCombat = InCombatEventHandler(self.frame)
+	self.inCombat:Enable()
 end
 
 function MainFrame:GetFrame()
@@ -133,6 +136,23 @@ function MainFrame:Hide()
 	self.frame:Hide()
 end
 
+function MainFrame:ShowOrHide(combat)
+	if EventHorizon.opt.shown then
+		if EventHorizon.opt.combat then
+			if combat then
+				self:Show()
+			else
+				self:Hide()
+			end
+		else
+			self:Show()
+		end
+	else
+		self:Hide()
+	end
+
+end
+
 function MainFrame:ToggleNowReference(toggle)
 	if self.nowReference then
 		if toggle then
@@ -218,12 +238,20 @@ function MainFrame:UpdateAllFrames()
 		self.nowReference
 		:GetTexture()
 		:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -past/(future-past)*width, 0)	
+
+		self.nowReference
+		:GetTexture()
+		:SetColorTexture(unpack(EventHorizon.opt.nowColor))	
 	end
 
 	if self.gcdReference then
 		self.gcdReference
 		:GetTexture()
 		:SetPoint('TOP',self.frame,'TOP', -past/(future-past)*width-0.5+height, 0)	
+
+		self.gcdReference
+		:GetTexture()
+		:SetColorTexture(unpack(EventHorizon.opt.gcdColor))	
 	end
 
 

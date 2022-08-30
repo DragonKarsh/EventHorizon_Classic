@@ -16,7 +16,7 @@ setmetatable(TickIndicator, {
 function TickIndicator:new(target, start)
 	Indicator.new(self, target, start, start)	
 	
-	self.style.texture = {1,1,1,1}
+	self.style.texture = EventHorizon.opt.tick
 	self.style.point1 = {'TOP', 'TOP'}
 	self.style.point2 = {'BOTTOM', 'TOP', 0, -5}
 

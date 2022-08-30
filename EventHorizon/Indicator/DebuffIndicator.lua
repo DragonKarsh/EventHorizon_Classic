@@ -15,8 +15,8 @@ setmetatable(DebuffIndicator, {
 
 function DebuffIndicator:new(target, start, stop, numTicks)
 	Indicator.new(self, target, start, stop)	
-	self.style.texture = {1,1,1,0.7}
-	self.style.ready = {0.5,0.5,0.5,0.7}
+	self.style.texture = EventHorizon.opt.debuff
+	self.style.ready = EventHorizon.opt.ready
 
 	self.ticks = {}
 	self.numTicks = numTicks

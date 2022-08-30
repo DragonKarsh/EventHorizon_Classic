@@ -69,35 +69,27 @@ function EventHorizon:CreateGlobalOptions()
 						type = "toggle",
 						width = 1.0,
 						get = function(info) return EventHorizon.opt.shown end,
-						set = function(info, val) EventHorizon.opt.shown = val if val then EventHorizon.mainFrame:Show() else EventHorizon.mainFrame:Hide() end end
+						set = function(info, val) EventHorizon.opt.shown = val EventHorizon.mainFrame:ShowOrHide(false) end
+					},
+					combat = {
+						order = 4,
+						name = "In Combat Only",
+						desc = "Show main frame when in combat",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.combat end,
+						set = function(info, val) EventHorizon.opt.combat = val EventHorizon.mainFrame:ShowOrHide(false) end
 					}
 				}
 			},
 			frame = {
 				order = 2,
-				name = "Frame Settings",
+				name = "Color Settings",
 				type = "group",
 				inline = true,
-				args = {					
-					background = {
-						order = 1,
-						type = "color",
-						name = "Background",
-						desc = "Set the background color",
-						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.background) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
-					},
-					border = {
-						order = 2,
-						type = "color",
-						name = "Border",
-						desc = "Set the border color",
-						get = function(info) return unpack(EventHorizon.opt.border) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
-					},
+				args = {		
 					texture = {
-						order = 3,
+						order = 1,
 						type = "select",
 						name = "Texture",
 						desc = "Set the background texture",
@@ -106,6 +98,103 @@ function EventHorizon:CreateGlobalOptions()
 						get = function(info) return EventHorizon.opt.texture end,
 						set = function(info,val)  EventHorizon.opt.texture = val EventHorizon:RefreshMainFrame() end
 					},
+					background = {
+						order = 2,
+						type = "color",
+						name = "Background",
+						desc = "Set the background color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.background) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					border = {
+						order = 3,
+						type = "color",
+						name = "Border",
+						desc = "Set the border color",
+						get = function(info) return unpack(EventHorizon.opt.border) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},					
+					casting = {
+						order = 4,
+						type = "color",
+						name = "Casting/Channeling",
+						desc = "Set the casting/channeling color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.casting) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.casting = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					debuff = {
+						order = 5,
+						type = "color",
+						name = "Debuff",
+						desc = "Set the debuff color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.debuff) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.debuff = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					coolDown = {
+						order = 6,
+						type = "color",
+						name = "Cooldown",
+						desc = "Set the cooldown color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.coolDown) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.coolDown = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					ready = {
+						order = 7,
+						type = "color",
+						name = "Ready",
+						desc = "Set the ready color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.ready) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.ready = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					tick = {
+						order = 8,
+						type = "color",
+						name = "Tick",
+						desc = "Set the tick color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.tick) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.tick = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					sent = {
+						order = 9,
+						type = "color",
+						name = "Sent",
+						desc = "Set the sent color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.sent) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.sent = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					nowColor = {
+						order = 10,
+						type = "color",
+						name = "Now",
+						desc = "Set the now indicator color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.nowColor) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.nowColor = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					gcdColor = {
+						order = 11,
+						type = "color",
+						name = "Gcd",
+						desc = "Set the gcd indicator color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.gcdColor) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.gcdColor = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					}
+				}
+			},
+			size = {
+				order = 3,
+				name = "Size Settings",
+				type = "group",
+				inline = true,
+				args = {
 					width = {
 						name = "Width",
 						type = "range",
@@ -113,7 +202,7 @@ function EventHorizon:CreateGlobalOptions()
 						min = 1,
 						max = 500,
 						step = 1,
-						order = 4,
+						order = 1,
 						get = function(info) return EventHorizon.opt.width end,
 						set = function(info,val) EventHorizon:SetWidth(val) end
 					},				
@@ -124,16 +213,14 @@ function EventHorizon:CreateGlobalOptions()
 						min = 1,
 						max = 50,
 						step = 1,
-						order = 5,
+						order = 2,
 						get = function(info) return EventHorizon.opt.height end,
 						set = function(info,val) EventHorizon:SetHeight(val) end
 					}
-					
-
-				}
+				}			
 			},
 			timeLine = {
-				order = 3,
+				order = 4,
 				name = "Timeline Settings",
 				type = "group",
 				inline = true,
