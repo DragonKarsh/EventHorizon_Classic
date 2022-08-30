@@ -40,7 +40,7 @@ function DebuffEventHandler:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function DebuffEventHandler:PLAYER_TARGET_CHANGED()
-	self:UNIT_AURA('target')	
+	self:UNIT_AURA(nil,'target')	
 end
 
 function DebuffEventHandler:UNIT_AURA(event, unitId)

@@ -17,7 +17,7 @@ function GcdReference:new(frame)
 	Reference.new(self, frame)
 
 	self.gcdEnd = nil
-	self.texture:SetColorTexture(1,1,1,0.5)	
+	self.texture:SetColorTexture(unpack(EventHorizon.opt.gcdColor))	
 	self.texture:Hide()
 end
 

@@ -15,4 +15,6 @@ setmetatable(SentIndicator, {
 
 function SentIndicator:new(start)
 	Indicator.new(self, nil, start, start)
+
+	self.style.texture = EventHorizon.opt.sent
 end

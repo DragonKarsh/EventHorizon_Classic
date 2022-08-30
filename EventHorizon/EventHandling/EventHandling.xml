@@ -6,4 +6,5 @@
   <Script file='CoolDownEventHandler.lua'/>
   <Script file='GcdEventHandler.lua'/>
   <Script file='SendEventHandler.lua'/>
+  <Script file='InCombatEventHandler.lua'/>
 </Ui>

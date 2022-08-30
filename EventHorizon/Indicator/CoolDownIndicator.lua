@@ -16,8 +16,8 @@ setmetatable(CoolDownIndicator, {
 function CoolDownIndicator:new(start, stop)
 	Indicator.new(self, nil, start, stop)	
 
-	self.style.texture = {0.9,0.9,0.9,0.7}
-	self.style.ready = {0.5,0.5,0.5,0.7}
+	self.style.texture = EventHorizon.opt.coolDown
+	self.style.ready = EventHorizon.opt.ready
 
 end
 
