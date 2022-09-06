@@ -34,7 +34,7 @@ function DebuffEventHandler:COMBAT_LOG_EVENT_UNFILTERED()
 
 	if self.debuffer:NotInterestingByGuid(srcGuid, spellId) then return end
 
-	if event == 'SPELL_CAST_SUCCESS' then
+	if event == 'SPELL_CAST_SUCCESS' or event == 'SPELL_AURA_APPLIED' then
 		self.debuffer:CaptureDebuff(dstGuid, now)
 	end
 end
