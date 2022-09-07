@@ -29,12 +29,11 @@ end
 
 function Debuffer:GenerateDebuff(target, start, stop)	
 	local debuff
-	local ticks = EventHorizon.opt.dots[self.spellName].ticks
 	if self.casted then		
-		debuff = CastedDebuffIndicator(target, start, stop, ticks, self.spellId)
+		debuff = CastedDebuffIndicator(target, start, stop, self.spellId)
 		tinsert(self.indicators, debuff.recast)
 	else
-		debuff = DebuffIndicator(target, start, stop, ticks)		
+		debuff = DebuffIndicator(target, start, stop, self.spellId)		
 	end
 
 	tinsert(self.indicators, debuff)

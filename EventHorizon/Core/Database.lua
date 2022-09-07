@@ -23,7 +23,7 @@ EventHorizon.defaults = {
 		locked = false,
 		combat = false,
 		channels = {},
-		dots = {},
+		debuffs = {},
 		directs = {}
 	}
 }

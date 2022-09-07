@@ -63,7 +63,7 @@ function MainFrame:AddDirectSpellFrame(spellId, enabled, order)
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:AddDotSpellFrame(spellId, enabled, order)
+function MainFrame:AddDebuffSpellFrame(spellId, enabled, order)
 	local spellFrame = self:RemoveSpellFrame(spellId)
 
 	if not spellFrame then
@@ -113,8 +113,8 @@ function MainFrame:LoadSpellFrames()
 		self:AddDirectSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 
-	for _,spell in pairs(EventHorizon.opt.dots) do
-		self:AddDotSpellFrame(spell.spellId, spell.enabled, spell.order)
+	for _,spell in pairs(EventHorizon.opt.debuffs) do
+		self:AddDebuffSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 end
 

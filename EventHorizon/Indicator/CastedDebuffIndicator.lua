@@ -13,8 +13,8 @@ setmetatable(CastedDebuffIndicator, {
   end,
 })
 
-function CastedDebuffIndicator:new(target, start, stop, numTicks, spellId)
-	DebuffIndicator.new(self, target, start, stop, numTicks)
+function CastedDebuffIndicator:new(target, start, stop, spellId)
+	DebuffIndicator.new(self, target, start, stop, spellId)
 	
 	self.style.point1 = {'TOP', 'TOP', 0, -3}
 	self.style.point2 = {'BOTTOM', 'TOP', -3, -6}
