@@ -18,19 +18,17 @@ function DebuffIndicator:new(target, start, stop, spellId)
 	self.style.texture = EventHorizon.opt.debuff
 	self.style.ready = EventHorizon.opt.ready
 
-	
 	self.spellId = spellId
 	self.spellName = GetSpellInfo(spellId)
 	
 	self.ticks = {}
 
-
 	if EventHorizon.opt.debuffs[self.spellName].dot then		
 		self.numTicks = EventHorizon.opt.debuffs[self.spellName].ticks
 		local duration = stop - start
-		local interval = duration / self.numTicks
+		self.snapInterval = duration / self.numTicks
 		for i=1,self.numTicks do
-			local tick = TickIndicator(target, start + i*interval)
+			local tick = TickIndicator(target, start + i*self.snapInterval)
 			tinsert(self.ticks, tick)
 		end
 	end
@@ -71,10 +69,8 @@ function DebuffIndicator:Refresh(start, stop)
 end	
 
 function DebuffIndicator:ApplyTicksAfter(start, stop, lastTick)
-	local duration = stop - start
-	local interval = duration / self.numTicks
 	for i=1,self.numTicks do
-		local tickTime = lastTick + i*interval
+		local tickTime = lastTick + i*self.snapInterval
 		if tickTime <= stop then
 			local tick = TickIndicator(self.target, tickTime)
 			tinsert(self.ticks, tick)
