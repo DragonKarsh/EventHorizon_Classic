@@ -13,19 +13,26 @@ setmetatable(DebuffIndicator, {
   end,
 })
 
-function DebuffIndicator:new(target, start, stop, numTicks)
+function DebuffIndicator:new(target, start, stop, spellId)
 	Indicator.new(self, target, start, stop)	
 	self.style.texture = EventHorizon.opt.debuff
 	self.style.ready = EventHorizon.opt.ready
 
+	
+	self.spellId = spellId
+	self.spellName = GetSpellInfo(spellId)
+	
 	self.ticks = {}
-	self.numTicks = numTicks
 
-	local duration = stop - start
-	local interval = duration / numTicks
-	for i=1,numTicks do
-		local tick = TickIndicator(target, start + i*interval)
-		tinsert(self.ticks, tick)
+
+	if EventHorizon.opt.debuffs[self.spellName].dot then		
+		self.numTicks = EventHorizon.opt.debuffs[self.spellName].ticks
+		local duration = stop - start
+		local interval = duration / self.numTicks
+		for i=1,self.numTicks do
+			local tick = TickIndicator(target, start + i*interval)
+			tinsert(self.ticks, tick)
+		end
 	end
 end
 
@@ -41,15 +48,26 @@ end
 
 function DebuffIndicator:Stop(stop)
 	Indicator.Stop(self,stop)
-	self:RemoveTicksAfter(stop)
+
+	if self.numTicks then
+		self:RemoveTicksAfter(stop)
+	end
 end
 
 function DebuffIndicator:Refresh(start, stop)
-	local lastTick = self.ticks[#self.ticks]
-	self:ApplyTicksAfter(start, stop, lastTick.start)	
-	lastTick = self.ticks[#self.ticks]
-	self:Stop(lastTick.start)
-	self.original.stop = lastTick.start
+	if self.numTicks then
+		local lastTick = self.ticks[#self.ticks]
+		self:ApplyTicksAfter(start, stop, lastTick.start)			
+	end
+
+	if EventHorizon.opt.debuffs[self.spellName].lastTick then
+		local lastTick = self.ticks[#self.ticks]
+		self:Stop(lastTick.start)
+		self.original.stop = lastTick.start
+	else
+		self:Stop(stop)
+		self.original.stop = stop
+	end
 end	
 
 function DebuffIndicator:ApplyTicksAfter(start, stop, lastTick)

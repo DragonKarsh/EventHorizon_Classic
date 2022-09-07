@@ -24,10 +24,10 @@ function EventHorizon:InitializeAllOptions()
 	self:CreateGlobalOptions()
 	self:CreateChannelsOptions()
 	self:CreateDirectsOptions()
-	self:CreateDotsOptions()
+	self:CreateDebuffsOptions()
 	self:CreateChanneledSpellsOptions()
 	self:CreateDirectSpellsOptions()
-	self:CreateDotSpellsOptions()
+	self:CreateDebuffSpellsOptions()
 end
 
 function EventHorizon:CreateGlobalOptions()
@@ -370,18 +370,18 @@ function EventHorizon:CreateDirectsOptions()
 	}
 end
 
-function EventHorizon:CreateDotsOptions()
-	self.options.args.dots = {
+function EventHorizon:CreateDebuffsOptions()
+	self.options.args.debuffs = {
 		order=4,
-		name = "Dots",
-		desc = "Edit damage over time spells",
+		name = "Debuffs",
+		desc = "Edit debuff spells",
 		type = "group",
 		cmdHidden = true,
 		args = {
-			createDot = {
+			createDebuff = {
 				order = 1,
 				name = "Create new spell",
-				desc = "Create a new damage over time spell",
+				desc = "Create a new debuff spell",
 				type = "group",
 				inline = true,
 				args = {
@@ -389,22 +389,22 @@ function EventHorizon:CreateDotsOptions()
 						name = "Create",
 						type = "execute",
 						order = 1,
-						func = function() EventHorizon:CreateNewDotSpell() end
+						func = function() EventHorizon:CreateNewDebuffSpell() end
 					},
 					input = {
 						name = "Spell name/id",
 						type = "input",
-						desc = "Enter spellname or spellId of the damage over time spell to create",
+						desc = "Enter spellname or spellId of the debuff spell to create",
 						order = 2,
-						get = function(info) return EventHorizon.newDotSpell end,
-						set = function(info,val) EventHorizon.newDotSpell = val end
+						get = function(info) return EventHorizon.newDebuffSpell end,
+						set = function(info,val) EventHorizon.newDebuffSpell = val end
 					}
 				}
 			},
 			existing = {
 				order = 2,
-				name = "Existing damage over time spells",
-				desc = "Already created channels",
+				name = "Existing debuff spells",
+				desc = "Already created debuffs",
 				type = "group"
 			}
 		}
@@ -438,10 +438,10 @@ function EventHorizon:RemoveDirectSpell(spellName)
 	self.mainFrame:ReleaseSpellFrame(spellId)
 end
 
-function EventHorizon:RemoveDotSpell(spellName)
-	local spellId = self.opt.dots[spellName].spellId
-	self.opt.dots[spellName] = nil
-	self:CreateDotSpellsOptions()
+function EventHorizon:RemoveDebuffSpell(spellName)
+	local spellId = self.opt.debuffs[spellName].spellId
+	self.opt.debuffs[spellName] = nil
+	self:CreateDebuffSpellsOptions()
 	self.mainFrame:ReleaseSpellFrame(spellId)
 end
 
@@ -458,16 +458,16 @@ function EventHorizon:CreateNewDirectSpell()
 	self:RefreshMainFrame()
 end
 
-function EventHorizon:CreateNewDotSpell()
-	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDotSpell)
+function EventHorizon:CreateNewDebuffSpell()
+	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDebuffSpell)
 		
-	if spellName and not self.opt.dots[spellName] then
-		local dot = {spellId=spellId, ticks=1, enabled=true, order=1}
-		self.opt.dots[spellName] = dot
+	if spellName and not self.opt.debuffs[spellName] then
+		local debuff = {spellId=spellId, dot=false,ticks=0, lastTick=false, enabled=true, order=1}
+		self.opt.debuffs[spellName] = debuff
 	end	
 
-	self.newDotSpell = nil
-	self:CreateDotSpellsOptions()
+	self.newDebuffSpell = nil
+	self:CreateDebuffSpellsOptions()
 	self:RefreshMainFrame()
 end
 
@@ -585,18 +585,18 @@ function EventHorizon:CreateDirectSpellsOptions()
 	EventHorizon.options.args.directs.args.existing.args = directSpells
 end
 
-function EventHorizon:CreateDotSpellsOptions()
-	local dotSpells = {}
+function EventHorizon:CreateDebuffSpellsOptions()
+	local debuffSpells = {}
 	local count = 0
 
 	local sorted = {}
-	for k,v in pairs(self.opt.dots) do
+	for k,v in pairs(self.opt.debuffs) do
 		tinsert(sorted, k)
 	end
 
 	for i,k in ipairs(sorted) do
 		count = count + 1
-		dotSpells[k] = {
+		debuffSpells[k] = {
 			order = count,
 			name = k,
 			icon = select(3,GetSpellInfo(k)),
@@ -607,43 +607,61 @@ function EventHorizon:CreateDotSpellsOptions()
 					order = 1,
 					name = "Enabled",
 					type = "toggle",
-					get = function(info) return EventHorizon.opt.dots[k].enabled end,
-					set = function(info, val) EventHorizon.opt.dots[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
+					get = function(info) return EventHorizon.opt.debuffs[k].enabled end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
 					width = "full"
-				},				
-				order = {
+				},		
+				dot = {
 					order = 2,
+					name = "Dot",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.debuffs[k].dot end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].dot = val self:CreateDebuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
+					width="full"
+				},
+				order = {
+					order = 3,
 					name = "Order",
 					type = "range",
 					desc = "Sort order on frame",
 					min = 1,
 					max = 10,
 					step = 1,
-					get = function(info) return EventHorizon.opt.dots[k].order end,
-					set = function(info, val) EventHorizon.opt.dots[k].order = val EventHorizon:RefreshMainFrame(k) end,
+					get = function(info) return EventHorizon.opt.debuffs[k].order end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].order = val EventHorizon:RefreshMainFrame(k) end,
 				},
 				ticks = {
-					order = 3,
+					order = 4,
 					name = "Ticks",
 					type = "range",
 					min = 1,
 					max = 15,
 					step = 1,
-					get = function(info) return EventHorizon.opt.dots[k].ticks end,
-					set = function(info, val) EventHorizon.opt.dots[k].ticks = val EventHorizon:RefreshMainFrame(k) end
+					hidden =  not EventHorizon.opt.debuffs[k].dot,
+					get = function(info) return EventHorizon.opt.debuffs[k].ticks end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].ticks = val  EventHorizon:RefreshMainFrame(k) end
+				},
+				lastTick = {
+					order = 5,
+					name = "Last Tick",
+					desc = "End debuff on last detected tick",
+					type = "toggle",
+					hidden =  not EventHorizon.opt.debuffs[k].dot,
+					get = function(info) return EventHorizon.opt.debuffs[k].lastTick end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				remove = {
-					order = 4,
+					order = 6,
 					name = "Remove",
 					type = "execute",
-					func = function() EventHorizon:RemoveDotSpell(k) end,				
+					func = function() EventHorizon:RemoveDebuffSpell(k) end,				
 					width = "full"
 				},
 			}
 		}
 	end
 
-	EventHorizon.options.args.dots.args.existing.args = dotSpells
+	EventHorizon.options.args.debuffs.args.existing.args = debuffSpells
 end
 
 function EventHorizon:SetHeight(height)
