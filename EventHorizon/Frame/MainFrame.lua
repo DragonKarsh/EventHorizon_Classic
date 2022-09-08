@@ -50,7 +50,7 @@ function MainFrame:AddChanneledSpellFrame(spellId, enabled, order)
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:AddDirectSpellFrame(spellId, enabled, order)
+function MainFrame:AddCastedSpellFrame(spellId, enabled, order)
 	local spellFrame = self:RemoveSpellFrame(spellId)
 
 	if not spellFrame then
@@ -69,6 +69,20 @@ function MainFrame:AddDebuffSpellFrame(spellId, enabled, order)
 	if not spellFrame then
 		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
 		:WithDebuff()
+		:Build()
+	else
+		spellFrame:Update(order, enabled)
+	end
+
+	self:AddSpellFrame(spellFrame)
+end
+
+function MainFrame:AddBuffSpellFrame(spellId, enabled, order)
+	local spellFrame = self:RemoveSpellFrame(spellId)
+
+	if not spellFrame then
+		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
+		:WithBuff()
 		:Build()
 	else
 		spellFrame:Update(order, enabled)
@@ -109,12 +123,16 @@ function MainFrame:LoadSpellFrames()
 		self:AddChanneledSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 
-	for _,spell in pairs(EventHorizon.opt.directs) do
-		self:AddDirectSpellFrame(spell.spellId, spell.enabled, spell.order)
+	for _,spell in pairs(EventHorizon.opt.casts) do
+		self:AddCastedSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 
 	for _,spell in pairs(EventHorizon.opt.debuffs) do
 		self:AddDebuffSpellFrame(spell.spellId, spell.enabled, spell.order)
+	end
+
+	for _,spell in pairs(EventHorizon.opt.buffs) do
+		self:AddBuffSpellFrame(spell.spellId, spell.enabled, spell.order)
 	end
 end
 

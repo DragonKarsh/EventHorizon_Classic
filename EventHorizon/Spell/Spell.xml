@@ -3,6 +3,7 @@
 	<Script file='Caster.lua'/>
 	<Script file='Channeler.lua'/>
   <Script file='CoolDowner.lua'/>
+  <Script file='Buffer.lua'/>
   <Script file='Debuffer.lua'/>
   <Script file='Sender.lua'/>
 </Ui>

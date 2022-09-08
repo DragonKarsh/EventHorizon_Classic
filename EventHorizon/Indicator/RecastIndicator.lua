@@ -13,10 +13,10 @@ setmetatable(RecastIndicator, {
   end,
 })
 
-function RecastIndicator:new(target, start, stop, spellId)
+function RecastIndicator:new(target, start, stop, spellId, texture)
 	Indicator.new(self, target, start, stop)	
 
-	self.style.texture = EventHorizon.opt.debuff
+	self.style.texture = texture
 	self.style.ready = EventHorizon.opt.ready
 	self.style.point1 = {'TOP', 'TOP', 0, -6}
 

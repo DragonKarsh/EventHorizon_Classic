@@ -13,10 +13,9 @@ setmetatable(Debuffer, {
   end,
 })
 
-function Debuffer:new(spellId, frame, casted)
+function Debuffer:new(spellId, frame)
 	SpellComponent.new(self, spellId, frame)
 	
-	self.casted = casted
 	self.debuffs = {}
 	self.successes = {}
 
@@ -28,12 +27,10 @@ function Debuffer:WithEventHandler()
 end
 
 function Debuffer:GenerateDebuff(target, start, stop)	
-	local debuff
-	if self.casted then		
-		debuff = CastedDebuffIndicator(target, start, stop, self.spellId)
-		tinsert(self.indicators, debuff.recast)
-	else
-		debuff = DebuffIndicator(target, start, stop, self.spellId)		
+	local debuff = AuraIndicator(target, start, stop, self.spellId, EventHorizon.opt.debuff, EventHorizon.opt.debuffs[self.spellName])
+	
+	if debuff.casted then
+		tinsert(self.indicators, debuff.recast)	
 	end
 
 	tinsert(self.indicators, debuff)

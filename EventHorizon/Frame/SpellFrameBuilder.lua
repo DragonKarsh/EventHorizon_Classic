@@ -30,6 +30,11 @@ function SpellFrameBuilder:WithDebuff()
 	return self
 end
 
+function SpellFrameBuilder:WithBuff()
+	self.buff = true
+	return self
+end
+
 function SpellFrameBuilder:WithCast()
 	self.cast = true
 	return self
@@ -62,10 +67,17 @@ end
 function SpellFrameBuilder:Build()
 	local spellComponents = {}
 	if self.debuff then
-		local debuffer = Debuffer(self.spellId, self.frame, self.cast)
+		local debuffer = Debuffer(self.spellId, self.frame)
 		:WithEventHandler()
 		:WithUpdateHandler()
 		tinsert(spellComponents, debuffer)
+	end
+
+	if self.buff then
+		local buffer = Buffer(self.spellId, self.frame)
+		:WithEventHandler()
+		:WithUpdateHandler()
+		tinsert(spellComponents, buffer)
 	end
 
 	if self.cast then
