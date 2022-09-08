@@ -4,8 +4,7 @@
   <Script file='ChannelingIndicator.lua'/>
   <Script file='RecastIndicator.lua'/>
   <Script file='CoolDownIndicator.lua'/>
-  <Script file='DebuffIndicator.lua'/>
-  <Script file='CastedDebuffIndicator.lua'/>
+  <Script file='AuraIndicator.lua'/>
   <Script file='SentIndicator.lua'/>
   <Script file='TickIndicator.lua'/>
 </Ui>

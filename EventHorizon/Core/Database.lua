@@ -9,6 +9,7 @@ EventHorizon.defaults = {
 		background = {1,1,1,.1},
 		casting = {0,1,0,0.9},
 		debuff = {1,1,1,0.7},
+		buff = {0,0.75,0,0.7},
 		coolDown = {0.9,0.9,0.9,0.7},
 		ready = {0.5,0.5,0.5,0.7},
 		tick = {1,1,1,1},
@@ -22,9 +23,10 @@ EventHorizon.defaults = {
 		shown = true,
 		locked = false,
 		combat = false,
+		casts = {},
 		channels = {},
 		debuffs = {},
-		directs = {}
+		buffs = {},
 	}
 }
 

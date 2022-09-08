@@ -23,11 +23,13 @@ end
 function EventHorizon:InitializeAllOptions()
 	self:CreateGlobalOptions()
 	self:CreateChannelsOptions()
-	self:CreateDirectsOptions()
+	self:CreateCastedOptions()
 	self:CreateDebuffsOptions()
+	self:CreateBuffsOptions()
 	self:CreateChanneledSpellsOptions()
-	self:CreateDirectSpellsOptions()
+	self:CreateCastedSpellsOptions()
 	self:CreateDebuffSpellsOptions()
+	self:CreateBuffSpellsOptions()
 end
 
 function EventHorizon:CreateGlobalOptions()
@@ -133,8 +135,17 @@ function EventHorizon:CreateGlobalOptions()
 						get = function(info) return unpack(EventHorizon.opt.debuff) end,
 						set = function(info,r,g,b,a)  EventHorizon.opt.debuff = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
-					coolDown = {
+					buff = {
 						order = 6,
+						type = "color",
+						name = "Buff",
+						desc = "Set the buff color",
+						hasAlpha = true,
+						get = function(info) return unpack(EventHorizon.opt.buff) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.buff = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+					},
+					coolDown = {
+						order = 7,
 						type = "color",
 						name = "Cooldown",
 						desc = "Set the cooldown color",
@@ -143,7 +154,7 @@ function EventHorizon:CreateGlobalOptions()
 						set = function(info,r,g,b,a)  EventHorizon.opt.coolDown = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					ready = {
-						order = 7,
+						order = 8,
 						type = "color",
 						name = "Ready",
 						desc = "Set the ready color",
@@ -152,7 +163,7 @@ function EventHorizon:CreateGlobalOptions()
 						set = function(info,r,g,b,a)  EventHorizon.opt.ready = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					tick = {
-						order = 8,
+						order = 9,
 						type = "color",
 						name = "Tick",
 						desc = "Set the tick color",
@@ -161,7 +172,7 @@ function EventHorizon:CreateGlobalOptions()
 						set = function(info,r,g,b,a)  EventHorizon.opt.tick = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					sent = {
-						order = 9,
+						order = 10,
 						type = "color",
 						name = "Sent",
 						desc = "Set the sent color",
@@ -170,7 +181,7 @@ function EventHorizon:CreateGlobalOptions()
 						set = function(info,r,g,b,a)  EventHorizon.opt.sent = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					nowColor = {
-						order = 10,
+						order = 11,
 						type = "color",
 						name = "Now",
 						desc = "Set the now indicator color",
@@ -179,7 +190,7 @@ function EventHorizon:CreateGlobalOptions()
 						set = function(info,r,g,b,a)  EventHorizon.opt.nowColor = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					gcdColor = {
-						order = 11,
+						order = 12,
 						type = "color",
 						name = "Gcd",
 						desc = "Set the gcd indicator color",
@@ -329,18 +340,18 @@ function EventHorizon:CreateChannelsOptions()
 	}
 end
 
-function EventHorizon:CreateDirectsOptions()
-	self.options.args.directs = {
+function EventHorizon:CreateCastedOptions()
+	self.options.args.casts = {
 		order=3,
-		name = "Directs",
-		desc = "Edit direct damage spells",
+		name = "Casts",
+		desc = "Edit casted spells",
 		type = "group",
 		cmdHidden = true,
 		args = {
-			createDirect = {
+			createCast = {
 				order = 1,
 				name = "Create new spell",
-				desc = "Create a new direct damage spell",
+				desc = "Create a new casted spell",
 				type = "group",
 				inline = true,
 				args = {
@@ -348,22 +359,22 @@ function EventHorizon:CreateDirectsOptions()
 						name = "Create",
 						type = "execute",
 						order = 1,
-						func = function() EventHorizon:CreateNewDirectSpell() end
+						func = function() EventHorizon:CreateNewCastedSpell() end
 					},
 					input = {
 						name = "Spell name/id",
 						type = "input",
-						desc = "Enter spellname or spellId of the direct damage spell to create",
+						desc = "Enter spellname or spellId of the casted spell to create",
 						order = 2,
-						get = function(info) return EventHorizon.newDirectSpell end,
-						set = function(info,val) EventHorizon.newDirectSpell = val end
+						get = function(info) return EventHorizon.newCastedSpell end,
+						set = function(info,val) EventHorizon.newCastedSpell = val end
 					}
 				}
 			},
 			existing = {
 				order = 2,
-				name = "Existing direct damage spells",
-				desc = "Already created direct damage spells",
+				name = "Existing casted spells",
+				desc = "Already created casted spells",
 				type = "group"
 			}
 		}
@@ -411,6 +422,47 @@ function EventHorizon:CreateDebuffsOptions()
 	}
 end
 
+function EventHorizon:CreateBuffsOptions()
+	self.options.args.buffs = {
+		order=5,
+		name = "Buffs",
+		desc = "Edit buff spells",
+		type = "group",
+		cmdHidden = true,
+		args = {
+			createBuff = {
+				order = 1,
+				name = "Create new spell",
+				desc = "Create a new buff spell",
+				type = "group",
+				inline = true,
+				args = {
+					create = {
+						name = "Create",
+						type = "execute",
+						order = 1,
+						func = function() EventHorizon:CreateNewBuffSpell() end
+					},
+					input = {
+						name = "Spell name/id",
+						type = "input",
+						desc = "Enter spellname or spellId of the buff spell to create",
+						order = 2,
+						get = function(info) return EventHorizon.newBuffSpell end,
+						set = function(info,val) EventHorizon.newBuffSpell = val end
+					}
+				}
+			},
+			existing = {
+				order = 2,
+				name = "Existing buff spells",
+				desc = "Already created buffs",
+				type = "group"
+			}
+		}
+	}
+end
+
 function EventHorizon:CreateNewChanneledSpell()	
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newChannelSpell)
 
@@ -431,10 +483,10 @@ function EventHorizon:RemoveChannelSpell(spellName)
 	self.mainFrame:ReleaseSpellFrame(spellId)
 end
 
-function EventHorizon:RemoveDirectSpell(spellName)
-	local spellId = self.opt.directs[spellName].spellId
-	self.opt.directs[spellName] = nil
-	self:CreateDirectSpellsOptions()
+function EventHorizon:RemoveCastedSpell(spellName)
+	local spellId = self.opt.casts[spellName].spellId
+	self.opt.casts[spellName] = nil
+	self:CreateCastedSpellsOptions()
 	self.mainFrame:ReleaseSpellFrame(spellId)
 end
 
@@ -445,16 +497,23 @@ function EventHorizon:RemoveDebuffSpell(spellName)
 	self.mainFrame:ReleaseSpellFrame(spellId)
 end
 
-function EventHorizon:CreateNewDirectSpell()
-	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDirectSpell)
+function EventHorizon:RemoveBuffSpell(spellName)
+	local spellId = self.opt.buffs[spellName].spellId
+	self.opt.buffs[spellName] = nil
+	self:CreateBuffSpellsOptions()
+	self.mainFrame:ReleaseSpellFrame(spellId)
+end
 
-	if spellName and not self.opt.directs[spellName] then
-		local direct = {spellId=spellId, enabled=true, order=1}
-		self.opt.directs[spellName] = direct
+function EventHorizon:CreateNewCastedSpell()
+	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newCastedSpell)
+
+	if spellName and not self.opt.casts[spellName] then
+		local cast = {spellId=spellId, enabled=true, order=1}
+		self.opt.casts[spellName] = cast
 	end
 
-	self.newDirectSpell = nil
-	self:CreateDirectSpellsOptions()
+	self.newCastedSpell = nil
+	self:CreateCastedSpellsOptions()
 	self:RefreshMainFrame()
 end
 
@@ -468,6 +527,19 @@ function EventHorizon:CreateNewDebuffSpell()
 
 	self.newDebuffSpell = nil
 	self:CreateDebuffSpellsOptions()
+	self:RefreshMainFrame()
+end
+
+function EventHorizon:CreateNewBuffSpell()
+	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newBuffSpell)
+		
+	if spellName and not self.opt.buffs[spellName] then
+		local buff = {spellId=spellId, hot=false,ticks=0, lastTick=false, enabled=true, order=1}
+		self.opt.buffs[spellName] = buff
+	end	
+
+	self.newBuffSpell = nil
+	self:CreateBuffSpellsOptions()
 	self:RefreshMainFrame()
 end
 
@@ -534,18 +606,18 @@ function EventHorizon:CreateChanneledSpellsOptions()
 	EventHorizon.options.args.channels.args.existing.args = channeledSpells
 end
 
-function EventHorizon:CreateDirectSpellsOptions()
-	local directSpells = {}
+function EventHorizon:CreateCastedSpellsOptions()
+	local castedSpells = {}
 	local count = 0
 
 	local sorted = {}
-	for k,v in pairs(self.opt.directs) do
+	for k,v in pairs(self.opt.casts) do
 		tinsert(sorted, k)
 	end
 
 	for i,k in ipairs(sorted) do
 		count = count + 1
-		directSpells[k] = {
+		castedSpells[k] = {
 			order = count,
 			name = k,
 			icon = select(3,GetSpellInfo(k)),
@@ -556,8 +628,8 @@ function EventHorizon:CreateDirectSpellsOptions()
 					order = 1,
 					name = "Enabled",
 					type = "toggle",
-					get = function(info) return EventHorizon.opt.directs[k].enabled end,
-					set = function(info, val) EventHorizon.opt.directs[k].enabled = val EventHorizon:RefreshMainFrame() end,
+					get = function(info) return EventHorizon.opt.casts[k].enabled end,
+					set = function(info, val) EventHorizon.opt.casts[k].enabled = val EventHorizon:RefreshMainFrame() end,
 					width = "full"
 				},				
 				order = {
@@ -568,21 +640,21 @@ function EventHorizon:CreateDirectSpellsOptions()
 					min = 1,
 					max = 10,
 					step = 1,
-					get = function(info) return EventHorizon.opt.directs[k].order end,
-					set = function(info, val) EventHorizon.opt.directs[k].order = val EventHorizon:RefreshMainFrame() end,
+					get = function(info) return EventHorizon.opt.casts[k].order end,
+					set = function(info, val) EventHorizon.opt.casts[k].order = val EventHorizon:RefreshMainFrame() end,
 				},
 				remove = {
 					order = 3,
 					name = "Remove",
 					type = "execute",
-					func = function() EventHorizon:RemoveDirectSpell(k) end,				
+					func = function() EventHorizon:RemoveCastedSpell(k) end,				
 					width = "full"
 				},
 			}
 		}
 	end
 
-	EventHorizon.options.args.directs.args.existing.args = directSpells
+	EventHorizon.options.args.casts.args.existing.args = castedSpells
 end
 
 function EventHorizon:CreateDebuffSpellsOptions()
@@ -634,7 +706,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					order = 4,
 					name = "Ticks",
 					type = "range",
-					min = 1,
+					min = 0,
 					max = 15,
 					step = 1,
 					hidden =  not EventHorizon.opt.debuffs[k].dot,
@@ -662,6 +734,94 @@ function EventHorizon:CreateDebuffSpellsOptions()
 	end
 
 	EventHorizon.options.args.debuffs.args.existing.args = debuffSpells
+end
+
+function EventHorizon:CreateBuffSpellsOptions()
+	local buffSpells = {}
+	local count = 0
+
+	local sorted = {}
+	for k,v in pairs(self.opt.buffs) do
+		tinsert(sorted, k)
+	end
+
+	for i,k in ipairs(sorted) do
+		count = count + 1
+		buffSpells[k] = {
+			order = count,
+			name = k,
+			icon = select(3,GetSpellInfo(k)),
+			type = "group",
+			width = "half",
+			args = {
+				enabled = {
+					order = 1,
+					name = "Enabled",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.buffs[k].enabled end,
+					set = function(info, val) EventHorizon.opt.buffs[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
+					width = "full"
+				},		
+				hot = {
+					order = 2,
+					name = "Hot",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.buffs[k].hot end,
+					set = function(info, val) EventHorizon.opt.buffs[k].hot = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
+					width="full"
+				},
+				order = {
+					order = 3,
+					name = "Order",
+					type = "range",
+					desc = "Sort order on frame",
+					min = 1,
+					max = 10,
+					step = 1,
+					get = function(info) return EventHorizon.opt.buffs[k].order end,
+					set = function(info, val) EventHorizon.opt.buffs[k].order = val EventHorizon:RefreshMainFrame(k) end,
+				},
+				unitId = {
+					order = 4,
+					name = "Unit",
+					desc = "Which unit this buff targets",
+					type = "select",
+					values = {["player"]="player",["target"]="target"},
+					get = function(info) return EventHorizon.opt.buffs[k].unitId or "player" end,
+					set = function(info, val) EventHorizon.opt.buffs[k].unitId = val  EventHorizon:RefreshMainFrame(k) end
+				},
+				ticks = {
+					order = 5,
+					name = "Ticks",
+					type = "range",
+					min = 0,
+					max = 15,
+					step = 1,
+					hidden =  not EventHorizon.opt.buffs[k].hot,
+					get = function(info) return EventHorizon.opt.buffs[k].ticks end,
+					set = function(info, val) EventHorizon.opt.buffs[k].ticks = val  EventHorizon:RefreshMainFrame(k) end
+				},
+				lastTick = {
+					order = 6,
+					name = "Last Tick",
+					desc = "End buff on last detected tick",
+					type = "toggle",
+					hidden =  not EventHorizon.opt.buffs[k].hot,
+					get = function(info) return EventHorizon.opt.buffs[k].lastTick end,
+					set = function(info, val) EventHorizon.opt.buffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
+				},				
+				remove = {
+					order = 7,
+					name = "Remove",
+					type = "execute",
+					func = function() EventHorizon:RemoveBuffSpell(k) end,				
+					width = "full"
+				},
+			}
+		}
+	end
+
+	EventHorizon.options.args.buffs.args.existing.args = buffSpells
 end
 
 function EventHorizon:SetHeight(height)

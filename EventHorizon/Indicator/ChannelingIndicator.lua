@@ -16,7 +16,6 @@ setmetatable(ChannelingIndicator, {
 function ChannelingIndicator:new(start, stop, numTicks)
 	CastingIndicator.new(self, start, stop)
 
-	self.style.texture = EventHorizon.opt.casting
 	self.ticks = {}
 
 	local duration = stop - start

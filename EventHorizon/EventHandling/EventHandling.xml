@@ -2,6 +2,7 @@
 	<Script file='EventHandler.lua'/>
 	<Script file='CastEventHandler.lua'/>
   <Script file='ChannelEventHandler.lua'/>
+  <Script file='BuffEventHandler.lua'/>
   <Script file='DebuffEventHandler.lua'/>
   <Script file='CoolDownEventHandler.lua'/>
   <Script file='GcdEventHandler.lua'/>
