@@ -60,8 +60,25 @@ function Debuffer:WasReplaced(debuffStop, stop, refresh)
 	return debuffStop ~= stop and not refresh
 end
 
-function Debuffer:WasRefreshed(originalStop, lastSuccess, start, stop) 
-	return originalStop ~= stop and math.abs(start - lastSuccess) > 0.5
+function Debuffer:WasRefreshed(debuff, lastSuccess, start, stop)
+	-- refresh should have a different stop value than original
+	if debuff.original.stop ~= stop then
+		-- if it is a dot, check for an edge case where the cast start is after the last tick. this is not considered as
+		-- a refresh by the server
+		if debuff.numTicks and #debuff.ticks > 0 and debuff.ticks[#debuff.ticks].start < start then
+			return false
+		end
+
+		-- try to detect a cast, casts do not refresh dots
+		if math.abs(start - lastSuccess) < 0.5 then
+			return false
+		end
+	else
+		return false	
+	end
+	
+	-- checks to negate a refresh case did not pass. so it is a refresh
+	return true
 end
 
 function Debuffer:CheckTargetDebuff()
@@ -98,7 +115,7 @@ function Debuffer:ApplyDebuff(target, start, stop)
 
 	if debuff then
 		if lastSuccess then
-			refreshed = self:WasRefreshed(debuff.original.stop, lastSuccess, start, stop)
+			refreshed = self:WasRefreshed(debuff, lastSuccess, start, stop)
 		end
 
 		replaced = self:WasReplaced(debuff.stop, stop, refreshed)	
