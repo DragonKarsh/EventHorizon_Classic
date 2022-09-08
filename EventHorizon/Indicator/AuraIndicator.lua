@@ -137,7 +137,6 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick, duration)
 			tinsert(self.ticks, tick)
 		end
 	end
-	print(tostring(self.isExtended))
 end
 
 function AuraIndicator:RemoveTicksAfter(time)
