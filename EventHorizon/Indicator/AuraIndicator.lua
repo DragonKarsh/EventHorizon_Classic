@@ -20,7 +20,7 @@ function AuraIndicator:new(target, start, stop, spellId, texture, config)
 
 	
 	self.spellId = spellId
-	self.spellName = GetSpellInfo(spellId)
+	self.spellName = GetSpellInfo(self.spellId)
 	self.config = config
 	self.casted = select(4, GetSpellInfo(self.spellId)) > 0
 
@@ -31,14 +31,16 @@ function AuraIndicator:new(target, start, stop, spellId, texture, config)
 	end
 	
 	self.ticks = {}
-
+	self.isExtended = false
+	self.adjustExtendedOffset = 0
+	self.originalDuration = stop - start
 
 	if config.ticks and config.ticks > 0 then		
 		self.numTicks = config.ticks
-		local duration = stop - start
-		local interval = duration / self.numTicks
+		self.originalDuration = stop - start
+		self.snapInterval = self.originalDuration / self.numTicks
 		for i=1,self.numTicks do
-			local tick = TickIndicator(target, start + i*interval)
+			local tick = TickIndicator(target, start + i*self.snapInterval)
 			tinsert(self.ticks, tick)
 		end
 	end
@@ -83,10 +85,10 @@ function AuraIndicator:Stop(stop)
 	end
 end
 
-function AuraIndicator:Refresh(start, stop)
+function AuraIndicator:Refresh(start, stop, duration)
 	if self.numTicks then
 		local lastTick = self.ticks[#self.ticks]
-		self:ApplyTicksAfter(start, stop, lastTick.start)			
+		self:ApplyTicksAfter(start, stop, lastTick.start, duration)			
 	end
 
 	if self.config.lastTick then
@@ -99,16 +101,43 @@ function AuraIndicator:Refresh(start, stop)
 	end
 end	
 
-function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
-	local duration = stop - start
-	local interval = duration / self.numTicks
+function AuraIndicator:ApplyTicksAfter(start, stop, lastTick, duration)
+	-- check if the aura was extended (e.g. like glyph of shred can extend rip aura duration)
+	if self.original.stop < stop and not self:IsFullRefresh(start, stop) then 
+		self.adjustExtendedOffset = self:CalcExtendedDotOffset(start)
+		
+		-- if so, mark it as extended and that's it, as the first extention cannot mess around with dot ticks
+		if not self.isExtended then
+			self.isExtended = true
+		else
+			-- this aura was already extended once.
+			-- check if the refresh was done between the last and second last ticks
+			if self:IsBeforeLastTick(start) then
+				-- last tick should be moved forward by the adjustment offset
+				self.ticks[#self.ticks].start = self.ticks[#self.ticks].start + self.adjustExtendedOffset
+				self.ticks[#self.ticks].stop = self.ticks[#self.ticks].stop + self.adjustExtendedOffset
+			end
+		end
+	end 
+
+	-- lastTickProximiySec: Align the last added tick with proximity to the stop point of aura 
+	-- (cosmetics due to server internal jitter on duration extending effects)
+	local lastTickProximitySec = 0.2 
+	
 	for i=1,self.numTicks do
-		local tickTime = lastTick + i*interval
+		local tickTime = lastTick + i*self.snapInterval
+
+		-- Maybe align the last tick that will fit the window
+		if tickTime-lastTickProximitySec <= stop and stop <= tickTime+lastTickProximitySec then
+			tickTime = stop
+		end
+
 		if tickTime <= stop then
 			local tick = TickIndicator(self.target, tickTime)
 			tinsert(self.ticks, tick)
 		end
 	end
+	print(tostring(self.isExtended))
 end
 
 function AuraIndicator:RemoveTicksAfter(time)
@@ -118,4 +147,32 @@ function AuraIndicator:RemoveTicksAfter(time)
 			tremove(self.ticks,i):Dispose()
 		end
 	end
+end
+
+function AuraIndicator:IsFullRefresh(start, stop)
+	elapsed = stop-start
+	if self.originalDuration-0.5 < elapsed and elapsed < self.originalDuration+0.5 then
+		return true
+	end
+	return false
+end
+
+function AuraIndicator:CalcExtendedDotOffset(currentTime)
+	-- baseline of an extended dot offset is from initial cast
+	local offset = currentTime-self.original.start
+
+	-- if there are ticks in the past, they should be used as the baseline for the offset
+	for i=1,#self.ticks,1 do
+		if self.ticks[i].start <= currentTime then
+			offset = currentTime - self.ticks[i].start
+		else
+			break
+		end
+	end
+	return offset
+end
+
+function AuraIndicator:IsBeforeLastTick(currentTime)
+	if #self.ticks > 1 and currentTime > self.ticks[#self.ticks-1].start then return true end
+	return false
 end
