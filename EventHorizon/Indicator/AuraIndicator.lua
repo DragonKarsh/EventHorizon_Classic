@@ -35,15 +35,15 @@ function AuraIndicator:new(target, start, stop, spellId, texture, config)
 	self.adjustExtendedOffset = 0
 	self.originalDuration = stop - start
 
-	if config.ticks and config.tickType == "count" and config.tickCount > 0 then		
-		self.numTicks = config.tickCount
+	if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
+		self.numTicks = self.config.tickCount
 		self.snapInterval = self.originalDuration / self.numTicks		
-	elseif config.ticks and config.tickType == "interval" and config.tickInterval > 0 then
-		self.snapInterval = config.tickInterval
-		self.numTicks = math.floor(self.originalDuration/config.tickInterval)		
+	elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
+		self.snapInterval = self.config.tickInterval
+		self.numTicks = math.floor(self.originalDuration/self.config.tickInterval)		
 	end
 
-	if config.ticks then
+	if self.config.ticks then
 		for i=1,self.numTicks do
 			local tick = TickIndicator(target, start + i*self.snapInterval)
 			tinsert(self.ticks, tick)
@@ -129,13 +129,23 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 	-- (cosmetics due to server internal jitter on duration extending effects)
 	local lastTickProximitySec = 0.2 
 
-	local duration = stop - start
-	if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
-		self.numTicks = self.config.tickCount
-		self.snapInterval = duration / self.numTicks		
-	elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
-		self.snapInterval = self.config.tickInterval
-		self.numTicks = math.floor(duration/self.config.tickInterval)		
+	-- Corruption edge case (the only refreshable hastable spell known)
+	-- TODO(verill): Refactor in future if there are more cases like corruption
+	local lastTick = lastTick
+	if self.spellName == "Corruption" then
+		-- remove any ticks after start of new duration
+		self:RemoveTicksAfter(start)
+		lastTick = self.ticks[#self.ticks].start
+
+		-- Corruption is a hasted refreshable spell and we break the immutability of the dot instance because of that
+		local duration = stop - start
+		if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
+			self.numTicks = self.config.tickCount
+			self.snapInterval = duration / self.numTicks		
+		elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
+			self.snapInterval = self.config.tickInterval
+			self.numTicks = math.floor(duration/self.config.tickInterval)		
+		end	
 	end
 	
 	for i=1,self.numTicks do
