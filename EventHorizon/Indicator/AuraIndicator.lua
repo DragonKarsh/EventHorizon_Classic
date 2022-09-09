@@ -35,10 +35,15 @@ function AuraIndicator:new(target, start, stop, spellId, texture, config)
 	self.adjustExtendedOffset = 0
 	self.originalDuration = stop - start
 
-	if config.ticks and config.ticks > 0 then		
-		self.numTicks = config.ticks
-		self.originalDuration = stop - start
-		self.snapInterval = self.originalDuration / self.numTicks
+	if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
+		self.numTicks = self.config.tickCount
+		self.snapInterval = self.originalDuration / self.numTicks		
+	elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
+		self.snapInterval = self.config.tickInterval
+		self.numTicks = math.floor(self.originalDuration/self.config.tickInterval)		
+	end
+
+	if self.config.ticks then
 		for i=1,self.numTicks do
 			local tick = TickIndicator(target, start + i*self.snapInterval)
 			tinsert(self.ticks, tick)
@@ -85,10 +90,10 @@ function AuraIndicator:Stop(stop)
 	end
 end
 
-function AuraIndicator:Refresh(start, stop, duration)
+function AuraIndicator:Refresh(start, stop)
 	if self.numTicks then
 		local lastTick = self.ticks[#self.ticks]
-		self:ApplyTicksAfter(start, stop, lastTick.start, duration)			
+		self:ApplyTicksAfter(start, stop, lastTick.start)			
 	end
 
 	if self.config.lastTick then
@@ -101,7 +106,7 @@ function AuraIndicator:Refresh(start, stop, duration)
 	end
 end	
 
-function AuraIndicator:ApplyTicksAfter(start, stop, lastTick, duration)
+function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 	-- check if the aura was extended (e.g. like glyph of shred can extend rip aura duration)
 	if self.original.stop < stop and not self:IsFullRefresh(start, stop) then 
 		self.adjustExtendedOffset = self:CalcExtendedDotOffset(start)
@@ -123,6 +128,25 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick, duration)
 	-- lastTickProximiySec: Align the last added tick with proximity to the stop point of aura 
 	-- (cosmetics due to server internal jitter on duration extending effects)
 	local lastTickProximitySec = 0.2 
+
+	-- Corruption edge case (the only refreshable hastable spell known)
+	-- TODO(verill): Refactor in future if there are more cases like corruption
+	local lastTick = lastTick
+	if self.spellName == "Corruption" then
+		-- remove any ticks after start of new duration
+		self:RemoveTicksAfter(start)
+		lastTick = self.ticks[#self.ticks].start
+
+		-- Corruption is a hasted refreshable spell and we break the immutability of the dot instance because of that
+		local duration = stop - start
+		if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
+			self.numTicks = self.config.tickCount
+			self.snapInterval = duration / self.numTicks		
+		elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
+			self.snapInterval = self.config.tickInterval
+			self.numTicks = math.floor(duration/self.config.tickInterval)		
+		end	
+	end
 	
 	for i=1,self.numTicks do
 		local tickTime = lastTick + i*self.snapInterval
