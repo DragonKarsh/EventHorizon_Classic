@@ -57,6 +57,9 @@ end
 
 function SpellFrameBuilder:WithIcon()
 	self.icon = self.frame:CreateTexture(nil, "BORDER")
+	self.frame.icon = icon
+	self.frame.stacks = self.frame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	self.frame.stacks:SetPoint("BOTTOMRIGHT",self.frame,"BOTTOMLEFT")
 	local texture = select(3,GetSpellInfo(self.spellId))
 	self.icon:SetTexture(texture)
 	self.icon:SetPoint("TOPRIGHT", self.frame, "TOPLEFT")
