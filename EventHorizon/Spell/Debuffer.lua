@@ -86,6 +86,12 @@ function Debuffer:CheckTargetDebuff()
 	local afflicted, icon, count, debuffType, duration, expirationTime = self:UnitDebuffByName('target', self.spellName)	
 	local shouldReplace, start	
 
+	if count then
+		self.stacks = count
+	else
+		self.stacks = 0
+	end
+
 	if afflicted then
 		local startTime = expirationTime - duration
 		self:ApplyDebuff(target,startTime, expirationTime)

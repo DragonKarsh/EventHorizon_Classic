@@ -24,6 +24,13 @@ function SpellComponentUpdateHandler:new(spellComponent)
 end
 
 function SpellComponentUpdateHandler:OnUpdate(elapsed)
+	
+	if self.spellComponent.stacks  and self.spellComponent.stacks > 1 then
+		self.uiFrame.stacks:SetText("x"..self.spellComponent.stacks) 
+	else
+		self.uiFrame.stacks:SetText("") 		
+	end
+
 	for i=#self.textures,1,-1 do
 		if self.textures[i] and (not self.textures[i].indicator or self.textures[i].indicator.disposed) then
 			self:RecycleTexture(tremove(self.textures, i))			

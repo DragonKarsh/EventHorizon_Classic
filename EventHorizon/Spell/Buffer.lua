@@ -68,6 +68,13 @@ function Buffer:CheckBuff()
 	local unitId = EventHorizon.opt.buffs[self.spellName].unitId
 	local target = UnitGUID(unitId)
 	local affected, icon, count, buffType, duration, expirationTime = self:UnitBuffByName(unitId, self.spellName)	
+
+	if count then
+		self.stacks = count
+	else
+		self.stacks = 0
+	end
+
 	local shouldReplace, start	
 
 	if affected then
