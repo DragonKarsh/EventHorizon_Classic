@@ -3,5 +3,6 @@
   <Script file='Media.lua'/>
   <Script file='Commands.lua'/>
   <Script file='Database.lua'/>
+  <Script file='Cache.lua'/>
 	<Script file='Options.lua'/>
 </Ui>

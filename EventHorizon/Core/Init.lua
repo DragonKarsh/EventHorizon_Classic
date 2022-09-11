@@ -5,6 +5,7 @@ EventHorizon = LibStub("AceAddon-3.0")
 function EventHorizon:OnInitialize()
 	self:InitializeMedia()
 	self:InitializeDatabase()
+	self:InitializeCache()
 	self:InitializeOptions()
 	self:InitializeCommands()
 end

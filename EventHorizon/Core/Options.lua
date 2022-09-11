@@ -519,7 +519,20 @@ end
 
 function EventHorizon:CreateNewDebuffSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDebuffSpell)
-		
+	-- if no name was returned, it might be a debuff not from the spell book or typo
+	if not spellName then
+		local cacheSpells = self.spellCache.GetSpellIDsMatchingName(EventHorizon.newDebuffSpell)
+		if cacheSpells then
+			for i,cacheSpell in pairs(cacheSpells) do
+				local cast = select(4,GetSpellInfo(cacheSpell))
+				if cast == nil or cast == 0 then
+					-- select highest spellId found without a cast time (aura)
+					spellId = cacheSpells[i]
+					spellName = EventHorizon.newDebuffSpell
+				end
+			end
+		end
+	end
 	if spellName and not self.opt.debuffs[spellName] then
 		local debuff = {spellId=spellId, ticks=false, tickType="count", tickCount=1, tickInterval=1, lastTick=false, enabled=true, order=1}
 		self.opt.debuffs[spellName] = debuff
@@ -532,7 +545,20 @@ end
 
 function EventHorizon:CreateNewBuffSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newBuffSpell)
-		
+	-- if no name was returned, it might be a debuff not from the spell book or typo
+	if not spellName then
+		local cacheSpells = self.spellCache.GetSpellIDsMatchingName(EventHorizon.newBuffSpell)
+		if cacheSpells then
+			for i,cacheSpell in pairs(cacheSpells) do
+				local cast = select(4,GetSpellInfo(cacheSpell))
+				if cast == nil or cast == 0 then
+					-- select highest spellId found without a cast time (aura)
+					spellId = cacheSpells[i]
+					spellName = EventHorizon.newBuffSpell
+				end
+			end
+		end
+	end
 	if spellName and not self.opt.buffs[spellName] then
 		local buff = {spellId=spellId, unitId="player", ticks=false, tickType="count", tickCount=1, tickInterval=1, lastTick=false, enabled=true, order=1}
 		self.opt.buffs[spellName] = buff
@@ -558,7 +584,7 @@ function EventHorizon:CreateChanneledSpellsOptions()
 		channeledSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = select(3,GetSpellInfo(EventHorizon.opt.channels[k].spellId)),
 			type = "group",
 			width = "half",
 			args = {
@@ -620,7 +646,7 @@ function EventHorizon:CreateCastedSpellsOptions()
 		castedSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = select(3,GetSpellInfo(EventHorizon.opt.casts[k].spellId)),
 			type = "group",
 			width = "half",
 			args = {
@@ -671,10 +697,16 @@ function EventHorizon:CreateDebuffSpellsOptions()
 		debuffSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = self.spellCache.GetBestIconMatchingName(k),
 			type = "group",
 			width = "half",
 			args = {
+				spellId = {
+					order = 1,
+					name = "SpellID: "..EventHorizon.opt.debuffs[k].spellId,
+					type = "description",
+					width = "full"
+				},
 				enabled = {
 					order = 1,
 					name = "Enabled",
@@ -771,7 +803,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 		buffSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = self.spellCache.GetBestIconMatchingName(k),
 			type = "group",
 			width = "half",
 			args = {
@@ -781,6 +813,12 @@ function EventHorizon:CreateBuffSpellsOptions()
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.buffs[k].enabled end,
 					set = function(info, val) EventHorizon.opt.buffs[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
+					width = "full"
+				},
+				spellId = {
+					order = 1,
+					name = "SpellID: "..EventHorizon.opt.buffs[k].spellId,
+					type = "description",
 					width = "full"
 				},					
 				order = {

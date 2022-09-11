@@ -98,7 +98,7 @@ function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
 	:WithCoolDown()
 
 	local castTime = select(4, GetSpellInfo(spellId))
-	if  castTime > 0 then
+	if (castTime or 0) > 0 then
 		builder:WithCast()
 	end
 
