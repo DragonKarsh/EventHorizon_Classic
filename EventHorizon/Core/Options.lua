@@ -519,7 +519,20 @@ end
 
 function EventHorizon:CreateNewDebuffSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newDebuffSpell)
-		
+	-- if no name was returned, it might be a debuff not from the spell book or typo
+	if not spellName then
+		local cacheSpells = self.spellCache.GetSpellIDsMatchingName(EventHorizon.newDebuffSpell)
+		if cacheSpells then
+			for i,cacheSpell in pairs(cacheSpells) do
+				local cast = select(4,GetSpellInfo(cacheSpell))
+				if cast == nil or cast == 0 then
+					-- select highest spellId found without a cast time (aura)
+					spellId = cacheSpells[i]
+					spellName = EventHorizon.newDebuffSpell
+				end
+			end
+		end
+	end
 	if spellName and not self.opt.debuffs[spellName] then
 		local debuff = {spellId=spellId, ticks=false, tickType="count", tickCount=1, tickInterval=1, lastTick=false, enabled=true, order=1}
 		self.opt.debuffs[spellName] = debuff
@@ -532,7 +545,20 @@ end
 
 function EventHorizon:CreateNewBuffSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newBuffSpell)
-		
+	-- if no name was returned, it might be a debuff not from the spell book or typo
+	if not spellName then
+		local cacheSpells = self.spellCache.GetSpellIDsMatchingName(EventHorizon.newBuffSpell)
+		if cacheSpells then
+			for i,cacheSpell in pairs(cacheSpells) do
+				local cast = select(4,GetSpellInfo(cacheSpell))
+				if cast == nil or cast == 0 then
+					-- select highest spellId found without a cast time (aura)
+					spellId = cacheSpells[i]
+					spellName = EventHorizon.newBuffSpell
+				end
+			end
+		end
+	end
 	if spellName and not self.opt.buffs[spellName] then
 		local buff = {spellId=spellId, unitId="player", ticks=false, tickType="count", tickCount=1, tickInterval=1, lastTick=false, enabled=true, order=1}
 		self.opt.buffs[spellName] = buff
@@ -558,7 +584,7 @@ function EventHorizon:CreateChanneledSpellsOptions()
 		channeledSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = select(3,GetSpellInfo(EventHorizon.opt.channels[k].spellId)),
 			type = "group",
 			width = "half",
 			args = {
@@ -620,7 +646,7 @@ function EventHorizon:CreateCastedSpellsOptions()
 		castedSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = select(3,GetSpellInfo(EventHorizon.opt.casts[k].spellId)),
 			type = "group",
 			width = "half",
 			args = {
@@ -671,12 +697,18 @@ function EventHorizon:CreateDebuffSpellsOptions()
 		debuffSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = self.spellCache.GetBestIconMatchingName(k),
 			type = "group",
 			width = "half",
 			args = {
-				enabled = {
+				spellId = {
 					order = 1,
+					name = "SpellID: "..EventHorizon.opt.debuffs[k].spellId,
+					type = "description",
+					width = "full"
+				},
+				enabled = {
+					order = 2,
 					name = "Enabled",
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.debuffs[k].enabled end,
@@ -684,7 +716,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					width = "full"
 				},
 				order = {
-					order = 2,
+					order = 3,
 					name = "Order",
 					type = "range",
 					desc = "Sort order on frame",
@@ -695,7 +727,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].order = val EventHorizon:RefreshMainFrame(k) end,
 				},
 				ticks = {
-					order = 3,
+					order = 4,
 					name = "Ticks",
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.debuffs[k].ticks end,
@@ -703,7 +735,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					width="full"
 				},
 				tickType = {
-					order = 4,
+					order = 5,
 					name = "Tick Type",
 					desc = "How to set the ticks",
 					type = "select",
@@ -713,7 +745,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].tickType = val self:CreateDebuffSpellsOptions()  EventHorizon:RefreshMainFrame(k) end
 				},
 				tickCount = {
-					order = 5,
+					order = 6,
 					name = "Tick Count",
 					type = "range",
 					min = 1,
@@ -724,7 +756,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].tickCount = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				tickInterval = {
-					order = 6,
+					order = 7,
 					name = "Tick Interval",
 					type = "range",
 					min = 1,
@@ -735,7 +767,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].tickInterval = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				lastTick = {
-					order = 7,
+					order = 8,
 					name = "Last Tick",
 					desc = "End debuff on last detected tick",
 					type = "toggle",
@@ -744,7 +776,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				remove = {
-					order = 8,
+					order = 9,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveDebuffSpell(k) end,				
@@ -771,20 +803,26 @@ function EventHorizon:CreateBuffSpellsOptions()
 		buffSpells[k] = {
 			order = count,
 			name = k,
-			icon = select(3,GetSpellInfo(k)),
+			icon = self.spellCache.GetBestIconMatchingName(k),
 			type = "group",
 			width = "half",
 			args = {
-				enabled = {
+				spellId = {
 					order = 1,
+					name = "SpellID: "..EventHorizon.opt.buffs[k].spellId,
+					type = "description",
+					width = "full"
+				},			
+				enabled = {
+					order = 2,
 					name = "Enabled",
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.buffs[k].enabled end,
 					set = function(info, val) EventHorizon.opt.buffs[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
 					width = "full"
-				},					
+				},
 				order = {
-					order = 2,
+					order = 3,
 					name = "Order",
 					type = "range",
 					desc = "Sort order on frame",
@@ -795,7 +833,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].order = val EventHorizon:RefreshMainFrame(k) end,
 				},				
 				unitId = {
-					order = 3,
+					order = 4,
 					name = "Unit",
 					desc = "Which unit this buff targets",
 					type = "select",
@@ -804,7 +842,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].unitId = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				ticks = {
-					order = 4,
+					order = 5,
 					name = "Ticks",
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.buffs[k].ticks end,
@@ -812,7 +850,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					width="full"
 				},
 				tickType = {
-					order = 5,
+					order = 6,
 					name = "Tick Type",
 					desc = "How to set the ticks",
 					type = "select",
@@ -822,7 +860,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].tickType = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end
 				},
 				tickCount = {
-					order = 6,
+					order = 7,
 					name = "Tick Count",
 					type = "range",
 					min = 1,
@@ -833,7 +871,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].tickCount = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				tickInterval = {
-					order = 7,
+					order = 8,
 					name = "Tick Interval",
 					type = "range",
 					min = 1,
@@ -844,7 +882,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].tickInterval = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				lastTick = {
-					order = 8,
+					order = 9,
 					name = "Last Tick",
 					desc = "End buff on last detected tick",
 					type = "toggle",
@@ -853,7 +891,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
 				},				
 				remove = {
-					order = 9,
+					order = 10,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveBuffSpell(k) end,				
