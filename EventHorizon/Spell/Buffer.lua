@@ -29,9 +29,7 @@ end
 function Buffer:GenerateBuff(target, start, stop)	
 	local buff = AuraIndicator(target, start, stop, self.spellId, EventHorizon.opt.buff, EventHorizon.opt.buffs[self.spellName])
 	
-	if EventHorizon.opt.buffs[self.spellName].unitId == 'player' then
-		buff.alwaysShow = true
-	end
+	buff.alwaysShow = EventHorizon.opt.buffs[self.spellName].unitId == 'player'
 
 	if buff.casted then
 		tinsert(self.indicators, buff.recast)
@@ -95,10 +93,12 @@ end
 
 function Buffer:RemoveBuff(target)
 	self.buffs[target] = nil
-	-- manually stop indicators since self buffs can be right-clicked
+	-- manually stop indicators since buffs can be right-clicked or dispelled
 	local now = GetTime()
 	for _,indicator in pairs(self.indicators) do
-		indicator:Stop(now)
+   	    if indicator.target == target then
+		    indicator:Stop(now)
+	    end 
 	end
 end
 
