@@ -106,6 +106,13 @@ end
 
 function Debuffer:RemoveDebuff(target)
 	self.debuffs[target] = nil
+	-- manually stop indicators since debuffs can be right-clicked or dispelled
+	local now = GetTime()
+	for _,indicator in pairs(self.indicators) do
+   	    if indicator.target == target then
+		    indicator:Stop(now)
+	    end 
+	end
 end
 
 function Debuffer:ClearIndicator(indicator)

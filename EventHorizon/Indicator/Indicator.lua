@@ -21,6 +21,7 @@ function Indicator:new(target, start, stop)
 	self.original = {start=start,stop=stop}
 
 	self.disposed = false	
+	self.alwaysShow = false
 
 	self.style = {
 		texture = {1,1,1,1},
@@ -48,6 +49,8 @@ function Indicator:GetPoints()
 end
 
 function Indicator:IsVisible()
+	if self.alwaysShow then return true end
+
 	local target = UnitGUID('target')
 	local dead = UnitIsDead('target')
 
