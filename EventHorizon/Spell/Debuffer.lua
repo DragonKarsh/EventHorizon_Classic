@@ -105,14 +105,21 @@ function Debuffer:CaptureDebuff(target, start)
 end
 
 function Debuffer:RemoveDebuff(target)
-	self.debuffs[target] = nil
-	-- manually stop indicators since debuffs can be right-clicked or dispelled
-	local now = GetTime()
-	for _,indicator in pairs(self.indicators) do
-   	    if indicator.target == target then
-		    indicator:Stop(now)
-	    end 
+	-- manually stop indicators (once) since debuffs can be right-clicked or dispelled
+	if self.debuffs[target] then
+		local now = GetTime()
+		for i=#self.indicators,1,-1 do
+			local indicator = self.indicators[i]
+			if indicator and indicator.target == target then
+				if indicator.start < indicator.stop then
+					indicator:Stop(now)
+				elseif indicator.start == indicator.stop and indicator.start > now + 0.1 then -- a future tick indicator (100ms grace)
+					tremove(self.indicators,i):Dispose()
+				end
+			end 
+		end
 	end
+	self.debuffs[target] = nil
 end
 
 function Debuffer:ClearIndicator(indicator)
