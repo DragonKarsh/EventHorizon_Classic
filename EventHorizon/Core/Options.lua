@@ -284,13 +284,14 @@ function EventHorizon:CreateGlobalOptions()
 						get = function(info) return EventHorizon.opt.gcd end,
 						set = function(info, val) EventHorizon.opt.gcd = val EventHorizon.mainFrame:ToggleGcdReference(val) end
 					},
-					gcdSpell = {
+					gcdGrid = {
 						order = 3,
-						name = "Gcd spell",
-						type = "input",
-						desc = "Input spell name/id to track Gcd",
-						get = function(info) return EventHorizon.opt.gcdSpell end,
-						set = function(info,val) EventHorizon.opt.gcdSpell = val end
+						name = "Gcd Grid (Experimental)",
+						desc = "Add gcd markers across frame",
+						type = "toggle",
+						width = 1.0,
+						get = function(info) return EventHorizon.opt.gcdGrid end,
+						set = function(info, val) EventHorizon.opt.gcdGrid = val end
 					}
 				}
 			}
