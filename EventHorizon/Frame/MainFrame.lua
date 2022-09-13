@@ -98,7 +98,7 @@ function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
 	:WithCoolDown()
 
 	local castTime = select(4, GetSpellInfo(spellId))
-	if  castTime > 0 then
+	if (castTime or 0) > 0 then
 		builder:WithCast()
 	end
 
@@ -255,7 +255,7 @@ function MainFrame:UpdateAllFrames()
 	if self.nowReference then
 		self.nowReference
 		:GetTexture()
-		:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -past/(future-past)*width, 0)	
+		:SetPoint('TOPLEFT',self.frame,'TOPLEFT', -past/(future-past)*width, -1)	
 
 		self.nowReference
 		:GetTexture()
@@ -265,7 +265,7 @@ function MainFrame:UpdateAllFrames()
 	if self.gcdReference then
 		self.gcdReference
 		:GetTexture()
-		:SetPoint('TOP',self.frame,'TOP', -past/(future-past)*width-0.5+height, 0)	
+		:SetPoint('TOP',self.frame,'TOP', -past/(future-past)*width-0.5+height, -1)	
 
 		self.gcdReference
 		:GetTexture()

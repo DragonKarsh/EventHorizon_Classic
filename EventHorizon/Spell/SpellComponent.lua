@@ -52,8 +52,12 @@ function SpellComponent:Disable()
 end
 
 function SpellComponent:SpellNotInteresting(spellId)
-	local spellName = GetSpellInfo(spellId)
-	return self.spellName ~= spellName
+	local candidateSpellName = GetSpellInfo(spellId)
+	-- some spell aura names are applied by other spell aura names
+	local applliedBy = EventHorizon.appliedByLookup[self.spellName]
+
+	--     not (                          interesting                                                  )
+	return not (self.spellName == candidateSpellName or (applliedBy and applliedBy[candidateSpellName]))
 end
 
 function SpellComponent:UnitNotInteresting(unitGuid)
