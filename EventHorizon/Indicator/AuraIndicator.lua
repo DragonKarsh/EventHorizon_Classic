@@ -163,11 +163,18 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 	end
 end
 
-function AuraIndicator:RemoveTicksAfter(time)
+function AuraIndicator:RemoveTicksAfter(point)
+	-- lastTickProximiySec: Align the last remaining tick with proximity to the stop stop
+	-- (cosmetics due to server internal jitter)
+	local lastTickProximitySec = 0.2
+
 	for i=#self.ticks,1,-1 do
-		local diff = self.ticks[i].start - time
-		if diff > 0.1 then
+		local proximity = math.abs(self.ticks[i].start - point)
+		if self.ticks[i].start > point + lastTickProximitySec then
 			tremove(self.ticks,i):Dispose()
+		elseif proximity < lastTickProximitySec then
+			self.ticks[i].stop = point
+			self.ticks[i].start = point
 		end
 	end
 end
