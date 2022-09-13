@@ -228,11 +228,8 @@ function MainFrame:Refresh()
 	else
 		self:Unlock()
 	end
-	if EventHorizon.opt.hidden then
-		self:Hide()
-	else
-		self:Show()
-	end
+	local inCombat = InCombatLockdown() or false
+	self:ShowOrHide(inCombat)
 end
 
 function MainFrame:UpdateAllFrames()
