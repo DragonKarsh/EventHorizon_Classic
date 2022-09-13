@@ -12,8 +12,8 @@ setmetatable(Reference, {
 function Reference:new(frame)
 	self.frame = frame
 
-	self.texture = self.frame:CreateTexture(nil, 'BORDER')
-	self.texture:SetPoint('BOTTOM',self.frame,'BOTTOM')
+	self.texture = self.frame:CreateTexture(nil, 'OVERLAY')
+	self.texture:SetPoint('BOTTOM',self.frame,'BOTTOM', 0, 1)
 	self.texture:SetWidth(1)
 end
 

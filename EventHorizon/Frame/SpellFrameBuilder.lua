@@ -20,6 +20,7 @@ function SpellFrameBuilder:new(framePool, spellId, enabled, order)
 	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
 	self.frame:SetBackdrop({bgFile=texture})
 	self.frame:SetBackdropColor(unpack(EventHorizon.opt.background))	
+	self.frame:SetFrameLevel(10)	
 
 
 end
