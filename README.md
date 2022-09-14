@@ -19,6 +19,17 @@ This alone gives you an immediate feedback as to how well you timed a cast, refr
 
 You no longer need to go dig your logs to find how efficient your execution was and can improve during the encounter itself.  
 
+## Main Elements
+
+![image](https://user-images.githubusercontent.com/86252474/190220515-61611a11-d4f0-427a-a835-1cc27d2a38ea.png)
+
+* `A` : "Now" reference. Everything to the left of it is considered in the past.
+* `B` : Recast advisory. The point you should start casting for the aura to apply right when the previous one ends (Anti clipping).
+* `C` : Damage/Heal tick markers.
+* `D` : Aura duration.
+* `E` : Cast/Channel duration.
+* `F` : Cooldown duration.
+
 >#### Slash Commands
 
 | command                          | description                |
