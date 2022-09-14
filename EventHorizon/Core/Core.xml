@@ -4,5 +4,6 @@
   <Script file='Commands.lua'/>
   <Script file='Database.lua'/>
   <Script file='Cache.lua'/>
+  <Script file='Utils.lua'/>
 	<Script file='Options.lua'/>
 </Ui>
