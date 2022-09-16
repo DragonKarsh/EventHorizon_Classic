@@ -54,7 +54,7 @@ end
 function SpellComponent:SpellNotInteresting(spellId)
 	local candidateSpellName = GetSpellInfo(spellId)
 	-- some spell aura names are applied by other spell aura names
-	local applliedBy = EventHorizon.appliedByLookup[self.spellName]
+	local applliedBy = EventHorizon.appliedByCache.Get(self.spellName)
 
 	--     not (                          interesting                                                  )
 	return not (self.spellName == candidateSpellName or (applliedBy and applliedBy[candidateSpellName]))
