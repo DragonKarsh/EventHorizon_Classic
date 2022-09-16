@@ -1024,7 +1024,7 @@ function EventHorizon:DoImport()
 	if newProfile then
 		self.database:SetProfile(self.newProfileName)
 		self.database:ResetProfile(false, true)
-		EventHorizon.Utils:Copy(newProfile, self.database.profile)
+		EventHorizon.Utils:Copy(self:LocalizeSpellOptions(newProfile), self.database.profile)
 	else
 		print("EventHorizon ERROR: error importing profile data string.")
 		return false
@@ -1032,4 +1032,19 @@ function EventHorizon:DoImport()
 	self.exportImportString = nil
 	self.newProfileName = nil
 	return true
+end
+
+function EventHorizon:LocalizeSpellOptions(profile)
+	targetCategories = {"debuffs", "buffs", "channels", "casts"}
+	for _, category in ipairs(targetCategories) do
+		local convertedSpellOptions = {}
+		for spellName, spellInfo in pairs(profile[category]) do
+			local localizedSpellName = select(1, GetSpellInfo(spellInfo.spellId))
+			convertedSpellOptions[localizedSpellName] = spellInfo
+		end
+		if next(convertedSpellOptions) ~= nil then
+			profile[category] = convertedSpellOptions
+		end
+	end
+	return profile
 end

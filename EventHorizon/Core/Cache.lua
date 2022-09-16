@@ -2,8 +2,12 @@
 local spellCache = {}
 EventHorizon.spellCache = spellCache
 
-local cache = {}       -- private
-local bestIcon = {} -- private
+local appliedByCache = {}
+EventHorizon.appliedByCache = appliedByCache
+
+local appliedByLookup = {} -- private
+local cache = {}           -- private
+local bestIcon = {}        -- private
 
 -- Builds a cache of name->(id=icon) pairs from existing spell data
 -- This is a rather slow operation, so it's only done once, and the result is subsequently saved
@@ -81,14 +85,31 @@ end
 
 function EventHorizon:InitializeCache()
     self.spellCache.Build()
+    self.appliedByCache.Build()
 end
 
-EventHorizon.appliedByLookup = {
-    ["Frost Fever"] = {
-        ["Icy Touch"]     = true,
-        ["Chains of Ice"] = true
-    },
-    ["Blood Plague"] = {
-        ["Plague Strike"] = true
+function appliedByCache.Build()
+    local spelldata = {
+        [59921] = {        -- Frost Fever
+            45477,              -- Icy Touch
+            45524               -- Chains of Ice
+        },
+        [59879] = {         -- Blood Plague
+            45462               -- Plague Strike
+        }
     }
-}
+    
+    -- Convert spellids to localized names
+    for spellId, appliedBySpells in pairs(spelldata) do
+        local spellName = select(1, GetSpellInfo(spellId))
+        appliedByLookup[spellName] = {}
+        for _, appliedBySpell in ipairs(appliedBySpells) do
+            local appliedBySpellName = select(1, GetSpellInfo(appliedBySpell))
+            appliedByLookup[spellName][appliedBySpellName] = true
+        end
+    end
+end
+
+function appliedByCache.Get(spellName)
+    return appliedByLookup[spellName]
+end
