@@ -82,6 +82,17 @@ function EventHorizon:CreateGlobalOptions()
 						width = 1.0,
 						get = function(info) return EventHorizon.opt.combat end,
 						set = function(info, val) EventHorizon.opt.combat = val EventHorizon.mainFrame:ShowOrHide(false) end
+					},
+					throttle = {
+						order = 5,
+						name = "Throttle (ms)",
+						type = "range",
+						desc = "How long in milliseconds to throttle frame updates (increase if having performance issues)",
+						min = 0,
+						max = 50,
+						step = 1,
+						get = function(info) return EventHorizon.opt.throttle end,
+						set = function(info,val) EventHorizon.opt.throttle = val end
 					}
 				}
 			},
@@ -734,8 +745,6 @@ function EventHorizon:CreateChanneledSpellsOptions()
 	EventHorizon.options.args.channels.args.existing.args = channeledSpells
 end
 function EventHorizon:GetColorOptions(spell,spellName)
-	 print(spell, spellName,"real", unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.aura or EventHorizon.opt.colors.aura))
-	 print(spell,spellName,"def",unpack(EventHorizon.opt.colors.aura))
 	return {
 			channel = {
 				order = 1,

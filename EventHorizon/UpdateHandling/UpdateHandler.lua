@@ -11,11 +11,20 @@ setmetatable(UpdateHandler, {
 
 function UpdateHandler:new(frame)
 	self.frame = frame
+	self.timeSinceLastUpdate = 0
 end
 
 function UpdateHandler:Enable()
-	self.frame:SetScript("OnUpdate", function(frame, elapsed) self:OnUpdate(elapsed) end)
-end
+	self.frame:SetScript("OnUpdate", 
+		function(frame, elapsed) 
+			local realElapsed = self.timeSinceLastUpdate + elapsed
+			self.timeSinceLastUpdate = realElapsed
+			if self.timeSinceLastUpdate >= (EventHorizon.opt.throttle/1000) then
+				self.timeSinceLastUpdate = 0
+				self:OnUpdate(realElapsed) 
+			end
+		end)
+end	
 
 function UpdateHandler:Disable()
 	self.frame:SetScript("OnUpdate", nil)
