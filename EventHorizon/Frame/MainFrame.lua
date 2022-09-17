@@ -1,3 +1,12 @@
+local GetSpellInfo = GetSpellInfo
+local InCombatLockdown = InCombatLockdown
+local CreateFramePool = CreateFramePool
+
+local pairs = pairs
+local setmetatable = setmetatable
+local tremove = tremove
+local tinsert = tinsert
+
 MainFrame = {}
 MainFrame.__index = MainFrame
 

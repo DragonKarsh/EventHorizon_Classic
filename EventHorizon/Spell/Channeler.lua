@@ -1,3 +1,7 @@
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+
 Channeler = {}
 for k, v in pairs(SpellComponent) do
   Channeler[k] = v

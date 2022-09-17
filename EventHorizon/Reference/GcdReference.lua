@@ -1,3 +1,7 @@
+local pairs = pairs
+local setmetatable = setmetatable
+local unpack = unpack
+
 GcdReference = {}
 for k, v in pairs(Reference) do
   GcdReference[k] = v

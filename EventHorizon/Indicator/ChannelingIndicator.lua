@@ -1,3 +1,8 @@
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+local tremove = tremove
+
 ChannelingIndicator = {}
 for k, v in pairs(CastingIndicator) do
   ChannelingIndicator[k] = v

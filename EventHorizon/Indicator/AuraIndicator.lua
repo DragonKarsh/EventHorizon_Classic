@@ -1,3 +1,13 @@
+local GetSpellInfo = GetSpellInfo
+local GetTime = GetTime
+
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+local tremove = tremove
+local floor = math.floor
+local abs = math.abs
+
 AuraIndicator = {}
 for k, v in pairs(Indicator) do
   AuraIndicator[k] = v
@@ -38,7 +48,7 @@ function AuraIndicator:new(target, start, stop, spell)
 		self.snapInterval = self.originalDuration / self.numTicks		
 	elseif self.spell.ticks and self.spell.tickType == "interval" and self.spell.tickInterval > 0 then
 		self.snapInterval = self.spell.tickInterval
-		self.numTicks = math.floor(self.originalDuration/self.spell.tickInterval)		
+		self.numTicks = floor(self.originalDuration/self.spell.tickInterval)		
 	end
 
 	if self.spell.ticks then
@@ -142,7 +152,7 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 			self.snapInterval = duration / self.numTicks		
 		elseif self.spell.ticks and self.spell.tickType == "interval" and self.spell.tickInterval > 0 then
 			self.snapInterval = self.spell.tickInterval
-			self.numTicks = math.floor(duration/self.spell.tickInterval)		
+			self.numTicks = floor(duration/self.spell.tickInterval)		
 		end	
 	end
 	
@@ -167,7 +177,7 @@ function AuraIndicator:RemoveTicksAfter(point)
 	local lastTickProximitySec = 0.2
 
 	for i=#self.ticks,1,-1 do
-		local proximity = math.abs(self.ticks[i].start - point)
+		local proximity = abs(self.ticks[i].start - point)
 		if self.ticks[i].start > point + lastTickProximitySec then
 			tremove(self.ticks,i):Dispose()
 		elseif proximity < lastTickProximitySec then

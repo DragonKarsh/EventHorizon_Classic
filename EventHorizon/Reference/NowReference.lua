@@ -1,3 +1,8 @@
+local pairs = pairs
+local setmetatable = setmetatable
+local unpack = unpack
+
+
 NowReference = {}
 for k, v in pairs(Reference) do
   NowReference[k] = v

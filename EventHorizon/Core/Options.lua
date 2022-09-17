@@ -7,6 +7,9 @@ EventHorizon.options = {
 	}	
 }
 
+
+local GetSpellInfo = GetSpellInfo
+
 function EventHorizon:InitializeOptions()	
 	self:InitializeAllOptions()
 	

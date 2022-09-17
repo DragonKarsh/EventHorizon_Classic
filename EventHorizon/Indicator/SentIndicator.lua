@@ -1,3 +1,6 @@
+local pairs = pairs
+local setmetatable = setmetatable
+
 SentIndicator = {}
 for k, v in pairs(Indicator) do
   SentIndicator[k] = v

@@ -1,3 +1,8 @@
+local GetTime = GetTime
+
+local pairs = pairs
+local setmetatable = setmetatable
+
 GcdUpdateHandler = {}
 for k, v in pairs(UpdateHandler) do
   GcdUpdateHandler[k] = v

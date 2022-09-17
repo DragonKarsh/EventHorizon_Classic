@@ -1,3 +1,14 @@
+local UnitBuff = UnitBuff
+local UnitGUID = UnitGUID
+local GetTime = GetTime
+
+
+local abs = math.abs
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+local tremove = tremove
+
 Buffer = {}
 for k, v in pairs(SpellComponent) do
   Buffer[k] = v
@@ -63,7 +74,7 @@ function Buffer:WasReplaced(buffStop, stop, refresh)
 end
 
 function Buffer:WasRefreshed(originalStop, lastSuccess, start, stop) 
-	return originalStop ~= stop and math.abs(start - lastSuccess) > 0.5
+	return originalStop ~= stop and abs(start - lastSuccess) > 0.5
 end
 
 function Buffer:CheckBuff()

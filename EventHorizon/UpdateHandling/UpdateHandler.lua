@@ -1,3 +1,5 @@
+local setmetatable = setmetatable
+
 UpdateHandler = {}
 UpdateHandler.__index = UpdateHandler
 

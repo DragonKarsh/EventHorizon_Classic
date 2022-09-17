@@ -1,3 +1,9 @@
+local GetSpellInfo = GetSpellInfo
+
+local setmetatable = setmetatable
+local pairs = pairs
+local tinsert = tinsert
+
 SpellFrameBuilder = {}
 SpellFrameBuilder.__index = SpellFrameBuilder
 

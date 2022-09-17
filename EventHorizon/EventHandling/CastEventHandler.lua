@@ -1,3 +1,10 @@
+local CastingInfo = CastingInfo
+
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
+
 CastEventHandler = {}
 for k, v in pairs(EventHandler) do
   CastEventHandler[k] = v

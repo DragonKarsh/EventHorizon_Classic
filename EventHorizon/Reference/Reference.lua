@@ -1,3 +1,6 @@
+local setmetatable = setmetatable
+
+
 Reference = {}
 Reference.__index = Reference
 

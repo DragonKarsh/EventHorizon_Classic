@@ -1,3 +1,9 @@
+local GetSpellCooldown = GetSpellCooldown
+
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+
 CoolDowner = {}
 for k, v in pairs(SpellComponent) do
   CoolDowner[k] = v

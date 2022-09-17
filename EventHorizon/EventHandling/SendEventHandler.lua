@@ -1,3 +1,6 @@
+local pairs = pairs
+local setmetatable = setmetatable
+
 SendEventHandler = {}
 for k, v in pairs(EventHandler) do
   SendEventHandler[k] = v
