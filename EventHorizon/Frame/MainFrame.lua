@@ -302,6 +302,16 @@ function MainFrame:UpdateAllFrames()
 			spellFrame
 			:GetIcon()
 			:SetSize(height, height)
+			
+			local coordScale
+			if EventHorizon.opt.zoom ~= nil then
+				coordScale = EventHorizon.opt.zoom / 100
+			else
+				coordScale = 1
+			end
+			spellFrame
+			:GetIcon()
+			:SetTexCoord(0 + coordScale, 1 - coordScale, 0 + coordScale, 1 -coordScale)
 		end
 
 		if i > 1 then

@@ -221,6 +221,17 @@ function EventHorizon:CreateGlobalOptions()
 				type = "group",
 				inline = true,
 				args = {
+					zoom = {
+						name = "Spell Icon Zoom %",
+						desc = "Zoom in on spell icons so that the grey borders can be cropped out",
+						type = "range",
+						min = 0,
+						max = 50,
+						step = 1,
+						order = 1,
+						get = function(info) return EventHorizon.opt.zoom end,
+						set = function(info, val) EventHorizon.opt.zoom = val EventHorizon:RefreshMainFrame() end
+					},
 					width = {
 						name = "Width",
 						type = "range",
@@ -228,7 +239,7 @@ function EventHorizon:CreateGlobalOptions()
 						min = 1,
 						max = 500,
 						step = 1,
-						order = 1,
+						order = 2,
 						get = function(info) return EventHorizon.opt.width end,
 						set = function(info,val) EventHorizon:SetWidth(val) end
 					},				
@@ -239,11 +250,11 @@ function EventHorizon:CreateGlobalOptions()
 						min = 1,
 						max = 50,
 						step = 1,
-						order = 2,
+						order = 3,
 						get = function(info) return EventHorizon.opt.height end,
 						set = function(info,val) EventHorizon:SetHeight(val) end
 					}
-				}			
+				}
 			},
 			timeLine = {
 				order = 4,
