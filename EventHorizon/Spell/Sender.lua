@@ -13,8 +13,8 @@ setmetatable(Sender, {
   end,
 })
 
-function Sender:new(spellId, frame)
-	SpellComponent.new(self, spellId, frame)
+function Sender:new(frame, spell)
+	SpellComponent.new(self, frame, spell)
 end
 
 function Sender:WithEventHandler()
@@ -23,6 +23,6 @@ function Sender:WithEventHandler()
 end
 
 function Sender:SentSpell(time)
-	local indicator  = SentIndicator(time)
+	local indicator  = SentIndicator(time, self.spell)
 	tinsert(self.indicators, indicator)
 end

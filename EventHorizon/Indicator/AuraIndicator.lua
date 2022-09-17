@@ -13,21 +13,19 @@ setmetatable(AuraIndicator, {
   end,
 })
 
-function AuraIndicator:new(target, start, stop, spellId, texture, config)
-	Indicator.new(self, target, start, stop)
-	self.style.texture = texture
-	self.style.ready = EventHorizon.opt.ready
-
+function AuraIndicator:new(target, start, stop, spell)
+	Indicator.new(self, target, start, stop, spell)
 	
-	self.spellId = spellId
-	self.spellName = GetSpellInfo(self.spellId)
-	self.config = config
+	
 	self.casted = select(4, GetSpellInfo(self.spellId)) > 0
+
+	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.aura or EventHorizon.opt.colors.aura
+	self.style.ready = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
 
 	if self.casted then
 		self.style.point1 = {'TOP', 'TOP', 0, -3}
 		self.style.point2 = {'BOTTOM', 'TOP', -3, -6}
-		self.recast = RecastIndicator(target, start, stop, spellId, texture)
+		self.recast = RecastIndicator(target, start, stop, self.spell)
 	end
 	
 	self.ticks = {}
@@ -35,17 +33,17 @@ function AuraIndicator:new(target, start, stop, spellId, texture, config)
 	self.adjustExtendedOffset = 0
 	self.originalDuration = stop - start
 
-	if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
-		self.numTicks = self.config.tickCount
+	if self.spell.ticks and self.spell.tickType == "count" and self.spell.tickCount > 0 then		
+		self.numTicks = self.spell.tickCount
 		self.snapInterval = self.originalDuration / self.numTicks		
-	elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
-		self.snapInterval = self.config.tickInterval
-		self.numTicks = math.floor(self.originalDuration/self.config.tickInterval)		
+	elseif self.spell.ticks and self.spell.tickType == "interval" and self.spell.tickInterval > 0 then
+		self.snapInterval = self.spell.tickInterval
+		self.numTicks = math.floor(self.originalDuration/self.spell.tickInterval)		
 	end
 
-	if self.config.ticks then
+	if self.spell.ticks then
 		for i=1,self.numTicks do
-			local tick = TickIndicator(target, start + i*self.snapInterval)
+			local tick = TickIndicator(target, start + i*self.snapInterval, self.spell)
 			tinsert(self.ticks, tick)
 		end
 	end
@@ -59,7 +57,7 @@ end
 
 function AuraIndicator:Cancel(stop)	
 	if self.casted then
-		self.style.texture = EventHorizon.opt.ready
+		self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
 		self.style.point1 = {'TOP', 'TOP', 0, -3}
 		self.style.point2 = {'BOTTOM', 'BOTTOM'}
 		Indicator.Cancel(self,stop)
@@ -96,7 +94,7 @@ function AuraIndicator:Refresh(start, stop)
 		self:ApplyTicksAfter(start, stop, lastTick.start)			
 	end
 
-	if self.config.lastTick then
+	if self.spell.lastTick then
 		local lastTick = self.ticks[#self.ticks]
 		self:Stop(lastTick.start)
 		self.original.stop = lastTick.start
@@ -139,12 +137,12 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 
 		-- Corruption is a hasted refreshable spell and we break the immutability of the dot instance because of that
 		local duration = stop - start
-		if self.config.ticks and self.config.tickType == "count" and self.config.tickCount > 0 then		
-			self.numTicks = self.config.tickCount
+		if self.spell.ticks and self.spell.tickType == "count" and self.spell.tickCount > 0 then		
+			self.numTicks = self.spell.tickCount
 			self.snapInterval = duration / self.numTicks		
-		elseif self.config.ticks and self.config.tickType == "interval" and self.config.tickInterval > 0 then
-			self.snapInterval = self.config.tickInterval
-			self.numTicks = math.floor(duration/self.config.tickInterval)		
+		elseif self.spell.ticks and self.spell.tickType == "interval" and self.spell.tickInterval > 0 then
+			self.snapInterval = self.spell.tickInterval
+			self.numTicks = math.floor(duration/self.spell.tickInterval)		
 		end	
 	end
 	
@@ -157,7 +155,7 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 		end
 
 		if tickTime <= stop then
-			local tick = TickIndicator(self.target, tickTime)
+			local tick = TickIndicator(self.target, tickTime, self.spell)
 			tinsert(self.ticks, tick)
 		end
 	end

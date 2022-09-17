@@ -9,19 +9,20 @@ setmetatable(SpellFrame, {
   end,
 })
 
-function SpellFrame:new(spellId, frame, spellComponents, icon, order)
-	self.spellId = spellId
-	self.spellName = GetSpellInfo(spellId)
+function SpellFrame:new(frame, spell, spellComponents, icon)
+	self.spell = spell
+	self.spellId = spell.spellId
+	self.spellName = GetSpellInfo(self.spellId)
 	self.frame = frame
 	self.spellComponents = spellComponents
 	self.icon = icon
-	self.order = order
+	self.enabled = self.spell.enabled
 end
 
-function SpellFrame:Update(order, enabled)
-	self.order = order
+function SpellFrame:Update(spell)
 
-	if enabled then 
+	self.enabled = spell.enabled
+	if self.enabled then 
 		self:Enable()
 	else 
 		self:Disable()

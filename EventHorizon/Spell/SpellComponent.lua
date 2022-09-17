@@ -9,9 +9,10 @@ setmetatable(SpellComponent, {
   end,
 })
 
-function SpellComponent:new(spellId, frame)
-	self.spellId = spellId
-	self.spellName = GetSpellInfo(spellId)
+function SpellComponent:new(frame, spell)
+	self.spell = spell
+	self.spellId = self.spell.spellId
+	self.spellName = GetSpellInfo(self.spellId)
 	self.frame = frame	
 	self.playerGuid = UnitGUID('player')
 

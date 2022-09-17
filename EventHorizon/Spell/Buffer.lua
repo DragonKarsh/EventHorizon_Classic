@@ -13,8 +13,8 @@ setmetatable(Buffer, {
   end,
 })
 
-function Buffer:new(spellId, frame)
-	SpellComponent.new(self, spellId, frame)
+function Buffer:new(frame, spell)
+	SpellComponent.new(self, frame, spell)
 	
 	self.buffs = {}
 	self.successes = {}
@@ -27,8 +27,8 @@ function Buffer:WithEventHandler()
 end
 
 function Buffer:GenerateBuff(target, start, stop)	
-	local buff = AuraIndicator(target, start, stop, self.spellId, EventHorizon.opt.buff, EventHorizon.opt.buffs[self.spellName])
-	local alwaysShow = EventHorizon.opt.buffs[self.spellName].unitId == 'player'
+	local buff = AuraIndicator(target, start, stop, self.spell)
+	local alwaysShow = self.spell.unitId == 'player'
 	buff.alwaysShow = alwaysShow
 
 	if buff.casted then

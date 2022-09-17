@@ -36,68 +36,68 @@ function MainFrame:AddSpellFrame(spellFrame)
 	end
 end
 
-function MainFrame:AddChanneledSpellFrame(spellId, enabled, order)
-	local spellFrame = self:RemoveSpellFrame(spellId)
+function MainFrame:AddChanneledSpellFrame(spell)
+	local spellFrame = self:RemoveSpellFrame(spell.spellId)
 	
 	if not spellFrame then
-		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
+		spellFrame = self:CreateSpellFrameBuilder(spell)
 		:WithChannel()
 		:Build()
 	else
-		spellFrame:Update(order, enabled)
+		spellFrame:Update(spell)
 	end
 
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:AddCastedSpellFrame(spellId, enabled, order)
-	local spellFrame = self:RemoveSpellFrame(spellId)
+function MainFrame:AddCastedSpellFrame(spell)
+	local spellFrame = self:RemoveSpellFrame(spell.spellId)
 
 	if not spellFrame then
-		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
+		spellFrame = self:CreateSpellFrameBuilder(spell)
 		:Build()
 	else
-		spellFrame:Update(order, enabled)
+		spellFrame:Update(spell)
 	end
 
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:AddDebuffSpellFrame(spellId, enabled, order)
-	local spellFrame = self:RemoveSpellFrame(spellId)
+function MainFrame:AddDebuffSpellFrame(spell)
+	local spellFrame = self:RemoveSpellFrame(spell.spellId)
 
 	if not spellFrame then
-		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
+		spellFrame = self:CreateSpellFrameBuilder(spell)
 		:WithDebuff()
 		:Build()
 	else
-		spellFrame:Update(order, enabled)
+		spellFrame:Update(spell)
 	end
 
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:AddBuffSpellFrame(spellId, enabled, order)
-	local spellFrame = self:RemoveSpellFrame(spellId)
+function MainFrame:AddBuffSpellFrame(spell)
+	local spellFrame = self:RemoveSpellFrame(spell.spellId)
 
 	if not spellFrame then
-		spellFrame = self:CreateSpellFrameBuilder(spellId, enabled, order)
+		spellFrame = self:CreateSpellFrameBuilder(spell)
 		:WithBuff()
 		:Build()
 	else
-		spellFrame:Update(order, enabled)
+		spellFrame:Update(spell)
 	end
 
 	self:AddSpellFrame(spellFrame)
 end
 
-function MainFrame:CreateSpellFrameBuilder(spellId, enabled, order)
-	local builder = SpellFrameBuilder(self.spellFramePool, spellId, enabled, order)
+function MainFrame:CreateSpellFrameBuilder(spell)
+	local builder = SpellFrameBuilder(self.spellFramePool, spell)
 	:WithIcon()
 	:WithSender()
 	:WithCoolDown()
 
-	local castTime = select(4, GetSpellInfo(spellId))
+	local castTime = select(4, GetSpellInfo(spell.spellId))
 	if (castTime or 0) > 0 then
 		builder:WithCast()
 	end
@@ -120,19 +120,19 @@ end
 
 function MainFrame:LoadSpellFrames()
 	for _,spell in pairs(EventHorizon.opt.channels) do
-		self:AddChanneledSpellFrame(spell.spellId, spell.enabled, spell.order)
+		self:AddChanneledSpellFrame(spell)
 	end
 
 	for _,spell in pairs(EventHorizon.opt.casts) do
-		self:AddCastedSpellFrame(spell.spellId, spell.enabled, spell.order)
+		self:AddCastedSpellFrame(spell)
 	end
 
 	for _,spell in pairs(EventHorizon.opt.debuffs) do
-		self:AddDebuffSpellFrame(spell.spellId, spell.enabled, spell.order)
+		self:AddDebuffSpellFrame(spell)
 	end
 
 	for _,spell in pairs(EventHorizon.opt.buffs) do
-		self:AddBuffSpellFrame(spell.spellId, spell.enabled, spell.order)
+		self:AddBuffSpellFrame(spell)
 	end
 end
 
@@ -192,7 +192,7 @@ function MainFrame:ToggleGcdReference(toggle)
 end
 
 function MainFrame:OrderEnabledSpellFrames()
-	table.sort(self.enabledSpellFrames, function(a,b) return a.order < b.order end)
+	table.sort(self.enabledSpellFrames, function(a,b) return a.spell.order < b.spell.order end)
 end
 
 function MainFrame:ReleaseSpellFrame(spellId)
@@ -243,7 +243,7 @@ function MainFrame:UpdateAllFrames()
 	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
 
 	self.frame:SetBackdrop({edgeFile=texture, edgeSize=1})
-	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.border))	
+	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.colors.border))	
 
 	if EventHorizon.opt.point then
 		self.handle:SetPoint(unpack(EventHorizon.opt.point))
@@ -256,7 +256,7 @@ function MainFrame:UpdateAllFrames()
 
 		self.nowReference
 		:GetTexture()
-		:SetColorTexture(unpack(EventHorizon.opt.nowColor))	
+		:SetColorTexture(unpack(EventHorizon.opt.colors.now))	
 	end
 
 	if self.gcdReference then
@@ -266,7 +266,7 @@ function MainFrame:UpdateAllFrames()
 
 		self.gcdReference
 		:GetTexture()
-		:SetColorTexture(unpack(EventHorizon.opt.gcdColor))	
+		:SetColorTexture(unpack(EventHorizon.opt.colors.gcd))	
 	end
 
 
@@ -282,7 +282,7 @@ function MainFrame:UpdateAllFrames()
 
 		spellFrame
 		:GetFrame()
-		:SetBackdropColor(unpack(EventHorizon.opt.background))
+		:SetBackdropColor(unpack(EventHorizon.opt.colors.background))
 
 
 		spellFrame

@@ -13,11 +13,11 @@ setmetatable(CoolDownIndicator, {
   end,
 })
 
-function CoolDownIndicator:new(start, stop)
-	Indicator.new(self, nil, start, stop)	
+function CoolDownIndicator:new(start, stop, spell)
+	Indicator.new(self, nil, start, stop, spell)	
 
-	self.style.texture = EventHorizon.opt.coolDown
-	self.style.ready = EventHorizon.opt.ready
+	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.coolDown or EventHorizon.opt.colors.coolDown
+	self.style.ready = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
 
 end
 

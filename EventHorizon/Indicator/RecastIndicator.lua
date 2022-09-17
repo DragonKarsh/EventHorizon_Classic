@@ -13,14 +13,12 @@ setmetatable(RecastIndicator, {
   end,
 })
 
-function RecastIndicator:new(target, start, stop, spellId, texture)
-	Indicator.new(self, target, start, stop)	
+function RecastIndicator:new(target, start, stop, spell)
+	Indicator.new(self, target, start, stop, spell)	
 
-	self.style.texture = texture
-	self.style.ready = EventHorizon.opt.ready
+	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.aura or EventHorizon.opt.colors.aura
+	self.style.ready = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
 	self.style.point1 = {'TOP', 'TOP', 0, -6}
-
-	self.spellId = spellId
 
 end
 

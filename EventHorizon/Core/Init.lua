@@ -27,6 +27,8 @@ function EventHorizon:CreateMainFrame()
 	:WithNow()
 	:WithGcd()
 	:Build()
+
+	self:RefreshMainFrame()
 end
 
 function EventHorizon:RefreshMainFrame()
