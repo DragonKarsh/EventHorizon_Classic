@@ -1,3 +1,6 @@
+local pairs = pairs
+local setmetatable = setmetatable
+
 CastingIndicator = {}
 for k, v in pairs(Indicator) do
   CastingIndicator[k] = v

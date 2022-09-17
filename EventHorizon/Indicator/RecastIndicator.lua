@@ -1,3 +1,9 @@
+local GetSpellInfo = GetSpellInfo
+local GetTime = GetTime
+
+local pairs = pairs
+local setmetatable = setmetatable
+
 RecastIndicator = {}
 for k, v in pairs(Indicator) do
   RecastIndicator[k] = v

@@ -1,3 +1,7 @@
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+
 Sender = {}
 for k, v in pairs(SpellComponent) do
   Sender[k] = v

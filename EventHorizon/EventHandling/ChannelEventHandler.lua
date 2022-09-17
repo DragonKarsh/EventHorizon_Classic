@@ -1,3 +1,10 @@
+local ChannelInfo = ChannelInfo
+local GetTime = GetTime
+
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
 ChannelEventHandler = {}
 for k, v in pairs(EventHandler) do
   ChannelEventHandler[k] = v

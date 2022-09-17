@@ -1,3 +1,7 @@
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
 EventHandler = {}
 EventHandler.__index = EventHandler
 

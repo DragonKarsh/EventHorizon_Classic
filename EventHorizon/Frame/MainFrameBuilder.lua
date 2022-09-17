@@ -1,3 +1,8 @@
+local CreateFrame = CreateFrame
+
+local setmetatable = setmetatable
+local unpack = unpack
+
 MainFrameBuilder = {}
 MainFrameBuilder.__index = MainFrameBuilder
 

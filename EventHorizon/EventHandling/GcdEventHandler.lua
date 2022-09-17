@@ -1,3 +1,9 @@
+local GetSpellCooldown = GetSpellCooldown
+
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
 GcdEventHandler = {}
 for k, v in pairs(EventHandler) do
   GcdEventHandler[k] = v
@@ -19,6 +25,7 @@ LibStub("AceEvent-3.0")
 local events = {
 	["SPELL_UPDATE_COOLDOWN"] = true
 }
+
 
 function GcdEventHandler:new(reference)
 	EventHandler.new(self, events)

@@ -1,3 +1,11 @@
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local GetTime = GetTime
+local UnitExists = UnitExists
+
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
 DebuffEventHandler = {}
 for k, v in pairs(EventHandler) do
   DebuffEventHandler[k] = v

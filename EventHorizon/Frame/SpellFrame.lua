@@ -1,3 +1,8 @@
+local GetSpellInfo = GetSpellInfo
+
+local setmetatable = setmetatable
+local pairs = pairs
+
 SpellFrame = {}
 SpellFrame.__index = SpellFrame
 
@@ -8,6 +13,8 @@ setmetatable(SpellFrame, {
     return self
   end,
 })
+
+
 
 function SpellFrame:new(frame, spell, spellComponents, icon)
 	self.spell = spell

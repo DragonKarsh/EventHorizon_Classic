@@ -1,3 +1,8 @@
+local GetSpellInfo = GetSpellInfo
+local UnitGUID = UnitGUID
+
+local setmetatable = setmetatable
+
 SpellComponent = {}
 SpellComponent.__index = SpellComponent
 
@@ -8,6 +13,7 @@ setmetatable(SpellComponent, {
     return self
   end,
 })
+
 
 function SpellComponent:new(frame, spell)
 	self.spell = spell

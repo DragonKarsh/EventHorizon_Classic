@@ -9,6 +9,10 @@ local appliedByLookup = {} -- private
 local cache = {}           -- private
 local bestIcon = {}        -- private
 
+local GetSpellInfo = GetSpellInfo
+local IsSpellKnown = IsSpellKnown
+local GetTimePreciseSec = GetTimePreciseSec
+
 -- Builds a cache of name->(id=icon) pairs from existing spell data
 -- This is a rather slow operation, so it's only done once, and the result is subsequently saved
 function spellCache.Build()

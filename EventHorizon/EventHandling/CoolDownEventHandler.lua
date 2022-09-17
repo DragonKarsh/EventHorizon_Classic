@@ -1,3 +1,7 @@
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
 CoolDownEventHandler = {}
 for k, v in pairs(EventHandler) do
   CoolDownEventHandler[k] = v

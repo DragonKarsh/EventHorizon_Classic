@@ -1,3 +1,6 @@
+local pairs = pairs
+local setmetatable = setmetatable
+
 InCombatEventHandler = {}
 for k, v in pairs(EventHandler) do
   InCombatEventHandler[k] = v

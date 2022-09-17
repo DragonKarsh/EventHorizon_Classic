@@ -1,3 +1,14 @@
+local GetSpellCooldown = GetSpellCooldown
+local UnitDebuff = UnitDebuff
+local UnitGUID = UnitGUID
+local GetTime = GetTime
+
+local abs = math.abs
+local pairs = pairs
+local setmetatable = setmetatable
+local tinsert = tinsert
+local tremove = tremove
+
 Debuffer = {}
 for k, v in pairs(SpellComponent) do
   Debuffer[k] = v
@@ -70,7 +81,7 @@ function Debuffer:WasRefreshed(debuff, lastSuccess, start, stop)
 		end
 
 		-- try to detect a cast, casts do not refresh dots
-		if math.abs(start - lastSuccess) < 0.5 then
+		if abs(start - lastSuccess) < 0.5 then
 			return false
 		end
 	else

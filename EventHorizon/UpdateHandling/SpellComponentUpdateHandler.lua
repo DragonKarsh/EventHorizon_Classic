@@ -1,3 +1,12 @@
+local CreateFrame = CreateFrame
+local GetTime = GetTime
+
+local pairs = pairs
+local setmetatable = setmetatable
+local tremove = tremove
+local tinsert = tinsert
+local unpack = unpack
+
 SpellComponentUpdateHandler = {}
 for k, v in pairs(UpdateHandler) do
   SpellComponentUpdateHandler[k] = v
@@ -12,6 +21,7 @@ setmetatable(SpellComponentUpdateHandler, {
     return self
   end,
 })
+
 
 function SpellComponentUpdateHandler:new(spellComponent)
 	UpdateHandler.new(self, CreateFrame("Frame"))

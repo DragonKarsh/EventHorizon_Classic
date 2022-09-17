@@ -1,3 +1,12 @@
+local GetTime = GetTime
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local UnitExists = UnitExists
+
+local select = select
+local pairs = pairs
+local setmetatable = setmetatable
+
+
 BuffEventHandler = {}
 for k, v in pairs(EventHandler) do
   BuffEventHandler[k] = v

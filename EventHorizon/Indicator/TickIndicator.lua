@@ -1,3 +1,6 @@
+local pairs = pairs
+local setmetatable = setmetatable
+
 TickIndicator = {}
 for k, v in pairs(Indicator) do
   TickIndicator[k] = v

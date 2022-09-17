@@ -1,3 +1,8 @@
+local GetTime = GetTime
+
+local pairs = pairs
+local setmetatable = setmetatable
+
 CoolDownIndicator = {}
 for k, v in pairs(Indicator) do
   CoolDownIndicator[k] = v

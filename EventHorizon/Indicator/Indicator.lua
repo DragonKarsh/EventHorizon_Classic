@@ -1,3 +1,9 @@
+local GetSpellInfo = GetSpellInfo
+local UnitGUID = UnitGUID
+local UnitIsDead = UnitIsDead
+
+local setmetatable = setmetatable
+
 Indicator = {}
 Indicator.__index = Indicator
 
