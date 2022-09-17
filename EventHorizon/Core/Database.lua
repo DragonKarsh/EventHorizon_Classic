@@ -31,6 +31,7 @@ EventHorizon.defaults = {
 		channels = {},
 		debuffs = {},
 		buffs = {},
+		zoom = 0,
 	}
 }
 
