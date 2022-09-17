@@ -499,6 +499,9 @@ function EventHorizon:RemoveChannelSpell(spellName)
 end
 
 function EventHorizon:OverrideColors(config)
+	if not config.colors then
+		config.colors = {}
+	end
 	if not config.overrideColors then
 		config.colors.cast = EventHorizon.opt.colors.cast
 		config.colors.channel = EventHorizon.opt.colors.channel
@@ -731,7 +734,8 @@ function EventHorizon:CreateChanneledSpellsOptions()
 	EventHorizon.options.args.channels.args.existing.args = channeledSpells
 end
 function EventHorizon:GetColorOptions(spell,spellName)
-	
+	 print(spell, spellName,"real", unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.aura or EventHorizon.opt.colors.aura))
+	 print(spell,spellName,"def",unpack(EventHorizon.opt.colors.aura))
 	return {
 			channel = {
 				order = 1,

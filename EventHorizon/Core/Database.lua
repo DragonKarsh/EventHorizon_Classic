@@ -71,39 +71,39 @@ function EventHorizon:ConvertColors()
 		EventHorizon.opt.colors.cast = EventHorizon.opt.casting
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.tick then
 		EventHorizon.opt.colors.tick = EventHorizon.opt.tick
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.ready then
 		EventHorizon.opt.colors.ready = EventHorizon.opt.ready
 	end
 
-	if EventHorizon.opt.casting then
-	end
+	if EventHorizon.opt.coolDown then	
 		EventHorizon.opt.colors.coolDown = EventHorizon.opt.coolDown
+	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.debuff then
 		EventHorizon.opt.colors.aura = EventHorizon.opt.debuff
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.sent then
 		EventHorizon.opt.colors.sent = EventHorizon.opt.sent
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.gcdColor then
 		EventHorizon.opt.colors.gcd = EventHorizon.opt.gcdColor
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.nowColor then
 		EventHorizon.opt.colors.now = EventHorizon.opt.nowColor
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.border then
 		EventHorizon.opt.colors.border = EventHorizon.opt.border
 	end
 
-	if EventHorizon.opt.casting then
+	if EventHorizon.opt.background then
 		EventHorizon.opt.colors.background = EventHorizon.opt.background
 	end
 

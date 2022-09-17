@@ -16,5 +16,5 @@ setmetatable(SentIndicator, {
 function SentIndicator:new(start, spell)
 	Indicator.new(self, nil, start, start, spell)
 
-	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.sent or EventHorizon.opt.colors.sent
+	self.style.texture =  EventHorizon.opt.colors.sent
 end
