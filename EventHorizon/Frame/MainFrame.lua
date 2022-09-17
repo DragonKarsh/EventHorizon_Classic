@@ -302,6 +302,11 @@ function MainFrame:UpdateAllFrames()
 			spellFrame
 			:GetIcon()
 			:SetSize(height, height)
+			if EventHorizon.opt.zoom then
+				spellFrame:GetIcon():SetTexCoord(.08, .92, .08, .92)
+			else
+				spellFrame:GetIcon():SetTexCoord(0, 1, 0, 1)
+			end
 		end
 
 		if i > 1 then
