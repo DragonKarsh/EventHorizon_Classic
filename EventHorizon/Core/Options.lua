@@ -222,10 +222,12 @@ function EventHorizon:CreateGlobalOptions()
 				inline = true,
 				args = {
 					zoom = {
-						name = "Spell Icon Zoom",
-						desc = "Remove borders from spell icons",
-						type = "toggle",
-						width = 1.0,
+						name = "Spell Icon Zoom %",
+						desc = "Zoom in on spell icons so that the grey borders can be cropped out",
+						type = "range",
+						min = 0,
+						max = 50,
+						step = 1,
 						order = 1,
 						get = function(info) return EventHorizon.opt.zoom end,
 						set = function(info, val) EventHorizon.opt.zoom = val EventHorizon:RefreshMainFrame() end
