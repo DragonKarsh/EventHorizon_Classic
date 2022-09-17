@@ -5,6 +5,7 @@ EventHorizon.defaults = {
 		height = 25,
 		width = 375,
 		version = 0,
+		throttle = 10,
 		texture = "EventHorizon_Smooth",
 		colors = {		 
 			cast = {0,1,0,0.9},
