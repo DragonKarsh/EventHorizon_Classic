@@ -13,15 +13,16 @@ setmetatable(ChannelingIndicator, {
   end,
 })
 
-function ChannelingIndicator:new(start, stop, numTicks)
-	CastingIndicator.new(self, start, stop)
+function ChannelingIndicator:new(start, stop, spell)
+	CastingIndicator.new(self, start, stop, spell)
 
 	self.ticks = {}
+	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.channel or EventHorizon.opt.colors.channel
 
 	local duration = stop - start
-	local interval = duration / numTicks
-	for i=1,numTicks do
-		local tick = TickIndicator(nil, start + i*interval)
+	local interval = duration / self.spell.ticks
+	for i=1,self.spell.ticks do
+		local tick = TickIndicator(nil, start + i*interval, self.spell)
 		tinsert(self.ticks, tick)
 	end
 end

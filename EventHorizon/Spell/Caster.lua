@@ -13,8 +13,8 @@ setmetatable(Caster, {
   end,
 })
 
-function Caster:new(spellId, frame)
-	SpellComponent.new(self, spellId, frame)
+function Caster:new(frame, spell)
+	SpellComponent.new(self, frame, spell)
 
 	self.currentCast = nil	
 end
@@ -25,7 +25,7 @@ function Caster:WithEventHandler()
 end
 
 function Caster:GenerateCast(start, stop)
-	self.currentCast = CastingIndicator(start, stop)
+	self.currentCast = CastingIndicator(start, stop, self.spell)
 	tinsert(self.indicators, self.currentCast)
 end
 

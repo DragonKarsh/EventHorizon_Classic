@@ -13,8 +13,8 @@ setmetatable(SentIndicator, {
   end,
 })
 
-function SentIndicator:new(start)
-	Indicator.new(self, nil, start, start)
+function SentIndicator:new(start, spell)
+	Indicator.new(self, nil, start, start, spell)
 
-	self.style.texture = EventHorizon.opt.sent
+	self.style.texture =  EventHorizon.opt.colors.sent
 end

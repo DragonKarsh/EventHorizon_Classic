@@ -16,5 +16,5 @@ setmetatable(NowReference, {
 function NowReference:new(frame)
 	Reference.new(self, frame)
 
-	self.texture:SetColorTexture(unpack(EventHorizon.opt.nowColor))
+	self.texture:SetColorTexture(unpack(EventHorizon.opt.colors.now))
 end

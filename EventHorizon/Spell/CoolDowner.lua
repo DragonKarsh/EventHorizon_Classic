@@ -13,8 +13,8 @@ setmetatable(CoolDowner, {
   end,
 })
 
-function CoolDowner:new(spellId, frame)
-	SpellComponent.new(self, spellId, frame)
+function CoolDowner:new(frame, spell)
+	SpellComponent.new(self, frame, spell)
 
 	self.coolDown = nil
 end
@@ -25,7 +25,7 @@ function CoolDowner:WithEventHandler()
 end
 
 function CoolDowner:GenerateCoolDown(start, stop)
-	self.coolDown = CoolDownIndicator(start, stop)
+	self.coolDown = CoolDownIndicator(start, stop, self.spell)
 	tinsert(self.indicators, self.coolDown)
 	
 end

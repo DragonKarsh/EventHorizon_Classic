@@ -107,43 +107,43 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Background",
 						desc = "Set the background color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.background) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.background) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					border = {
 						order = 3,
 						type = "color",
 						name = "Border",
 						desc = "Set the border color",
-						get = function(info) return unpack(EventHorizon.opt.border) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.border) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},					
 					casting = {
 						order = 4,
 						type = "color",
-						name = "Casting/Channeling",
-						desc = "Set the casting/channeling color",
+						name = "Casting",
+						desc = "Set the casting color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.casting) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.casting = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.cast) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.cast = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
-					debuff = {
+					channeling = {
 						order = 5,
 						type = "color",
-						name = "Debuff",
-						desc = "Set the debuff color",
+						name = "Channeling",
+						desc = "Set the channeling color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.debuff) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.debuff = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.channel) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.channel = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
-					buff = {
+					aura = {
 						order = 6,
 						type = "color",
-						name = "Buff",
-						desc = "Set the buff color",
+						name = "Aura",
+						desc = "Set the aura color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.buff) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.buff = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.aura) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.aura = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					coolDown = {
 						order = 7,
@@ -151,8 +151,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Cooldown",
 						desc = "Set the cooldown color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.coolDown) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.coolDown = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.coolDown) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.coolDown = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					ready = {
 						order = 8,
@@ -160,8 +160,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Ready",
 						desc = "Set the ready color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.ready) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.ready = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.ready) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.ready = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					tick = {
 						order = 9,
@@ -169,8 +169,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Tick",
 						desc = "Set the tick color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.tick) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.tick = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.tick) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.tick = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					sent = {
 						order = 10,
@@ -178,8 +178,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Sent",
 						desc = "Set the sent color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.sent) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.sent = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.sent) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.sent = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					nowColor = {
 						order = 11,
@@ -187,8 +187,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Now",
 						desc = "Set the now indicator color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.nowColor) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.nowColor = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.now) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.now = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					},
 					gcdColor = {
 						order = 12,
@@ -196,8 +196,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Gcd",
 						desc = "Set the gcd indicator color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.gcdColor) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.gcdColor = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return unpack(EventHorizon.opt.colors.gcd) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.gcd = {r,g,b,a} EventHorizon:RefreshMainFrame() end
 					}
 				}
 			},
@@ -344,15 +344,15 @@ end
 function EventHorizon:CreateCastedOptions()
 	self.options.args.casts = {
 		order=3,
-		name = "Casts",
-		desc = "Edit casted spells",
+		name = "Directs",
+		desc = "Edit direct spells",
 		type = "group",
 		cmdHidden = true,
 		args = {
 			createCast = {
 				order = 1,
 				name = "Create new spell",
-				desc = "Create a new casted spell",
+				desc = "Create a new direct spell",
 				type = "group",
 				inline = true,
 				args = {
@@ -365,7 +365,7 @@ function EventHorizon:CreateCastedOptions()
 					input = {
 						name = "Spell name/id",
 						type = "input",
-						desc = "Enter spellname or spellId of the casted spell to create",
+						desc = "Enter spellname or spellId of the direct spell to create",
 						order = 2,
 						get = function(info) return EventHorizon.newCastedSpell end,
 						set = function(info,val) EventHorizon.newCastedSpell = val end
@@ -374,8 +374,8 @@ function EventHorizon:CreateCastedOptions()
 			},
 			existing = {
 				order = 2,
-				name = "Existing casted spells",
-				desc = "Already created casted spells",
+				name = "Existing direct spells",
+				desc = "Already created direct spells",
 				type = "group"
 			}
 		}
@@ -468,7 +468,21 @@ function EventHorizon:CreateNewChanneledSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newChannelSpell)
 
 	if spellName and not self.opt.channels[spellName] then
-		local channel = {spellId=spellId, ticks=1, enabled=true, order=1}
+		local channel = {
+			spellId=spellId, 
+			ticks=1, 
+			enabled=true, 
+			order=1,
+			overrideColors=false,
+			colors={
+				cast=EventHorizon.opt.colors.cast,
+				tick=EventHorizon.opt.colors.tick,
+				coolDown=EventHorizon.opt.colors.coolDown,
+				ready=EventHorizon.opt.colors.ready,
+				channel=EventHorizon.opt.colors.channel,
+				sent=EventHorizon.opt.colors.sent
+			}
+		}
 		self.opt.channels[spellName] = channel
 	end	
 
@@ -482,6 +496,21 @@ function EventHorizon:RemoveChannelSpell(spellName)
 	 self.opt.channels[spellName] = nil
 	self:CreateChanneledSpellsOptions()
 	self.mainFrame:ReleaseSpellFrame(spellId)
+end
+
+function EventHorizon:OverrideColors(config)
+	if not config.colors then
+		config.colors = {}
+	end
+	if not config.overrideColors then
+		config.colors.cast = EventHorizon.opt.colors.cast
+		config.colors.channel = EventHorizon.opt.colors.channel
+		config.colors.aura = EventHorizon.opt.colors.aura
+		config.colors.tick = EventHorizon.opt.colors.tick
+		config.colors.ready = EventHorizon.opt.colors.ready
+		config.colors.coolDown = EventHorizon.opt.colors.coolDown
+		config.colors.sent = EventHorizon.opt.colors.sent
+	end
 end
 
 function EventHorizon:RemoveCastedSpell(spellName)
@@ -509,7 +538,20 @@ function EventHorizon:CreateNewCastedSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newCastedSpell)
 
 	if spellName and not self.opt.casts[spellName] then
-		local cast = {spellId=spellId, enabled=true, order=1}
+		local cast = {
+			spellId=spellId, 
+			enabled=true, 
+			order=1,
+			overrideColors=false,
+			colors={
+				cast=EventHorizon.opt.colors.cast,
+				tick=EventHorizon.opt.colors.tick,
+				coolDown=EventHorizon.opt.colors.coolDown,
+				ready=EventHorizon.opt.colors.ready,
+				channel=EventHorizon.opt.colors.channel,
+				sent=EventHorizon.opt.colors.sent
+			}
+		}
 		self.opt.casts[spellName] = cast
 	end
 
@@ -535,7 +577,25 @@ function EventHorizon:CreateNewDebuffSpell()
 		end
 	end
 	if spellName and not self.opt.debuffs[spellName] then
-		local debuff = {spellId=spellId, ticks=false, tickType="count", tickCount=1, tickInterval=1, lastTick=false, enabled=true, order=1}
+		local debuff = {
+			spellId=spellId, 
+			ticks=false, 
+			tickType="count", 
+			tickCount=1, 
+			tickInterval=1, 
+			lastTick=false, 
+			enabled=true, 
+			order=1, 
+			overrideColors=false,
+			colors={
+				cast=EventHorizon.opt.colors.cast,
+				tick=EventHorizon.opt.colors.tick,
+				coolDown=EventHorizon.opt.colors.coolDown,
+				ready=EventHorizon.opt.colors.ready,
+				channel=EventHorizon.opt.colors.channel,
+				sent=EventHorizon.opt.colors.sent
+			}
+		}
 		self.opt.debuffs[spellName] = debuff
 	end	
 
@@ -561,7 +621,26 @@ function EventHorizon:CreateNewBuffSpell()
 		end
 	end
 	if spellName and not self.opt.buffs[spellName] then
-		local buff = {spellId=spellId, unitId="player", ticks=false, tickType="count", tickCount=1, tickInterval=1, lastTick=false, enabled=true, order=1}
+		local buff = {
+			spellId=spellId, 
+			unitId="player", 
+			ticks=false, 
+			tickType="count", 
+			tickCount=1, 
+			tickInterval=1, 
+			lastTick=false, 
+			enabled=true, 
+			order=1,
+			overrideColors=false,
+			colors={
+				cast=EventHorizon.opt.colors.cast,
+				tick=EventHorizon.opt.colors.tick,
+				coolDown=EventHorizon.opt.colors.coolDown,
+				ready=EventHorizon.opt.colors.ready,
+				channel=EventHorizon.opt.colors.channel,
+				sent=EventHorizon.opt.colors.sent
+			}
+		}
 		self.opt.buffs[spellName] = buff
 	end	
 
@@ -618,9 +697,30 @@ function EventHorizon:CreateChanneledSpellsOptions()
 					get = function(info) return EventHorizon.opt.channels[k].ticks end,
 					set = function(info, val) EventHorizon.opt.channels[k].ticks = val EventHorizon:RefreshMainFrame() end
 				},
-				
-				remove = {
+				overrideColors = {
 					order = 4,
+					name = "Override default colors",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.channels[k].overrideColors end,
+					set = function(info, val) 
+						EventHorizon.opt.channels[k].overrideColors = val 
+						EventHorizon:OverrideColors(EventHorizon.opt.channels[k]) 
+						EventHorizon:CreateChanneledSpellsOptions()
+						EventHorizon:RefreshMainFrame() end,
+					width = "full"
+				},	
+				colors = {
+					order = 5,
+					name = "Colors",
+					type = "group",
+					inline = true,
+					hidden = (not EventHorizon.opt.channels[k].overrideColors),
+					args = {
+					
+					}
+				},
+				remove = {
+					order = 6,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveChannelSpell(k) end,				
@@ -628,11 +728,79 @@ function EventHorizon:CreateChanneledSpellsOptions()
 				}
 			}
 		}
+		channeledSpells[k].args.colors.args = self:GetColorOptions("channels",k)		
 	end
 
 	EventHorizon.options.args.channels.args.existing.args = channeledSpells
 end
+function EventHorizon:GetColorOptions(spell,spellName)
+	 print(spell, spellName,"real", unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.aura or EventHorizon.opt.colors.aura))
+	 print(spell,spellName,"def",unpack(EventHorizon.opt.colors.aura))
+	return {
+			channel = {
+				order = 1,
+				type = "color",
+				name = "Channel",
+				desc = "Set the channeling color",
+				hasAlpha = true,
+				get = function(info) return unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.channel or EventHorizon.opt.colors.channel) end,
+				set = function(info,r,g,b,a)  EventHorizon:OverrideColor(spell,spellName,"channel",{r,g,b,a}) EventHorizon:RefreshMainFrame() end
+			},
+			cast = {
+				order = 2,
+				type = "color",
+				name = "Cast",
+				desc = "Set the casting color",
+				hasAlpha = true,
+				get = function(info) return unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.cast or EventHorizon.opt.colors.cast) end,
+				set = function(info,r,g,b,a)  EventHorizon:OverrideColor(spell,spellName,"cast",{r,g,b,a}) EventHorizon:RefreshMainFrame() end
+			},
+			aura = {
+				order = 3,
+				type = "color",
+				name = "Aura",
+				desc = "Set the aura color",
+				hasAlpha = true,
+				get = function(info) return unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.aura or EventHorizon.opt.colors.aura) end,
+				set = function(info,r,g,b,a)  EventHorizon:OverrideColor(spell,spellName,"aura",{r,g,b,a}) EventHorizon:RefreshMainFrame() end
+			},
+			tick = {
+				order = 4,
+				type = "color",
+				name = "Tick",
+				desc = "Set the tick color",
+				hasAlpha = true,
+				get = function(info) return unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.tick or EventHorizon.opt.colors.tick) end,
+				set = function(info,r,g,b,a)  EventHorizon:OverrideColor(spell,spellName,"tick",{r,g,b,a}) EventHorizon:RefreshMainFrame() end
+			},
+			coolDown = {
+				order = 5,
+				type = "color",
+				name = "Cooldown",
+				desc = "Set the cooldown color",
+				hasAlpha = true,
+				get = function(info) return unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.coolDown or EventHorizon.opt.colors.coolDown) end,
+				set = function(info,r,g,b,a)  EventHorizon:OverrideColor(spell,spellName,"coolDown",{r,g,b,a}) EventHorizon:RefreshMainFrame() end
+			},
+			ready = {
+				order = 6,
+				type = "color",
+				name = "Ready",
+				desc = "Set the ready color",
+				hasAlpha = true,
+				get = function(info) return unpack(EventHorizon.opt[spell][spellName].colors and EventHorizon.opt[spell][spellName].colors.ready or EventHorizon.opt.colors.ready) end,
+				set = function(info,r,g,b,a)  EventHorizon:OverrideColor(spell,spellName,"ready",{r,g,b,a}) EventHorizon:RefreshMainFrame() end
+			}
+		}
+		
+end
 
+function EventHorizon:OverrideColor(spell, spellName, color, override)
+	if not EventHorizon.opt[spell][spellName].colors then
+		EventHorizon.opt[spell][spellName].colors = {}
+	end
+	EventHorizon.opt[spell][spellName].colors[color] = override
+end
 function EventHorizon:CreateCastedSpellsOptions()
 	local castedSpells = {}
 	local count = 0
@@ -670,8 +838,31 @@ function EventHorizon:CreateCastedSpellsOptions()
 					get = function(info) return EventHorizon.opt.casts[k].order end,
 					set = function(info, val) EventHorizon.opt.casts[k].order = val EventHorizon:RefreshMainFrame() end,
 				},
-				remove = {
+				overrideColors = {
 					order = 3,
+					name = "Override default colors",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.casts[k].overrideColors end,
+					set = function(info, val) 
+						EventHorizon.opt.casts[k].overrideColors = val 
+						EventHorizon:OverrideColors(EventHorizon.opt.casts[k])
+						EventHorizon:CreateCastedSpellsOptions()
+						EventHorizon:RefreshMainFrame() end,
+					width = "full"
+				},
+					
+				colors = {
+					order = 4,
+					name = "Colors",
+					type = "group",
+					inline = true,
+					hidden = (not EventHorizon.opt.casts[k].overrideColors),
+					args = {
+					
+					}
+				},
+				remove = {
+					order = 5,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveCastedSpell(k) end,				
@@ -679,6 +870,8 @@ function EventHorizon:CreateCastedSpellsOptions()
 				},
 			}
 		}
+
+		castedSpells[k].args.colors.args = self:GetColorOptions("casts",k)	
 	end
 
 	EventHorizon.options.args.casts.args.existing.args = castedSpells
@@ -784,8 +977,31 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					get = function(info) return EventHorizon.opt.debuffs[k].lastTick end,
 					set = function(info, val) EventHorizon.opt.debuffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
 				},
-				remove = {
+				overrideColors = {
 					order = 9,
+					name = "Override default colors",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.debuffs[k].overrideColors end,
+					set = function(info, val) 
+						EventHorizon.opt.debuffs[k].overrideColors = val 
+						EventHorizon:OverrideColors(EventHorizon.opt.debuffs[k]) 
+						EventHorizon:CreateDebuffSpellsOptions()
+						EventHorizon:RefreshMainFrame() 
+						end,
+					width = "full"
+				},							
+				colors = {
+					order = 10,
+					name = "Colors",
+					type = "group",
+					inline = true,
+					hidden = (not EventHorizon.opt.debuffs[k].overrideColors),
+					args = {
+					
+					}
+				},
+				remove = {
+					order = 11,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveDebuffSpell(k) end,				
@@ -793,6 +1009,8 @@ function EventHorizon:CreateDebuffSpellsOptions()
 				},
 			}
 		}
+
+		debuffSpells[k].args.colors.args = self:GetColorOptions("debuffs",k)	
 	end
 
 	EventHorizon.options.args.debuffs.args.existing.args = debuffSpells
@@ -906,9 +1124,31 @@ function EventHorizon:CreateBuffSpellsOptions()
 					hidden =  not EventHorizon.opt.buffs[k].ticks,
 					get = function(info) return EventHorizon.opt.buffs[k].lastTick end,
 					set = function(info, val) EventHorizon.opt.buffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
-				},				
-				remove = {
+				},
+				overrideColors = {
 					order = 10,
+					name = "Override default colors",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.buffs[k].overrideColors end,
+					set = function(info, val) 
+						EventHorizon.opt.buffs[k].overrideColors = val 
+						EventHorizon:OverrideColors(EventHorizon.opt.buffs[k]) 
+						EventHorizon:CreateBuffSpellsOptions()
+						EventHorizon:RefreshMainFrame() end,
+					width = "full"
+				},						
+				colors = {
+					order = 11,
+					name = "Colors",
+					type = "group",
+					inline = true,
+					hidden = (not EventHorizon.opt.buffs[k].overrideColors),
+					args = {
+					
+					}
+				},
+				remove = {
+					order = 12,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveBuffSpell(k) end,				
@@ -916,6 +1156,8 @@ function EventHorizon:CreateBuffSpellsOptions()
 				},
 			}
 		}
+
+		buffSpells[k].args.colors.args = self:GetColorOptions("buffs",k)	
 	end
 
 	EventHorizon.options.args.buffs.args.existing.args = buffSpells
