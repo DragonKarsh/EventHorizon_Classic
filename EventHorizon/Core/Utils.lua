@@ -39,6 +39,10 @@ function Utils:DecodeAndDecompressString(dataString)
             return false
         end
         
+        if not Utils:ValidateData(data) then
+            print("EventHorizon: ERROR: import string is not supported")
+            return false
+        end
         return data
     end
 end
@@ -54,4 +58,17 @@ function Utils:Copy(fromTable, toTable)
 			end
 		end
 	end
+end
+
+function Utils:ValidateData(data)
+    if type(data) ~= "table" then return false end
+
+    for key, value in pairs(data) do
+        if type(value) == "function" then return false end
+
+        if (type(value) == "table") then
+            if not Utils:ValidateData(data[key]) then return false end
+        end
+    end
+    return true
 end
