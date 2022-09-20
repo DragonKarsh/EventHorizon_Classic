@@ -1,4 +1,11 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
+  <Script file='Init.lua'/>
+  <Script file='Media.lua'/>
+  <Script file='Commands.lua'/>
+  <Script file='Database.lua'/>
+  <Script file='Cache.lua'/>
+  <Script file='Utils.lua'/>
+  <Script file='Options.lua'/>
   <Script file='Options/GlobalOptions.lua'/>
   <Script file='Options/BuffOptions.lua'/>
   <Script file='Options/CastOptions.lua'/>
