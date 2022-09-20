@@ -19,7 +19,7 @@ setmetatable(CastingIndicator, {
 function CastingIndicator:new(start, stop, spell)
 	Indicator.new(self, nil, start, stop, spell)	
 
-	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.cast or EventHorizon.opt.colors.cast
+	self.style.texture = self:GetColor('cast')
 end
 
 function CastingIndicator:IsVisible()
