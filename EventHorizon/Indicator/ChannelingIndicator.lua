@@ -45,3 +45,7 @@ function ChannelingIndicator:RemoveTicksAfter(time)
 		end
 	end
 end
+
+function ChannelingIndicator:GetType()
+	return "ChannelingIndicator"
+end

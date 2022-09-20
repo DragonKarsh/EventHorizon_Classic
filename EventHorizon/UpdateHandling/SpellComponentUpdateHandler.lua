@@ -22,6 +22,16 @@ setmetatable(SpellComponentUpdateHandler, {
   end,
 })
 
+-- Controls the display priority of overlapping indicator textures
+local displayLevels = {
+	AuraIndicator = 4,
+	CastingIndicator = 5,
+	ChannelingIndicator = 5,
+	CoolDownIndicator = 1,
+	RecastIndicator = 4,
+	SentIndicator = 6,
+	TickIndicator = 7
+}
 
 function SpellComponentUpdateHandler:new(spellComponent)
 	UpdateHandler.new(self, CreateFrame("Frame"))
@@ -109,6 +119,8 @@ function SpellComponentUpdateHandler:AttachTexture(indicator)
 		tinsert(self.textures, texture)
 	end
 
+	local level = displayLevels[indicator:GetType()]
+	texture:SetDrawLayer("BORDER", level)
 	texture:SetColorTexture(unpack(indicator.style.texture))
 	local a,c,d,e = unpack(indicator.style.point1)
 	texture:SetPoint(a,self.uiFrame,c,d,e)

@@ -29,3 +29,8 @@ function CastingIndicator:IsVisible()
 
 	return true	
 end
+
+
+function CastingIndicator:GetType()
+	return "CastingIndicator"
+end

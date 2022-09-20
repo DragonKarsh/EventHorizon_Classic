@@ -37,3 +37,7 @@ function CoolDownIndicator:IsVisible()
 
 	return true	
 end
+
+function CoolDownIndicator:GetType()
+	return "CoolDownIndicator"
+end

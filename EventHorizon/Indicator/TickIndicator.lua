@@ -24,3 +24,7 @@ function TickIndicator:new(target, start, spell)
 	self.style.point2 = {'BOTTOM', 'TOP', 0, -5}
 
 end
+
+function TickIndicator:GetType()
+	return "TickIndicator"
+end
