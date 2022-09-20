@@ -22,7 +22,7 @@ function ChannelingIndicator:new(start, stop, spell)
 	CastingIndicator.new(self, start, stop, spell)
 
 	self.ticks = {}
-	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.channel or EventHorizon.opt.colors.channel
+	self.style.texture = self:GetColor('channel')
 
 	local duration = stop - start
 	local interval = duration / self.spell.ticks
