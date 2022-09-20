@@ -19,8 +19,8 @@ function AuraIndicator:new(target, start, stop, spell)
 	
 	self.casted = select(4, GetSpellInfo(self.spellId)) > 0
 
-	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.aura or EventHorizon.opt.colors.aura
-	self.style.ready = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
+	self.style.texture = self:GetColor('aura')
+	self.style.ready = self:GetColor('ready')
 
 	if self.casted then
 		self.style.point1 = {'TOP', 'TOP', 0, -3}
@@ -57,7 +57,7 @@ end
 
 function AuraIndicator:Cancel(stop)	
 	if self.casted then
-		self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
+		self.style.texture = self:GetColor('ready')
 		self.style.point1 = {'TOP', 'TOP', 0, -3}
 		self.style.point2 = {'BOTTOM', 'BOTTOM'}
 		Indicator.Cancel(self,stop)

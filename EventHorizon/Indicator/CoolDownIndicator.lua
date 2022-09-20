@@ -16,8 +16,8 @@ setmetatable(CoolDownIndicator, {
 function CoolDownIndicator:new(start, stop, spell)
 	Indicator.new(self, nil, start, stop, spell)	
 
-	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.coolDown or EventHorizon.opt.colors.coolDown
-	self.style.ready = self.spell.overrideColors and self.spell.colors and self.spell.colors.ready or EventHorizon.opt.colors.ready
+	self.style.texture = self:GetColor('coolDown')
+	self.style.ready = self:GetColor('ready')
 
 end
 

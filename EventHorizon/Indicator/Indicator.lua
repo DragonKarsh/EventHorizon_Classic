@@ -35,6 +35,13 @@ function Indicator:new(target, start, stop, spell)
 	self.style.ready = self.style.texture
 end
 
+function Indicator:GetColor(indicator)
+	if self.spell.overrideColors and self.spell.colors and self.spell.colors[indicator] and #self.spell.colors[indicator] > 0 then
+		return self.spell.colors[indicator]
+	else
+		return EventHorizon.opt.colors[indicator]
+	end
+end
 function Indicator:Dispose()
 	self.disposed = true
 end

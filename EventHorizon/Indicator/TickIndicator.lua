@@ -16,7 +16,7 @@ setmetatable(TickIndicator, {
 function TickIndicator:new(target, start, spell)
 	Indicator.new(self, target, start, start, spell)	
 	
-	self.style.texture = self.spell.overrideColors and self.spell.colors and self.spell.colors.tick or EventHorizon.opt.colors.tick
+	self.style.texture = self:GetColor('tick')
 	self.style.point1 = {'TOP', 'TOP'}
 	self.style.point2 = {'BOTTOM', 'TOP', 0, -5}
 

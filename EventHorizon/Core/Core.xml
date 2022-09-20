@@ -6,4 +6,12 @@
   <Script file='Cache.lua'/>
   <Script file='Utils.lua'/>
 	<Script file='Options.lua'/>
+  <Script file='Options/GlobalOptions.lua'/>
+  <Script file='Options/BuffOptions.lua'/>
+  <Script file='Options/CastOptions.lua'/>
+  <Script file='Options/ChannelOptions.lua'/>
+  <Script file='Options/DebuffOptions.lua'/>
+  <Script file='Options/ExportImportOptions.lua'/>
+  <Script file='Options/ColorOptions.lua'/>
+  
 </Ui>
