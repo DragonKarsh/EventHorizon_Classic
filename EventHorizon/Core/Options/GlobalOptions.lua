@@ -285,3 +285,25 @@ function EventHorizon:CreateGlobalOptions()
 		}
 	}
 end
+
+function EventHorizon:SetHeight(height)
+	self.opt.height = height
+	self:RefreshMainFrame()
+end
+
+function EventHorizon:SetWidth(width)
+	self.opt.width = width
+	self:RefreshMainFrame()
+end
+
+function EventHorizon:SetPast(past)
+	self.opt.past = past
+	self.opt.scale = 1/(self.opt.future-self.opt.past)
+	self:RefreshMainFrame()
+end
+
+function EventHorizon:SetFuture(future)
+	self.opt.future = future
+	self.opt.scale = 1/(self.opt.future-self.opt.past)
+	self:RefreshMainFrame()
+end
