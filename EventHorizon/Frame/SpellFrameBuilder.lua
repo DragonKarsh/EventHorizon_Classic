@@ -118,7 +118,7 @@ function SpellFrameBuilder:Build()
 
 	local spellFrame = SpellFrame(self.frame, self.config, spellComponents, self.icon)
 
-	if self.enabled then
+	if self.config.enabled then
 		spellFrame:Enable()
 	else
 		spellFrame:Disable()

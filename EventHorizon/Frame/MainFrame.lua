@@ -247,7 +247,12 @@ function MainFrame:UpdateAllFrames()
 	local height = EventHorizon.opt.height
 	local width = EventHorizon.opt.width
 
-	self.frame:SetSize(width, #self.enabledSpellFrames * height)
+	local frameHeight = #self.enabledSpellFrames * height
+	-- cannot resize a frame back to 0
+	if frameHeight == 0 then
+		frameHeight = height
+	end
+	self.frame:SetSize(width, frameHeight)
 	
 	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
 

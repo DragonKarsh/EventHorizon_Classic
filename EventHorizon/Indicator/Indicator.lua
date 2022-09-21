@@ -92,3 +92,7 @@ function Indicator:Cancel(stop)
 	self.original.stop = stop
 	self:Stop(stop)
 end
+
+function Indicator:GetType()
+	error("abstract method GetType not implemented")
+end

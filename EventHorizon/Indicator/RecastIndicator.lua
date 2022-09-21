@@ -36,3 +36,7 @@ end
 function RecastIndicator:IsReady()
 	return GetTime() >= self.stop
 end
+
+function RecastIndicator:GetType()
+	return "RecastIndicator"
+end

@@ -21,3 +21,7 @@ function SentIndicator:new(start, spell)
 
 	self.style.texture =  EventHorizon.opt.colors.sent
 end
+
+function SentIndicator:GetType()
+	return "SentIndicator"
+end

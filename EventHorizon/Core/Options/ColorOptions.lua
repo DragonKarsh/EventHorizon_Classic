@@ -6,6 +6,7 @@ function EventHorizon:OverrideColors(config)
 	config.colors.ready = EventHorizon.opt.colors.ready
 	config.colors.coolDown = EventHorizon.opt.colors.coolDown
 	config.colors.sent = EventHorizon.opt.colors.sent
+	config.colors.aura = EventHorizon.opt.colors.aura
 end
 
 function EventHorizon:GetColor(indicator,spell,spellName)

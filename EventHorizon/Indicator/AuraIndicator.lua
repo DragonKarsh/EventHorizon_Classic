@@ -204,3 +204,8 @@ function AuraIndicator:IsBeforeLastTick(currentTime)
 	if #self.ticks > 1 and currentTime > self.ticks[#self.ticks-1].start then return true end
 	return false
 end
+
+
+function AuraIndicator:GetType()
+	return "AuraIndicator"
+end
