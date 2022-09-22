@@ -72,3 +72,7 @@ function Utils:ValidateData(data)
     end
     return true
 end
+
+function Utils:UnpackColor(color)
+	return color.r, color.g, color.b, color.a
+end

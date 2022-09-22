@@ -23,7 +23,7 @@ function SpellFrameBuilder:new(framePool, config)
 	self.frame:SetSize(EventHorizon.opt.width, EventHorizon.opt.height)
 	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
 	self.frame:SetBackdrop({bgFile=texture})
-	self.frame:SetBackdropColor(unpack(EventHorizon.opt.colors.background))	
+	self.frame:SetBackdropColor(EventHorizon.Utils:UnpackColor(EventHorizon.opt.colors.background))	
 	self.frame:SetFrameLevel(10)	
 
 

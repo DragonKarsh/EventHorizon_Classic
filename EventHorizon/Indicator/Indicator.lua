@@ -42,7 +42,7 @@ function Indicator:new(target, start, stop, spell)
 end
 
 function Indicator:GetColor(indicator)
-	if self.spell.overrideColors and self.spell.colors and self.spell.colors[indicator] and #self.spell.colors[indicator] > 0 then
+	if self.spell.overrideColors then
 		return self.spell.colors[indicator]
 	else
 		return EventHorizon.opt.colors[indicator]

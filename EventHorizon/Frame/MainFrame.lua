@@ -257,7 +257,7 @@ function MainFrame:UpdateAllFrames()
 	local texture = EventHorizon.media:Fetch("statusbar", EventHorizon.opt.texture)
 
 	self.frame:SetBackdrop({edgeFile=texture, edgeSize=1})
-	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.colors.border))	
+	self.frame:SetBackdropBorderColor(EventHorizon.Utils:UnpackColor(EventHorizon.opt.colors.border))	
 
 	if EventHorizon.opt.point then
 		self.handle:SetPoint(unpack(EventHorizon.opt.point))
@@ -270,7 +270,7 @@ function MainFrame:UpdateAllFrames()
 
 		self.nowReference
 		:GetTexture()
-		:SetColorTexture(unpack(EventHorizon.opt.colors.now))	
+		:SetColorTexture(EventHorizon.Utils:UnpackColor(EventHorizon.opt.colors.now))	
 	end
 
 	if self.gcdReference then
@@ -280,7 +280,7 @@ function MainFrame:UpdateAllFrames()
 
 		self.gcdReference
 		:GetTexture()
-		:SetColorTexture(unpack(EventHorizon.opt.colors.gcd))	
+		:SetColorTexture(EventHorizon.Utils:UnpackColor(EventHorizon.opt.colors.gcd))	
 	end
 
 
@@ -296,7 +296,7 @@ function MainFrame:UpdateAllFrames()
 
 		spellFrame
 		:GetFrame()
-		:SetBackdropColor(unpack(EventHorizon.opt.colors.background))
+		:SetBackdropColor(EventHorizon.Utils:UnpackColor(EventHorizon.opt.colors.background))
 
 
 		spellFrame

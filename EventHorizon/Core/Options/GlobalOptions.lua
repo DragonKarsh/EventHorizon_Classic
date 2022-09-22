@@ -83,16 +83,16 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Background",
 						desc = "Set the background color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.background) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.background = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.background) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.background = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					border = {
 						order = 3,
 						type = "color",
 						name = "Border",
 						desc = "Set the border color",
-						get = function(info) return unpack(EventHorizon.opt.colors.border) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.border = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.border) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.border = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},					
 					casting = {
 						order = 4,
@@ -100,8 +100,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Casting",
 						desc = "Set the casting color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.cast) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.cast = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.cast) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.cast = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					channeling = {
 						order = 5,
@@ -109,8 +109,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Channeling",
 						desc = "Set the channeling color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.channel) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.channel = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.channel) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.channel = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					aura = {
 						order = 6,
@@ -118,8 +118,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Aura",
 						desc = "Set the aura color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.aura) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.aura = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.aura) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.aura = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					coolDown = {
 						order = 7,
@@ -127,8 +127,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Cooldown",
 						desc = "Set the cooldown color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.coolDown) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.coolDown = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.coolDown) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.coolDown = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					ready = {
 						order = 8,
@@ -136,8 +136,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Ready",
 						desc = "Set the ready color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.ready) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.ready = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.ready) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.ready = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					tick = {
 						order = 9,
@@ -145,8 +145,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Tick",
 						desc = "Set the tick color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.tick) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.tick = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.tick) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.tick = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					sent = {
 						order = 10,
@@ -154,8 +154,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Sent",
 						desc = "Set the sent color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.sent) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.sent = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.sent) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.sent = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					nowColor = {
 						order = 11,
@@ -163,8 +163,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Now",
 						desc = "Set the now indicator color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.now) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.now = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.now) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.now = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					},
 					gcdColor = {
 						order = 12,
@@ -172,8 +172,8 @@ function EventHorizon:CreateGlobalOptions()
 						name = "Gcd",
 						desc = "Set the gcd indicator color",
 						hasAlpha = true,
-						get = function(info) return unpack(EventHorizon.opt.colors.gcd) end,
-						set = function(info,r,g,b,a)  EventHorizon.opt.colors.gcd = {r,g,b,a} EventHorizon:RefreshMainFrame() end
+						get = function(info) return self.Utils:UnpackColor(EventHorizon.opt.colors.gcd) end,
+						set = function(info,r,g,b,a)  EventHorizon.opt.colors.gcd = {r=r,g=g,b=b,a=a} EventHorizon:RefreshMainFrame() end
 					}
 				}
 			},

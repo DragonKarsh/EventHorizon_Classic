@@ -28,7 +28,13 @@ end
 
 function SpellFrame:Update(spell)
 
-	self.enabled = spell.enabled
+	self.spell = spell
+	self.enabled = self.spell.enabled
+
+	for _,spellComponent in pairs(self.spellComponents) do
+		spellComponent:Update(self.spell)
+	end
+
 	if self.enabled then 
 		self:Enable()
 	else 
