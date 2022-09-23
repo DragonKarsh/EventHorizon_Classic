@@ -126,7 +126,7 @@ function EventHorizon:ExplicitRgbaColors()
 		for spell,_ in pairs(self.opt[category]) do
 			for _,color in ipairs(colors) do
 				if self.opt[category][spell].overrideColors then
-					self.FixRgba(self.opt[category][spell].colors, self.opt.colors, color)
+					self:FixRgba(self.opt[category][spell].colors, self.opt.colors, color)
 				end
 			end
 		end
