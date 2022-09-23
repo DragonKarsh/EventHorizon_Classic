@@ -121,14 +121,14 @@ function SpellComponentUpdateHandler:AttachTexture(indicator)
 
 	local level = displayLevels[indicator:GetType()]
 	texture:SetDrawLayer("BORDER", level)
-	texture:SetColorTexture(unpack(indicator.style.texture))
+	texture:SetColorTexture(EventHorizon.Utils:UnpackColor(indicator.style.texture))
 	local a,c,d,e = unpack(indicator.style.point1)
 	texture:SetPoint(a,self.uiFrame,c,d,e)
 	local a,c,d,e = unpack(indicator.style.point2)
 	texture:SetPoint(a,self.uiFrame,c,d,e)
 
 	if indicator:IsReady() then
-		texture:SetColorTexture(unpack(indicator.style.ready))
+		texture:SetColorTexture(EventHorizon.Utils:UnpackColor(indicator.style.ready))
 	end
 
 	return texture

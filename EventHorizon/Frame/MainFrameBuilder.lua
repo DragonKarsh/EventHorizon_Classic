@@ -18,7 +18,11 @@ function MainFrameBuilder:new()
 	self.frame = CreateFrame("Frame", "EventHorizon", UIParent, "BackdropTemplate")	
 	local texture = EventHorizon.media:Fetch("background", EventHorizon.opt.texture)
 	self.frame:SetBackdrop({edgeFile=texture, edgeSize=1})
-	self.frame:SetBackdropBorderColor(unpack(EventHorizon.opt.colors.border))
+	self.frame:SetBackdropBorderColor(
+		EventHorizon.opt.colors.border.r,
+		EventHorizon.opt.colors.border.g,
+		EventHorizon.opt.colors.border.b,
+		EventHorizon.opt.colors.border.a)
 	self.frame:SetFrameLevel(100)	
 end
 

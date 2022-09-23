@@ -37,6 +37,15 @@ function SpellComponent:WithUpdateHandler()
 	return self
 end
 
+function SpellComponent:Update(spell)
+	self.spell = spell
+	self.spellId = self.spell.spellId
+	self.spellName = GetSpellInfo(self.spellId)
+
+	self:Disable()
+	self:Enable()
+end
+
 function SpellComponent:Enable()
 	if self.updateHandler then
 		self.updateHandler:Enable()
@@ -49,6 +58,11 @@ end
 
 function SpellComponent:Disable()
 
+	for i=#self.indicators,1,-1  do
+		local indicator = tremove(self.indicators, i)
+		indicator:Dispose()
+		self:ClearIndicator(indicator)
+	end
 	if self.updateHandler then
 		self.updateHandler:Disable()
 	end

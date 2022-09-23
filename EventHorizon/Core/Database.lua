@@ -4,21 +4,21 @@ EventHorizon.defaults = {
 		future = 9,
 		height = 25,
 		width = 375,
-		version = 0,
+		version = 202209220,
 		throttle = 10,
 		texture = "EventHorizon_Smooth",
 		colors = {		 
-			cast = {0,1,0,0.9},
-			channel = {0,1,0,0.9},
-			aura = {1,1,1,0.7},
-			coolDown = {0.9,0.9,0.9,0.7},
-			ready = {0.5,0.5,0.5,0.7},
-			tick = {1,1,1,1},
-			sent = {1,1,1,1},
-			now = {1,1,1,1},
-			gcd = {1,1,1,0.5},
-			border = {0,0,0,1},
-			background = {1,1,1,.1}
+			cast = {r=0,g=1,b=0,a=0.9},
+			channel = {r=0,g=1,b=0,a=0.9},
+			aura = {r=1,g=1,b=1,a=0.7},
+			coolDown = {r=0.9,g=0.9,b=0.9,a=0.7},
+			ready = {r=0.5,g=0.5,b=0.5,a=0.7},
+			tick = {r=1,g=1,b=1,a=1},
+			sent = {r=1,g=1,b=1,a=1},
+			now = {r=1,g=1,b=1,a=1},
+			gcd = {r=1,g=1,b=1,a=0.5},
+			border = {r=0,g=0,b=0,a=1},
+			background = {r=1,g=1,b=1,a=0.1}
 		},
 		now=true,
 		gcd=true,
@@ -27,10 +27,10 @@ EventHorizon.defaults = {
 		shown = true,
 		locked = false,
 		combat = false,
-		casts = {},
-		channels = {},
-		debuffs = {},
-		buffs = {},
+		casts = {['*']={overrideColors=false}},
+		channels = {['*']={overrideColors=false}},
+		debuffs = {['*']={overrideColors=false}},
+		buffs = {['*']={overrideColors=false}},
 		zoom = 0,
 	}
 }
@@ -47,6 +47,7 @@ function EventHorizon:InitializeDatabase()
 	self.database.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
     self.database.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
     self.database.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
+	self.database.RegisterCallback(self, "OnNewProfile", "OnProfileChanged")
 end
 
 function EventHorizon:OnProfileChanged()
@@ -62,14 +63,17 @@ function EventHorizon:ApplyConversions()
 		self:ConvertColors()
 		self.opt.version = 202209160
 	end
+
+	--on 2022-09-22, colors were changed to store r,g,b,a explicitly
+	if self.opt.version < 202209220 then
+		self:ExplicitRgbaColors()
+		self.opt.version = 202209220
+	end
 end
 
 function EventHorizon:ConvertColors()	
 	if EventHorizon.opt.casting then
 		EventHorizon.opt.colors.channel = EventHorizon.opt.casting
-	end
-
-	if EventHorizon.opt.casting then
 		EventHorizon.opt.colors.cast = EventHorizon.opt.casting
 	end
 
@@ -108,8 +112,52 @@ function EventHorizon:ConvertColors()
 	if EventHorizon.opt.background then
 		EventHorizon.opt.colors.background = EventHorizon.opt.background
 	end
-
 end
 
+function EventHorizon:ExplicitRgbaColors()
+	local colors = {'aura','cast','channel','tick','sent','coolDown','ready','now','gcd','background','border'}
+
+	for _, color in ipairs(colors) do
+		self:FixGeneralRgba(color)
+	end
+
+	local categories = {'channels','casts','buffs','debuffs'}
+	for _,category in ipairs(categories) do
+		for spell,_ in pairs(self.opt[category]) do
+			for _,color in ipairs(colors) do
+				if self.opt[category][spell].overrideColors then
+					self:FixRgba(self.opt[category][spell].colors, self.opt.colors, color)
+				end
+			end
+		end
+	end	
+end
+
+function EventHorizon:FixGeneralRgba(color)
+	local r,g,b,a = unpack(self.opt.colors[color])
+	self:FixGeneralRgbaValue(color,'r',r)
+	self:FixGeneralRgbaValue(color,'g',g)
+	self:FixGeneralRgbaValue(color,'b',b)
+	self:FixGeneralRgbaValue(color,'a',a)
+end
+function EventHorizon:FixGeneralRgbaValue(color,value,current)
+	if current and current ~= self.opt.colors[color][value] then
+		self.opt.colors[color][value] = current
+	end
+end
+function EventHorizon:FixRgba(colors, defaults, color)
+	local values = {'r','g','b','a'}
+	for _,value in ipairs(values) do
+		if colors and colors[color] and not colors[color][value] then
+			colors[color][value] = defaults[color][value]
+		elseif  colors and not colors[color] then
+			if defaults[color] then
+				colors[color] = defaults[color]
+			else
+				colors[color] = EventHorizon.defaults.profile.colors[color]
+			end
+		end			
+	end	
+end
 
 	

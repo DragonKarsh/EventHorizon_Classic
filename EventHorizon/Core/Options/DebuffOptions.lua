@@ -76,12 +76,49 @@ function EventHorizon:CreateNewDebuffSpell()
 			order=1, 
 			overrideColors=false,
 			colors={
-				cast=EventHorizon.opt.colors.cast,
-				tick=EventHorizon.opt.colors.tick,
-				coolDown=EventHorizon.opt.colors.coolDown,
-				ready=EventHorizon.opt.colors.ready,
-				channel=EventHorizon.opt.colors.channel,
-				sent=EventHorizon.opt.colors.sent
+				cast = {
+					r=EventHorizon.opt.colors.cast.r,
+					g=EventHorizon.opt.colors.cast.g,
+					b=EventHorizon.opt.colors.cast.b,
+					a=EventHorizon.opt.colors.cast.a
+		
+				},
+				channel = {
+					r=EventHorizon.opt.colors.channel.r,
+					g=EventHorizon.opt.colors.channel.g,
+					b=EventHorizon.opt.colors.channel.b,
+					a=EventHorizon.opt.colors.channel.a
+				},
+				tick = {
+					r=EventHorizon.opt.colors.tick.r,
+					g=EventHorizon.opt.colors.tick.g,
+					b=EventHorizon.opt.colors.tick.b,
+					a=EventHorizon.opt.colors.tick.a
+				},
+				ready = {
+					r=EventHorizon.opt.colors.ready.r,
+					g=EventHorizon.opt.colors.ready.g,
+					b=EventHorizon.opt.colors.ready.b,
+					a=EventHorizon.opt.colors.ready.a
+				},
+				coolDown = {
+					r=EventHorizon.opt.colors.coolDown.r,
+					g=EventHorizon.opt.colors.coolDown.g,
+					b=EventHorizon.opt.colors.coolDown.b,
+					a=EventHorizon.opt.colors.coolDown.a
+				},
+				sent = {
+					r=EventHorizon.opt.colors.sent.r,
+					g=EventHorizon.opt.colors.sent.g,
+					b=EventHorizon.opt.colors.sent.b,
+					a=EventHorizon.opt.colors.sent.a
+				},
+				aura = {
+					r=EventHorizon.opt.colors.aura.r,
+					g=EventHorizon.opt.colors.aura.g,
+					b=EventHorizon.opt.colors.aura.b,
+					a=EventHorizon.opt.colors.aura.a
+				}
 			}
 		}
 		self.opt.debuffs[spellName] = debuff
