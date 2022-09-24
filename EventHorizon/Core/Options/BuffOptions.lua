@@ -74,6 +74,7 @@ function EventHorizon:CreateNewBuffSpell()
 			enabled=true, 
 			order=1,
 			overrideColors=false,
+			ownOnly=true,
 			colors={
 				cast = {
 					r=EventHorizon.opt.colors.cast.r,
@@ -160,8 +161,17 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
 					width = "full"
 				},
+				ownOnly = {
+					order = 3,
+					name = "Own only",
+					type = "toggle",
+					desc = "Track your spell only",
+					get = function(info) return EventHorizon.opt.buffs[k].ownOnly end,
+					set = function(info, val) EventHorizon.opt.buffs[k].ownOnly = val EventHorizon:RefreshMainFrame(k) end,
+					width = "full"
+				},
 				order = {
-					order = 2,
+					order = 4,
 					name = "Order",
 					type = "range",
 					desc = "Sort order on frame",
@@ -172,7 +182,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].order = val EventHorizon:RefreshMainFrame(k) end,
 				},				
 				unitId = {
-					order = 3,
+					order = 5,
 					name = "Unit",
 					desc = "Which unit this buff targets",
 					type = "select",
@@ -181,23 +191,23 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].unitId = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				ticks = {
-					order = 4,
-					name = "Ticks",
-					type = "toggle",
-					get = function(info) return EventHorizon.opt.buffs[k].ticks end,
-					set = function(info, val) EventHorizon.opt.buffs[k].ticks = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
-					width="full"
-				},
-				tickType = {
-					order = 5,
-					name = "Ticks",
-					type = "toggle",
-					get = function(info) return EventHorizon.opt.buffs[k].ticks end,
-					set = function(info, val) EventHorizon.opt.buffs[k].ticks = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
-					width="full"
-				},
-				tickType = {
 					order = 6,
+					name = "Ticks",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.buffs[k].ticks end,
+					set = function(info, val) EventHorizon.opt.buffs[k].ticks = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
+					width="full"
+				},
+				tickType = {
+					order = 7,
+					name = "Ticks",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.buffs[k].ticks end,
+					set = function(info, val) EventHorizon.opt.buffs[k].ticks = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
+					width="full"
+				},
+				tickType = {
+					order = 8,
 					name = "Tick Type",
 					desc = "How to set the ticks",
 					type = "select",
@@ -207,7 +217,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].tickType = val self:CreateBuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end
 				},
 				tickCount = {
-					order = 7,
+					order = 9,
 					name = "Tick Count",
 					type = "range",
 					min = 1,
@@ -218,7 +228,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].tickCount = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				tickInterval = {
-					order = 8,
+					order = 10,
 					name = "Tick Interval",
 					type = "range",
 					min = 1,
@@ -229,7 +239,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].tickInterval = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				lastTick = {
-					order = 9,
+					order = 11,
 					name = "Last Tick",
 					desc = "End buff on last detected tick",
 					type = "toggle",
@@ -238,7 +248,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.buffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				overrideColors = {
-					order = 10,
+					order = 12,
 					name = "Override default colors",
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.buffs[k].overrideColors end,
@@ -250,7 +260,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					width = "full"
 				},						
 				colors = {
-					order = 11,
+					order = 13,
 					name = "Colors",
 					type = "group",
 					inline = true,
@@ -260,7 +270,7 @@ function EventHorizon:CreateBuffSpellsOptions()
 					}
 				},
 				remove = {
-					order = 12,
+					order = 14,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveBuffSpell(k) end,				

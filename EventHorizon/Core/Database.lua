@@ -29,8 +29,8 @@ EventHorizon.defaults = {
 		combat = false,
 		casts = {['*']={overrideColors=false}},
 		channels = {['*']={overrideColors=false}},
-		debuffs = {['*']={overrideColors=false}},
-		buffs = {['*']={overrideColors=false}},
+		debuffs = {['*']={overrideColors=false, ownOnly=true}},
+		buffs = {['*']={overrideColors=false, ownOnly=true}},
 		zoom = 0,
 	}
 }

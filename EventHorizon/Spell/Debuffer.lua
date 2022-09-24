@@ -53,14 +53,14 @@ function Debuffer:GenerateDebuff(target, start, stop)
 
 end
 
-function Debuffer:UnitDebuffByName(unitId, debuff)
+function Debuffer:UnitDebuffByName(unitId, debuff, ownOnly)
 	for i = 1, 40 do
 		local name, icon, count, debufftype, duration, expirationTime, isMine = UnitDebuff(unitId, i)
 
 		if not name then break end
 
 		if name == debuff then
-			if duration >= 0 and (isMine == "player") then
+			if duration >= 0 and ((not ownOnly) or isMine == "player") then
 				return name, icon, count, debufftype, duration, expirationTime
 			end
 		end
@@ -94,7 +94,7 @@ end
 
 function Debuffer:CheckTargetDebuff()
 	local target = UnitGUID('target')
-	local afflicted, icon, count, debuffType, duration, expirationTime = self:UnitDebuffByName('target', self.spellName)	
+	local afflicted, icon, count, debuffType, duration, expirationTime = self:UnitDebuffByName('target', self.spellName, self.spell.ownOnly)	
 	local shouldReplace, start	
 
 	if count then
