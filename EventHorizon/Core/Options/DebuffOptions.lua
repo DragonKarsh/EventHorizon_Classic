@@ -75,6 +75,7 @@ function EventHorizon:CreateNewDebuffSpell()
 			enabled=true, 
 			order=1, 
 			overrideColors=false,
+			ownOnly=true,
 			colors={
 				cast = {
 					r=EventHorizon.opt.colors.cast.r,
@@ -161,8 +162,17 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].enabled = val EventHorizon:RefreshMainFrame(k) end,
 					width = "full"
 				},
+				ownOnly = {
+					order = 3,
+					name = "Own only",
+					type = "toggle",
+					desc = "Track your spell only",
+					get = function(info) return EventHorizon.opt.debuffs[k].ownOnly end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].ownOnly = val EventHorizon:RefreshMainFrame(k) end,
+					width = "full"
+				},
 				order = {
-					order = 2,
+					order = 4,
 					name = "Order",
 					type = "range",
 					desc = "Sort order on frame",
@@ -173,23 +183,23 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].order = val EventHorizon:RefreshMainFrame(k) end,
 				},
 				ticks = {
-					order = 3,
-					name = "Ticks",
-					type = "toggle",
-					get = function(info) return EventHorizon.opt.debuffs[k].ticks end,
-					set = function(info, val) EventHorizon.opt.debuffs[k].ticks = val self:CreateDebuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
-					width="full"
-				},
-				tickType = {
-					order = 4,
-					name = "Ticks",
-					type = "toggle",
-					get = function(info) return EventHorizon.opt.debuffs[k].ticks end,
-					set = function(info, val) EventHorizon.opt.debuffs[k].ticks = val self:CreateDebuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
-					width="full"
-				},
-				tickType = {
 					order = 5,
+					name = "Ticks",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.debuffs[k].ticks end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].ticks = val self:CreateDebuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
+					width="full"
+				},
+				tickType = {
+					order = 6,
+					name = "Ticks",
+					type = "toggle",
+					get = function(info) return EventHorizon.opt.debuffs[k].ticks end,
+					set = function(info, val) EventHorizon.opt.debuffs[k].ticks = val self:CreateDebuffSpellsOptions() EventHorizon:RefreshMainFrame(k) end,
+					width="full"
+				},
+				tickType = {
+					order = 7,
 					name = "Tick Type",
 					desc = "How to set the ticks",
 					type = "select",
@@ -199,7 +209,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].tickType = val self:CreateDebuffSpellsOptions()  EventHorizon:RefreshMainFrame(k) end
 				},
 				tickCount = {
-					order = 6,
+					order = 8,
 					name = "Tick Count",
 					type = "range",
 					min = 1,
@@ -210,7 +220,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].tickCount = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				tickInterval = {
-					order = 7,
+					order = 9,
 					name = "Tick Interval",
 					type = "range",
 					min = 1,
@@ -221,7 +231,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].tickInterval = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				lastTick = {
-					order = 8,
+					order = 10,
 					name = "Last Tick",
 					desc = "End debuff on last detected tick",
 					type = "toggle",
@@ -230,7 +240,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					set = function(info, val) EventHorizon.opt.debuffs[k].lastTick = val  EventHorizon:RefreshMainFrame(k) end
 				},
 				overrideColors = {
-					order = 9,
+					order = 11,
 					name = "Override default colors",
 					type = "toggle",
 					get = function(info) return EventHorizon.opt.debuffs[k].overrideColors end,
@@ -243,7 +253,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					width = "full"
 				},							
 				colors = {
-					order = 10,
+					order = 12,
 					name = "Colors",
 					type = "group",
 					inline = true,
@@ -253,7 +263,7 @@ function EventHorizon:CreateDebuffSpellsOptions()
 					}
 				},
 				remove = {
-					order = 11,
+					order = 13,
 					name = "Remove",
 					type = "execute",
 					func = function() EventHorizon:RemoveDebuffSpell(k) end,				

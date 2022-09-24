@@ -55,14 +55,14 @@ function Buffer:GenerateBuff(target, start, stop)
 	end
 end
 
-function Buffer:UnitBuffByName(unitId, buff)
+function Buffer:UnitBuffByName(unitId, buff, ownOnly)
 	for i = 1, 40 do
 		local name, icon, count, bufftype, duration, expirationTime, isMine = UnitBuff(unitId, i)
 
 		if not name then break end
 
 		if name == buff then
-			if duration >= 0 and (isMine == "player") then
+			if duration >= 0 and ((not ownOnly) or isMine == "player") then
 				return name, icon, count, bufftype, duration, expirationTime
 			end
 		end
@@ -78,9 +78,9 @@ function Buffer:WasRefreshed(originalStop, lastSuccess, start, stop)
 end
 
 function Buffer:CheckBuff()
-	local unitId = EventHorizon.opt.buffs[self.spellName].unitId
+	local unitId = self.spell.unitId
 	local target = UnitGUID(unitId)
-	local affected, icon, count, buffType, duration, expirationTime = self:UnitBuffByName(unitId, self.spellName)	
+	local affected, icon, count, buffType, duration, expirationTime = self:UnitBuffByName(unitId, self.spellName, self.spell.ownOnly)	
 
 	if count then
 		self.stacks = count
