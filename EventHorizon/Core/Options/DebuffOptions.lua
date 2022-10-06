@@ -64,7 +64,7 @@ function EventHorizon:CreateNewDebuffSpell()
 			end
 		end
 	end
-	if spellName and not self.opt.debuffs[spellName] then
+	if spellName and not self.opt.debuffs[spellName].spellId then
 		local debuff = {
 			spellId=spellId, 
 			ticks=false, 
