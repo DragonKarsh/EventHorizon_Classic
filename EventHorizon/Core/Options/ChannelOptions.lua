@@ -3,7 +3,7 @@ local GetSpellInfo = GetSpellInfo
 function EventHorizon:CreateNewChanneledSpell()	
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newChannelSpell)
 
-	if spellName and not self.opt.channels[spellName] then
+	if spellName and not self.opt.channels[spellName].spellId then
 		local channel = {
 			spellId=spellId, 
 			ticks=1, 

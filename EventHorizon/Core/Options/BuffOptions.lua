@@ -62,7 +62,7 @@ function EventHorizon:CreateNewBuffSpell()
 			end
 		end
 	end
-	if spellName and not self.opt.buffs[spellName] then
+	if spellName and not self.opt.buffs[spellName].spellId then
 		local buff = {
 			spellId=spellId, 
 			unitId="player", 

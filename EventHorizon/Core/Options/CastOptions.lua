@@ -44,7 +44,7 @@ end
 function EventHorizon:CreateNewCastedSpell()
 	local spellName,_,_,_,_,_,spellId = GetSpellInfo(EventHorizon.newCastedSpell)
 
-	if spellName and not self.opt.casts[spellName] then
+	if spellName and not self.opt.casts[spellName].spellId then
 		local cast = {
 			spellId=spellId, 
 			enabled=true, 
