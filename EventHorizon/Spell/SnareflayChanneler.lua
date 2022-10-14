@@ -20,7 +20,7 @@ setmetatable(SnareflayChanneler, {
 function SnareflayChanneler:new(frame, spell)
 	Channeler.new(self, frame, spell)
 
-	self.isTroll = select(3, UnitRace('player'))
+	self.isTroll = select(3, UnitRace('player')) == 8
 end
 
 function SnareflayChanneler:CalculateSnare()
