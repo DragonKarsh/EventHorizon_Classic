@@ -7,6 +7,7 @@ EventHorizon.defaults = {
 		version = 202209220,
 		throttle = 10,
 		texture = "EventHorizon_Smooth",
+		snareflay = false,
 		colors = {		 
 			cast = {r=0,g=1,b=0,a=0.9},
 			channel = {r=0,g=1,b=0,a=0.9},
