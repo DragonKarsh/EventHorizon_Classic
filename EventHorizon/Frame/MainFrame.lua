@@ -48,7 +48,7 @@ end
 function MainFrame:AddChanneledSpellFrame(spell)
 	local spellFrame = self:RemoveSpellFrame(spell.spellId)
 	
-	if not spellFrame then
+	if not spellFrame  or GetSpellInfo(spell.spellId) == GetSpellInfo(48156) then
 		spellFrame = self:CreateSpellFrameBuilder(spell)
 		:WithChannel()
 		:Build()
