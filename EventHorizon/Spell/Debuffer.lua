@@ -81,7 +81,7 @@ function Debuffer:WasRefreshed(debuff, lastSuccess, start, stop)
 		end
 
 		-- try to detect a cast, casts do not refresh dots
-		if abs(start - lastSuccess) < 0.5 then
+		if abs(start - lastSuccess) < 0.25 then
 			return false
 		end
 	else
