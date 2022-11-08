@@ -6,5 +6,4 @@
   <Script file='Buffer.lua'/>
   <Script file='Debuffer.lua'/>
   <Script file='Sender.lua'/>
-  <Script file='SnareflayChanneler.lua'/>
 </Ui>

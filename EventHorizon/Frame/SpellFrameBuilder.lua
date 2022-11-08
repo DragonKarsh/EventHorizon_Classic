@@ -96,15 +96,7 @@ function SpellFrameBuilder:Build()
 	end
 
 	if self.channel then
-		local channeler
-
-		if EventHorizon.opt.snareflay then
-			channeler = SnareflayChanneler(self.frame, self.config)
-		else
-			channeler = Channeler(self.frame, self.config)
-		end
-
-		channeler
+		local channeler= Channeler(self.frame, self.config)
 		:WithEventHandler()
 		:WithUpdateHandler()
 		tinsert(spellComponents, channeler)
