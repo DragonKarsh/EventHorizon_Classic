@@ -58,15 +58,6 @@ function EventHorizon:CreateGlobalOptions()
 						step = 1,
 						get = function(info) return EventHorizon.opt.throttle end,
 						set = function(info,val) EventHorizon.opt.throttle = val end
-					},
-					snareflay = {
-						order = 6,
-						name = "Snareflay fix",
-						type = "toggle",
-						desc = "Alter " .. GetSpellInfo(48156) .. " channel time based on current snare reduction",
-						width = 1.0,
-						get = function(info) return EventHorizon.opt.snareflay end,
-						set = function(info, val) EventHorizon.opt.snareflay = val EventHorizon:RefreshMainFrame() end
 					}
 				}
 			},

@@ -7,5 +7,4 @@
   <Script file='AuraIndicator.lua'/>
   <Script file='SentIndicator.lua'/>
   <Script file='TickIndicator.lua'/>
-  <Script file='SnareflayChannelingIndicator.lua'/>
 </Ui>
