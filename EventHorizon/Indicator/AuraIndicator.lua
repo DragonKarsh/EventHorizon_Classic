@@ -13,6 +13,9 @@ setmetatable(AuraIndicator, {
   end,
 })
 
+-- Scoped localization
+local LocalizedCorruptionSpellName = select(1, GetSpellInfo(27216)) -- Rank 8 Corruption to get localized name
+
 function AuraIndicator:new(target, start, stop, spell)
 	Indicator.new(self, target, start, stop, spell)
 	
@@ -126,14 +129,20 @@ function AuraIndicator:ApplyTicksAfter(start, stop, lastTick)
 	-- lastTickProximiySec: Align the last added tick with proximity to the stop point of aura 
 	-- (cosmetics due to server internal jitter on duration extending effects)
 	local lastTickProximitySec = 0.2 
+	local lastTick = lastTick
 
 	-- Corruption edge case (the only refreshable hastable spell known)
 	-- TODO(verill): Refactor in future if there are more cases like corruption
-	local lastTick = lastTick
-	if self.spellName == "Corruption" then
+	if self.spellName == LocalizedCorruptionSpellName then
 		-- remove any ticks after start of new duration
 		self:RemoveTicksAfter(start)
-		lastTick = self.ticks[#self.ticks].start
+
+		-- There is an edge case of refresh before even the first tick. this will result in an empty ticks table
+		if #self.ticks > 0 then
+			lastTick = self.ticks[#self.ticks].start
+		else 
+			lastTick = self.original.start
+		end
 
 		-- Corruption is a hasted refreshable spell and we break the immutability of the dot instance because of that
 		local duration = stop - start
